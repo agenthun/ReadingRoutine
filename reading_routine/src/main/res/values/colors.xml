@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_daytime_material_blue">#65dbd5</color><!--80CBC4--><!--7ecec9  81dad2-->
+    <color name="background_night_material_blue">#05212d</color>
+
+    <color name="color_accent">#2196F3</color>
+    <color name="text_color_hint">#42000000</color>
+
+    <color name="color_white">@color/bright_foreground_material_dark</color>
+
+    <color name="fab_add_color_pressed">#1565C0</color>
+    <color name="fab_color_pressed">@color/bright_foreground_disabled_material_dark</color>
+    <color name="fab_color_shadow">#44000000</color>
+
+    <color name="delete_btn_press">#f75549</color>
+
+</resources>

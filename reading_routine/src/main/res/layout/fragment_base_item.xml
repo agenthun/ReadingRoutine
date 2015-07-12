@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.agenthun.readingroutine.fragments.ManagementFragment">
+
+    <com.agenthun.readingroutine.view.RevealBackgroundView
+        android:id="@+id/revealBackgroundView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/itemRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/addBtn"
+        android:layout_width="@dimen/btn_fab_size"
+        android:layout_height="@dimen/btn_fab_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/btn_fab_margins"
+        android:layout_marginRight="@dimen/btn_fab_margins"
+        android:background="@drawable/btn_fab_add"
+        android:elevation="@dimen/default_elevation"
+        android:translationZ="12dp"
+        android:src="@drawable/ic_add_white_36dp" />
+
+    <!--    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addBtn2"
+            style="@style/FabStyle"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_add_white_36dp" />-->
+
+</RelativeLayout>

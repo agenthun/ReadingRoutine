@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">#56bab5</item>
+        <!--0097A7-->
+        <item name="colorPrimary">@color/background_daytime_material_blue</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- <item name="colorAccent">@color/highlighted_text_material_light</item>-->
+        <!-- <item name="android:textColorHint">@color/text_color_hint</item>-->
+    </style>
+
+    <style name="ActionBarThemeOverlay" parent="">
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="colorControlHighlight">#3fff</item>
+    </style>
+
+    <style name="FabStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/btn_fab_margins</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="borderWidth">0dp</item>
+        <item name="elevation">6dp</item>
+        <item name="pressedTranslationZ">12dp</item>
+        <item name="rippleColor">@color/color_white</item>
+    </style>
+</resources>

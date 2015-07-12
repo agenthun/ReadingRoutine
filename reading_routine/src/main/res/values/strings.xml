@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Reading Routine</string>
+    <string name="action_settings">设置</string>
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+
+    <string name="text_global_settings">设置</string>
+    <string name="text_font_size">字体大小</string>
+    <string name="text_small_font">小</string>
+    <string name="text_big_font">大</string>
+    <string name="text_reading_mode">夜读模式</string>
+    <string name="text_brightness">亮度</string>
+    <string name="text_brightness_dark">暗</string>
+    <string name="text_brightness_light">亮</string>
+    <string name="text_management">管理</string>
+    <string name="text_routines">安排</string>
+    <string name="text_reading_routine">阅读路线</string>
+    <string name="text_main">首页</string>
+    <string name="text_null" />
+</resources>

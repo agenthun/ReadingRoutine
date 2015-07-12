@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/managementHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/headerGraphics"
+        android:layout_width="match_parent"
+        android:layout_height="186.0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/view_header" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50.0dp"
+        android:layout_alignTop="@id/headerGraphics"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30.0dp"
+        android:paddingTop="10.0dp"
+        android:text="@string/text_management"
+        android:textColor="@color/background_daytime_material_blue"
+        android:textSize="27.0sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/headerGraphics"
+        android:layout_marginTop="68.0dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/management_badge" />
+
+</RelativeLayout>
