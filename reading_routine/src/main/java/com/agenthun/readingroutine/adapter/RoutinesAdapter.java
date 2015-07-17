@@ -1,6 +1,8 @@
 package com.agenthun.readingroutine.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -11,9 +13,11 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
+import com.agenthun.readingroutine.activity.BookActivity;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
@@ -129,7 +133,29 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
             }
         });
 
-        holder.textViewPosition.setText(position + "");
+        holder.textViewData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* Intent intent = new Intent(context, BookActivity.class);
+                context.startActivity(intent);*/
+            }
+        });
+
+        switch (position % 4) {
+            case 0:
+                holder.swipeLayout.setBackgroundColor(Color.rgb(255, 197, 3));
+                break;
+            case 1:
+                holder.swipeLayout.setBackgroundColor(Color.rgb(115, 199, 120));
+                break;
+            case 2:
+                holder.swipeLayout.setBackgroundColor(Color.rgb(86, 119, 252));
+                break;
+            case 3:
+                holder.swipeLayout.setBackgroundColor(Color.rgb(117, 117, 117));
+                break;
+        }
+//        holder.textViewPosition.setText(position + "");
         holder.textViewData.setText(item);
         mItemManger.bindView(holder.itemView, position);
         if (lastAnimatedItem < position) lastAnimatedItem = position;
@@ -199,8 +225,8 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
     }
 
     static class RoutineViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.position)
-        TextView textViewPosition;
+        /*        @InjectView(R.id.position)
+                TextView textViewPosition;*/
         @InjectView(R.id.text_data)
         TextView textViewData;
         @InjectView(R.id.swipe)

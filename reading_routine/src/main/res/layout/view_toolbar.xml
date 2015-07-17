@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?actionBarSize"
-    android:elevation="@dimen/default_elevation"
     android:background="?attr/colorPrimary"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" /><!--app:theme="@style/ActionBarThemeOverlay"-->
+    android:elevation="@dimen/default_elevation"
+    android:minHeight="?actionBarSize"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" /><!--app:theme="@style/ActionBarThemeOverlay"-->

@@ -1,6 +1,7 @@
 package com.agenthun.readingroutine.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -14,6 +15,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 
 import com.agenthun.readingroutine.R;
+import com.agenthun.readingroutine.activity.BookActivity;
 import com.agenthun.readingroutine.adapter.RoutinesAdapter;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.view.RecyclerViewScrollManager;
@@ -32,6 +34,7 @@ import butterknife.OnClick;
 public class RoutinesFragment extends TFragment implements RevealBackgroundView.OnStateChangeListener {
 
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
+    private static final int NEW_BOOK = 1;
 
     @InjectView(R.id.revealBackgroundView)
     RevealBackgroundView revealBackgroundView;
@@ -59,15 +62,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         setupGridLayout();
         setupRevealBackground(savedInstanceState);
 
-        addRoutinesItemBtn.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                addRoutinesItemBtn.getViewTreeObserver().removeOnPreDrawListener(this);
-                pendingIntro = true;
-                addRoutinesItemBtn.setTranslationY(2 * addRoutinesItemBtn.getHeight());
-                return true;
-            }
-        });
+        initAddItemBtn(addRoutinesItemBtn);
 
         return view;
     }
@@ -75,17 +70,16 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     private void setupGridLayout() {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         routinesRecyclerView.setLayoutManager(layoutManager);
-/*        routinesRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        routinesRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 routinesAdapter.setLockedAnimations(true);
             }
-        });*/
-        RecyclerViewScrollManager scrollManager = new RecyclerViewScrollManager();
+        });
+/*        RecyclerViewScrollManager scrollManager = new RecyclerViewScrollManager();
         scrollManager.attach(routinesRecyclerView);
-        scrollManager.addView(addRoutinesItemBtn, RecyclerViewScrollManager.Direction.DOWN);
-//        scrollManager.addView(addRoutinesItemBtn2, RecyclerViewScrollManager.Direction.DOWN);
+        scrollManager.addView(addRoutinesItemBtn, RecyclerViewScrollManager.Direction.DOWN); //下滑动画*/
     }
 
     private void setupRevealBackground(Bundle savedInstanceState) {
@@ -104,6 +98,19 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             revealBackgroundView.setToFinishedFrame();
             routinesAdapter.setLockedAnimations(true);
         }
+    }
+
+    private void initAddItemBtn(final ImageButton imageButton) {
+        //初始化隐藏Button
+        imageButton.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                imageButton.getViewTreeObserver().removeOnPreDrawListener(this);
+                pendingIntro = true;
+                imageButton.setTranslationY(2 * imageButton.getHeight());
+                return true;
+            }
+        });
     }
 
     @Override
@@ -132,6 +139,15 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     @OnClick(R.id.addBtn)
     public void onAddClick() {
         System.out.println("onAddClick");
-        routinesAdapter.addItem();
+//        routinesAdapter.addItem();
+        Intent intent = new Intent(getContext(), BookActivity.class);
+        startActivityForResult(intent, NEW_BOOK);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode){
+//        }
     }
 }
