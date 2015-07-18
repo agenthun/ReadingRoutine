@@ -1,0 +1,125 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.agenthun.readingroutine.activity.BookActivity">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="192dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/view_toolbar"
+                app:layout_collapseMode="pin" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBarLayout"
+        android:layout_margin="@dimen/margin_horizontal_small"
+        android:elevation="@dimen/cardview_default_elevation"
+        app:contentPadding="@dimen/margin_horizontal">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_book_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/text_book_name"
+                android:textColor="@color/background_daytime_material_blue"
+                android:textSize="@dimen/abc_text_size_menu_material" />
+
+            <EditText
+                android:id="@+id/book_name_edittext"
+                android:layout_width="fill_parent"
+                android:layout_height="30.0dp"
+                android:layout_below="@id/text_book_name"
+                android:layout_marginTop="0.0dp"
+                android:background="@drawable/edit_text_bg"
+                android:imeOptions="actionDone"
+                android:nextFocusLeft="@id/book_name_edittext"
+                android:nextFocusUp="@id/book_name_edittext"
+                android:saveEnabled="false"
+                android:singleLine="true"
+                android:textColor="@color/text_color_green"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/abc_text_size_medium_material" />
+
+            <TextView
+                android:id="@+id/time_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/book_name_edittext"
+                android:layout_marginTop="20.0dip"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/text_time_label"
+                android:textColor="@color/background_daytime_material_blue"
+                android:textSize="@dimen/abc_text_size_menu_material" />
+
+            <TextView
+                android:id="@+id/alarm_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time_heading"
+                android:layout_marginTop="0.0dp"
+                android:fontFamily="sans-serif-light"
+                android:text="2015-07-09"
+                android:textColor="@color/text_color_green"
+                android:textSize="@dimen/abc_text_size_display_1_material" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40.0dip"
+                android:layout_below="@id/alarm_time"
+                android:layout_marginLeft="-16.0dip"
+                android:layout_marginRight="-16.0dip"
+                android:layout_marginTop="25.0dip"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/delete"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/btn_book_selector"
+                    android:gravity="center"
+                    android:text="@string/text_book_delete"
+
+                    android:textSize="@dimen/abc_text_size_medium_material" />
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="1.0px"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/btn_book_selector"
+                    android:gravity="center"
+                    android:text="@string/text_book_save"
+
+                    android:textSize="@dimen/abc_text_size_medium_material" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     android:elevation="@dimen/cardview_default_elevation"
     android:foreground="?android:attr/selectableItemBackground"
     android:padding="@dimen/margin_horizontal_small">
@@ -10,11 +11,10 @@
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffc107"
         swipe:leftEdgeSwipeOffset="0dp"
         swipe:rightEdgeSwipeOffset="0dp">
         <!--android:background="@drawable/item_selector"-->
-
+        <!--android:background="#73c778"-->
         <LinearLayout
             android:layout_width="56dp"
             android:layout_height="match_parent"
@@ -29,42 +29,60 @@
                 android:src="@drawable/ic_delete_white_48dp" />
         </LinearLayout>
 
-        <LinearLayout
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@drawable/style_book"-->
+        <!--android:orientation="vertical">-->
+        <!--&lt;!&ndash;android:background="@drawable/item_selector"&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<com.agenthun.readingroutine.view.SquareImageView&ndash;&gt;-->
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@drawable/ic_book" />-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/position"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="@dimen/margin_horizontal_medium"-->
+        <!--android:textColor="@color/color_white" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/text_data"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="@dimen/margin_horizontal_medium"-->
+        <!--android:textColor="@color/color_white" />-->
+        <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
+
+
+        <TextView
+            android:id="@+id/text_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/style_book"
-            android:orientation="vertical">
-            <!--android:background="@drawable/item_selector"-->
 
-            <!--<com.agenthun.readingroutine.view.SquareImageView-->
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_book" />
+            android:gravity="center"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/abc_text_size_title_material" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+        <!--android:background="@drawable/style_book"-->
 
-                <TextView
-                    android:id="@+id/position"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_horizontal_medium"
-                    android:textColor="@color/color_white" />
 
-                <TextView
-                    android:id="@+id/text_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_horizontal_medium"
-                    android:textColor="@color/color_white" />
-            </LinearLayout>
+        <!--        <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/item_selector" />-->
 
-        </LinearLayout>
     </com.daimajia.swipe.SwipeLayout>
-
 </FrameLayout>

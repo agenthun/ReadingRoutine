@@ -4,4 +4,11 @@
         <attr name="shadowDrawable" format="reference" />
         <attr name="shadowVisible" format="boolean" />
     </declare-styleable>
+
+    <integer-array name="style_book_color">
+        <item>@color/style_book_color_amber</item>
+        <item>@color/style_book_color_green</item>
+        <item>@color/style_book_color_blue</item>
+        <item>@color/style_book_color_grey</item>
+    </integer-array>
 </resources>

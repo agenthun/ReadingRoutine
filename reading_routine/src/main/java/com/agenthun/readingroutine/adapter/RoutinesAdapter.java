@@ -1,6 +1,8 @@
 package com.agenthun.readingroutine.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -10,10 +12,13 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
+import com.agenthun.readingroutine.activity.BookActivity;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
@@ -21,6 +26,8 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,6 +38,9 @@ import butterknife.InjectView;
 //public class RoutinesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> {
 
+    public static final String BOOK_NAME = "BOOK_NAME";
+    public static final String BOOK_COLOR_INDEX = "BOOK_COLOR_INDEX";
+    public static final String BOOK_ALARM_TIME = "BOOK_ALARM_TIME";
     private static final int TYPE_ROUTINES_HEADER = 0;
     private static final int TYPE_ROUTINE = 1;
     private static final int MIN_ITEM_COUNT = 1;
@@ -45,9 +55,9 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
 
     private int lastAnimatedItem = 0;
     private int itemsCount = 0;
-    private ArrayList<String> mDataset;
+    private ArrayList<HashMap<String, Object>> mDataset;
 
-    public RoutinesAdapter(Context context, ArrayList<String> objects) {
+    public RoutinesAdapter(Context context, ArrayList<HashMap<String, Object>> objects) {
         this.context = context;
         this.cellHeight = (int) (UiUtils.getScreenWidthPixels(context) / 2 * 1.2);
         this.cellWidth = UiUtils.getScreenWidthPixels(context) / 2;
@@ -107,8 +117,7 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
     private void bindRoutine(final RoutineViewHolder holder, final int position) {
 
         animateRoutine(holder);
-
-        String item = mDataset.get(position - 1);
+        String item = (String) mDataset.get(position - 1).get(BOOK_NAME);
 
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
@@ -129,7 +138,21 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
             }
         });
 
-        holder.textViewPosition.setText(position + "");
+        if (mOnItemClickListener != null) {
+            holder.textViewData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(holder.textViewData, pos);
+                }
+            });
+        }
+
+        int[] colorBook = context.getResources().getIntArray(R.array.style_book_color);
+        int colorIndex = (int) mDataset.get(position - 1).get(BOOK_COLOR_INDEX);
+        holder.swipeLayout.setBackgroundColor(colorBook[colorIndex]);
+
+//        holder.textViewPosition.setText(position + "");
         holder.textViewData.setText(item);
         mItemManger.bindView(holder.itemView, position);
         if (lastAnimatedItem < position) lastAnimatedItem = position;
@@ -174,7 +197,12 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
     public void addItem() {
 /*        itemsCount++;
         notifyItemInserted(MIN_ITEM_COUNT + mDataset.size() + itemsCount - 1);*/
-        mDataset.add("123");
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put(BOOK_NAME, "ABC");
+        hashMap.put(BOOK_COLOR_INDEX, 0);
+        hashMap.put(BOOK_ALARM_TIME, "2015-09-10");
+        mDataset.add(hashMap);
+
         notifyItemInserted(MIN_ITEM_COUNT + mDataset.size() - 1);
 //        notifyItemRangeChanged(MIN_ITEM_COUNT + mDataset.size() - 2, mDataset.size());
     }
@@ -199,8 +227,8 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
     }
 
     static class RoutineViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.position)
-        TextView textViewPosition;
+        /*        @InjectView(R.id.position)
+                TextView textViewPosition;*/
         @InjectView(R.id.text_data)
         TextView textViewData;
         @InjectView(R.id.swipe)
@@ -216,5 +244,20 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
 
     public void setLockedAnimations(boolean lockedAnimations) {
         this.lockedAnimations = lockedAnimations;
+    }
+
+    public HashMap<String, Object> getItemData(int position) {
+        return mDataset.get(position-1);
+    }
+
+    //itemClick interface
+    public static interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
     }
 }
