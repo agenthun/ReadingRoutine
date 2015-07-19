@@ -13,10 +13,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageButton;
 
-import com.agenthun.readingroutine.adapter.ManagementAdapter;
+import com.agenthun.readingroutine.adapters.ManagementAdapter;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
-import com.agenthun.readingroutine.view.RevealBackgroundView;
+import com.agenthun.readingroutine.views.RevealBackgroundView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

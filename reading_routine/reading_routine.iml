@@ -100,8 +100,10 @@
     <orderEntry type="library" exported="" name="recyclerview-v7-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Bmob_Push_V0.6beta_20150408" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-5.1.1" level="project" />
+    <orderEntry type="library" exported="" name="BmobSDK_V3.4.1_0710" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="material-menu-1.5.1" level="project" />
     <orderEntry type="library" exported="" name="material-menu-toolbar-1.5.1" level="project" />

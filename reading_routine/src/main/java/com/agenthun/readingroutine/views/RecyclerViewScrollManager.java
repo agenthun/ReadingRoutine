@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.agenthun.readingroutine.view;
+package com.agenthun.readingroutine.views;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

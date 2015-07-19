@@ -1,26 +1,20 @@
-package com.agenthun.readingroutine.activity;
+package com.agenthun.readingroutine.activities;
 
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
-import com.agenthun.readingroutine.adapter.RoutinesAdapter;
+import com.agenthun.readingroutine.adapters.RoutinesAdapter;
 import com.agenthun.readingroutine.fragments.CalendarDialogFragment;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import butterknife.ButterKnife;

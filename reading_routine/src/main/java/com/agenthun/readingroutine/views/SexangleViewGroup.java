@@ -1,4 +1,4 @@
-package com.agenthun.readingroutine.view;
+package com.agenthun.readingroutine.views;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,4 +1,4 @@
-package com.agenthun.readingroutine.activity;
+package com.agenthun.readingroutine.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

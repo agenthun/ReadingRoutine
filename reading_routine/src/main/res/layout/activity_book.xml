@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.agenthun.readingroutine.activity.BookActivity">
+    tools:context="com.agenthun.readingroutine.activities.BookActivity">
 
 
     <android.support.design.widget.AppBarLayout

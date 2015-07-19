@@ -1,8 +1,6 @@
-package com.agenthun.readingroutine.adapter;
+package com.agenthun.readingroutine.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -12,13 +10,10 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
-import com.agenthun.readingroutine.activity.BookActivity;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
@@ -27,7 +22,6 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
