@@ -8,12 +8,13 @@ import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.UserData;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -53,19 +54,30 @@ public class LoginActivity extends Activity {
         String name = loginName.getText().toString();
         String password = loginPassword.getText().toString();
 
+        if (name.isEmpty()) {
+            Toast.makeText(LoginActivity.this, R.string.error_invalid_account, Toast.LENGTH_SHORT).show();
+            YoYo.with(Techniques.Shake).duration(500).delay(100).playOn(loginName);
+            return;
+        } else if (password.isEmpty()) {
+            Toast.makeText(LoginActivity.this, R.string.error_invalid_password, Toast.LENGTH_SHORT).show();
+            YoYo.with(Techniques.Shake).duration(500).delay(100).playOn(loginPassword);
+            return;
+        }
+
         userData.setUsername(name);
         userData.setPassword(password);
         userData.login(this, new SaveListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, R.string.msg_success, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
 
             @Override
             public void onFailure(int i, String s) {
-                Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, R.string.msg_fail, Toast.LENGTH_SHORT).show();
+                YoYo.with(Techniques.Shake).duration(500).delay(100).playOn(loginPassword);
             }
         });
     }
