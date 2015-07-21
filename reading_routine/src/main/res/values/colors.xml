@@ -9,6 +9,8 @@
     <color name="text_color_hint">#42000000</color>
 
     <color name="color_white">@color/bright_foreground_material_dark</color>
+    <color name="grey_100">#f5f5f5</color>
+    <color name="grey_200">#eeeeee</color>
     <color name="grey_300">#e0e0e0</color>
     <color name="teal_300">#4db6ac</color>
     <color name="teal_400">#26a69a</color>

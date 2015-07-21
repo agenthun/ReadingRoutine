@@ -26,4 +26,5 @@
     <string name="text_book_delete">删除</string>
     <string name="text_book_save">保存</string>
     <string name="text_global_logout">退出</string>
+    <string name="action_sign_up">注册</string>
 </resources>
