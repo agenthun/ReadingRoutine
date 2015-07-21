@@ -6,28 +6,40 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- Push SDK权限 start -->
+    <permission
+        android:name="cn.bmob.permission.push"
+        android:protectionLevel="normal"></permission>
+    <uses-permission android:name="cn.bmob.permission.push" />
+    <!-- 添加自定义的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Push SDK权限 end -->
+    <!-- 允许网络连接以及网络状态改变 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 文件存储 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_rr_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activities.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.BookActivity"
-            android:label="@string/title_activity_book"></activity>
         <activity
             android:name=".activities.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateVisible">
             <intent-filter>
@@ -36,6 +48,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+<!--            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activities.BookActivity"
+            android:label="@string/title_activity_book"></activity>
     </application>
 
 </manifest>

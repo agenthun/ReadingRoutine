@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.bmob.v3.Bmob;
 
 public class MainActivity extends TActivity implements MenuFragment.OnMenuInteractionListener {
 
@@ -38,6 +40,7 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.inject(this);
 
         materialMenuIconToolbar = new MaterialMenuIconToolbar(this, getResources().getColor(R.color.color_white), MaterialMenuDrawable.Stroke.REGULAR) {
@@ -122,6 +125,14 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         if (savedInstanceState == null) {
             pushFragmentToBackStack(MenuFragment.class, null);
         }
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Log.d("MainActivity", menuItem.getItemId() + "");
+                return false;
+            }
+        });
     }
 
     @Override

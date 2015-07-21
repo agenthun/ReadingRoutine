@@ -1,109 +1,92 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     android:background="@color/background_daytime_material_blue"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.agenthun.readingroutine.activities.LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
+    <!--    <ProgressBar
+            android:id="@+id/login_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone" />-->
 
-    <ScrollView
-        android:id="@+id/account_login_form"
+    <!--    <ScrollView
+            android:id="@+id/account_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">-->
+
+    <LinearLayout
+        android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/ic_reading_routine_white" />
 
         <LinearLayout
-            android:id="@+id/login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_horizontal"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_reading_routine_white" />
+            <EditText
+                android:id="@+id/login_name"
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:drawableLeft="@drawable/ic_account_box_white_48dp"
+                android:drawablePadding="25dip"
+                android:hint="@string/prompt_account"
+                android:shadowDx="0.0"
+                android:shadowDy="1.0"
+                android:shadowRadius="1.0"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textColorHint="#ffdddddd" />
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/login_password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
-                        android:src="@drawable/ic_account" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/account"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:hint="@string/prompt_account"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
-                        android:src="@drawable/ic_password" />
-
-                    <EditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:hint="@string/prompt_password"
-                        android:imeActionId="@+id/login"
-                        android:imeActionLabel="@string/action_sign_in_short"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/sign_in_button"
-                    style="?android:textAppearanceMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in"
-                    android:textColor="@color/background_daytime_material_blue"
-                    android:textStyle="bold"
-                    android:background="@drawable/btn_default" />
-            </LinearLayout>
+                android:layout_height="48dp"
+                android:drawableLeft="@drawable/ic_lock_white_48dp"
+                android:drawablePadding="25dip"
+                android:hint="@string/prompt_password"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textColorHint="#ffdddddd" />
 
         </LinearLayout>
-    </ScrollView>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/sign_in_button"
+            style="?android:textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_default"
+            android:gravity="center"
+            android:text="@string/action_sign_in"
+            android:textColor="@color/background_daytime_material_blue"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    <!--</ScrollView>-->
+
+</RelativeLayout>
 
 
 

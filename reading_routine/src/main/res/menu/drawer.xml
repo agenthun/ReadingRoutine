@@ -12,5 +12,10 @@
             android:icon="@drawable/icon_settings"
             android:title="@string/text_global_settings" />
 
+        <item
+            android:id="@+id/drawer_logout"
+            android:icon="@drawable/ic_power_settings_new_white_48dp"
+            android:title="@string/text_global_logout" />
+
     </group>
 </menu>

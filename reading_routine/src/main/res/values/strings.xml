@@ -25,4 +25,5 @@
     <string name="text_time_label">提醒时间</string>
     <string name="text_book_delete">删除</string>
     <string name="text_book_save">保存</string>
+    <string name="text_global_logout">退出</string>
 </resources>
