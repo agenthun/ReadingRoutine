@@ -44,6 +44,7 @@ public class LoginActivity extends Activity {
         if (userData != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            finish();
         } else {
             userData = new UserData();
         }
