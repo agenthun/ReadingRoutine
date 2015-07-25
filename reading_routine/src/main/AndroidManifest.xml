@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.agenthun.readingroutine" >
+    package="com.agenthun.readingroutine">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -9,8 +9,7 @@
     <!-- Push SDK权限 start -->
     <permission
         android:name="cn.bmob.permission.push"
-        android:protectionLevel="normal" />
-
+        android:protectionLevel="normal"></permission>
     <uses-permission android:name="cn.bmob.permission.push" />
     <!-- 添加自定义的权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,6 +21,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -35,12 +35,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_rr_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
+
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,19 +52,16 @@
             android:name=".activities.MainActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-
-            <!--
-                <intent-filter>
+            android:screenOrientation="portrait">
+<!--            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".activities.BookActivity"
-            android:label="@string/title_activity_book" />
+            android:label="@string/title_activity_book"></activity>
     </application>
 
 </manifest>

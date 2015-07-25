@@ -15,7 +15,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -45,7 +44,6 @@ public class LoginActivity extends Activity {
         if (userData != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            finish();
         } else {
             userData = new UserData();
         }
@@ -74,6 +72,7 @@ public class LoginActivity extends Activity {
                 Toast.makeText(LoginActivity.this, R.string.msg_success, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override

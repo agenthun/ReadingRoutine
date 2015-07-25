@@ -26,5 +26,4 @@
         <item name="pressedTranslationZ">12dp</item>
         <item name="rippleColor">@color/color_white</item>
     </style>
-
 </resources>
