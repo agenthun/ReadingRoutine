@@ -19,7 +19,6 @@
     <string name="text_null" />
     <string name="title_activity_book">BookActivity</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="text_book">添加书籍</string>
     <string name="text_book_name">书名</string>
     <string name="text_time_label">提醒时间</string>
@@ -27,4 +26,5 @@
     <string name="text_book_save">保存</string>
     <string name="text_global_logout">退出</string>
     <string name="action_sign_up">注册</string>
+    <string name="time_setting_finish">完成</string>
 </resources>

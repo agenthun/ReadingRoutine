@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.adapters.RoutinesAdapter;
 import com.agenthun.readingroutine.fragments.CalendarDialogFragment;
+import com.agenthun.readingroutine.fragments.SettingsFragment;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
@@ -33,6 +34,7 @@ public class BookActivity extends TActivity {
     EditText bookName;
     @InjectView(R.id.alarm_time)
     TextView alarmTime;
+    private String getBookAlarmTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class BookActivity extends TActivity {
             bookName.setText(getBookName);
         }
 
-        String getBookAlarmTime = intent.getStringExtra(RoutinesAdapter.BOOK_ALARM_TIME);
+        getBookAlarmTime = intent.getStringExtra(RoutinesAdapter.BOOK_ALARM_TIME);
         alarmTime.setText(getBookAlarmTime);
     }
 
@@ -85,8 +87,7 @@ public class BookActivity extends TActivity {
 
     @OnClick(R.id.alarm_time)
     public void onAlarmTimeClick() {
-        System.out.println("onAlarmTimeClick");
-        new CalendarDialogFragment();
+        new CalendarDialogFragment().show(getSupportFragmentManager(), "onAlarmTimeClick");
     }
 
     @OnClick(R.id.save)

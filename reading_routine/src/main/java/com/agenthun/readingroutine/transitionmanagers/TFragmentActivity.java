@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 /**
  * Created by Agent Henry on 2015/5/16.
  */
-public abstract class TFragmentActivity extends ActionBarActivity {
+public abstract class TFragmentActivity extends AppCompatActivity {
     protected TFragment mCurrentTFragment;
     private boolean mCloseWarned;
 
@@ -48,7 +49,7 @@ public abstract class TFragmentActivity extends ActionBarActivity {
             fragment.onEnter(param.data);
 
             FragmentTransaction ft = fm.beginTransaction();
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.setCustomAnimations(android.support.v7.appcompat.R.anim.abc_fade_in, android.support.v7.appcompat.R.anim.abc_fade_out,
                     android.support.v7.appcompat.R.anim.abc_fade_in, android.support.v7.appcompat.R.anim.abc_fade_out);
             if (fragment.isAdded()) {
