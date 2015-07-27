@@ -3,6 +3,8 @@ package com.agenthun.readingroutine.activities;
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +18,9 @@ import com.agenthun.readingroutine.fragments.CalendarDialogFragment;
 import com.agenthun.readingroutine.fragments.MenuFragment;
 import com.agenthun.readingroutine.fragments.RoutinesFragment;
 import com.agenthun.readingroutine.fragments.SettingsFragment;
+import com.agenthun.readingroutine.transitionmanagers.FragmentParam;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
+import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.daimajia.androidanimations.library.Techniques;
@@ -98,13 +102,52 @@ public class BookActivity extends TActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public void goToFragment(Class<?> cls, Object data) {
+        if (cls == null) {
+            return;
+        }
+        CalendarDialogFragment fragment = (CalendarDialogFragment) getSupportFragmentManager().findFragmentByTag(cls.toString());
+        if (fragment != null) {
+//            mCurrentTFragment = fragment;
+            fragment.onBackWithData(data);
+        }
+        getSupportFragmentManager().popBackStackImmediate(cls.toString(), 0);
+    }
+
+    @Override
+    public void pushFragmentToBackStack(Class<?> cls, Object data) {
+        FragmentParam param = new FragmentParam();
+        param.cls = cls;
+        param.data = data;
+
+        String fragmentTag = getFragmentTag(param);
+        FragmentManager fm = getSupportFragmentManager();
+        CalendarDialogFragment fragment = (CalendarDialogFragment) fm.findFragmentByTag(fragmentTag);
+
+        fragment.onEnter(param.data);
+
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.setCustomAnimations(android.support.v7.appcompat.R.anim.abc_fade_in, android.support.v7.appcompat.R.anim.abc_fade_out,
+                android.support.v7.appcompat.R.anim.abc_fade_in, android.support.v7.appcompat.R.anim.abc_fade_out);
+        if (fragment.isAdded()) {
+            ft.show(fragment);
+        } else {
+            ft.add(getFragmentContainerId(), fragment, fragmentTag);
+        }
+
+        ft.addToBackStack(fragmentTag);
+        ft.commitAllowingStateLoss();
+    }
+
     @OnClick(R.id.alarm_time)
     public void onAlarmTimeClick() {
-//        new CalendarDialogFragment().show(getSupportFragmentManager(), "onAlarmTimeClick");
-        Intent intent = new Intent(this, SplashActivity.class);
-        intent.putExtra(SELECT_BOOK_ALARM_TIME, getBookAlarmTime);
-//        startActivityFromFragment(new CalendarDialogFragment(), intent, 1);
-        startActivity(intent);
+//        pushFragmentToBackStack(CalendarDialogFragment.class, getBookAlarmTime);
+        new CalendarDialogFragment().show(getSupportFragmentManager(), "onAlarmTimeClick");
+//        Intent intent = new Intent(this, SplashActivity.class);
+//        intent.putExtra(SELECT_BOOK_ALARM_TIME, getBookAlarmTime);
+//        startActivity(intent);
     }
 
     @OnClick(R.id.delete)

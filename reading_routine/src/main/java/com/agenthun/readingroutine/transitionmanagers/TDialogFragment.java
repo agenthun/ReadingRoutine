@@ -2,122 +2,449 @@ package com.agenthun.readingroutine.transitionmanagers;
 
 
 import android.app.Activity;
-import android.app.DialogFragment;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
-import com.agenthun.readingroutine.transitionmanagers.lifecycle.IComponentContainer;
-import com.agenthun.readingroutine.transitionmanagers.lifecycle.LifeCycleComponent;
-import com.agenthun.readingroutine.transitionmanagers.lifecycle.LifeCycleComponentManager;
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 
 /**
  * Created by Agent Henry on 2015/5/16.
  */
-public class TDialogFragment extends DialogFragment implements ITFragment, IComponentContainer {
+public class TDialogFragment extends TFragment implements DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
+    /**
+     * Style for {@link #setStyle(int, int)}: a basic,
+     * normal dialog.
+     */
 
-    protected Object mDataIn;
-    private boolean mFirstResume = true;
+    public static final int STYLE_NORMAL = 0;
 
-    private LifeCycleComponentManager mLifeCycleComponentManager = new LifeCycleComponentManager();
+    /**
+     * Style for {@link #setStyle(int, int)}: don't include
+     * a title area.
+     */
+    public static final int STYLE_NO_TITLE = 1;
 
-    @Override
-    public void addComponent(LifeCycleComponent component) {
-        mLifeCycleComponentManager.addComponent(component);
+    /**
+     * Style for {@link #setStyle(int, int)}: don't draw
+     * any frame at all; the view hierarchy returned by {@link #onCreateView}
+     * is entirely responsible for drawing the dialog.
+     */
+    public static final int STYLE_NO_FRAME = 2;
+
+    /**
+     * Style for {@link #setStyle(int, int)}: like
+     * {@link #STYLE_NO_FRAME}, but also disables all input to the dialog.
+     * The user can not touch it, and its window will not receive input focus.
+     */
+    public static final int STYLE_NO_INPUT = 3;
+
+    private static final String SAVED_DIALOG_STATE_TAG = "android:savedDialogState";
+    private static final String SAVED_STYLE = "android:style";
+    private static final String SAVED_THEME = "android:theme";
+    private static final String SAVED_CANCELABLE = "android:cancelable";
+    private static final String SAVED_SHOWS_DIALOG = "android:showsDialog";
+    private static final String SAVED_BACK_STACK_ID = "android:backStackId";
+
+    int mStyle = STYLE_NORMAL;
+    int mTheme = 0;
+    boolean mCancelable = true;
+    boolean mShowsDialog = true;
+    int mBackStackId = -1;
+
+    Dialog mDialog;
+    boolean mViewDestroyed;
+    boolean mDismissed;
+    boolean mShownByMe;
+
+    public TDialogFragment() {
     }
 
-    public TFragmentActivity getContext() {
-        return (TFragmentActivity) getActivity();
+    /**
+     * Call to customize the basic appearance and behavior of the
+     * fragment's dialog.  This can be used for some common dialog behaviors,
+     * taking care of selecting flags, theme, and other options for you.  The
+     * same effect can be achieve by manually setting Dialog and Window
+     * attributes yourself.  Calling this after the fragment's Dialog is
+     * created will have no effect.
+     *
+     * @param style Selects a standard style: may be {@link #STYLE_NORMAL},
+     *              {@link #STYLE_NO_TITLE}, {@link #STYLE_NO_FRAME}, or
+     *              {@link #STYLE_NO_INPUT}.
+     * @param theme Optional custom theme.  If 0, an appropriate theme (based
+     *              on the style) will be selected for you.
+     */
+
+
+    /**
+     * Display the dialog, adding the fragment to the given FragmentManager.  This
+     * is a convenience for explicitly creating a transaction, adding the
+     * fragment to it with the given tag, and committing it.  This does
+     * <em>not</em> add the transaction to the back stack.  When the fragment
+     * is dismissed, a new transaction will be executed to remove it from
+     * the activity.
+     *
+     * @param manager The FragmentManager this fragment will be added to.
+     * @param tag     The tag for this fragment, as per
+     *                {@link FragmentTransaction#add(Fragment, String) FragmentTransaction.add}.
+     */
+    public void show(FragmentManager manager, String tag) {
+        mDismissed = false;
+        mShownByMe = true;
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.add(this, tag);
+        ft.commit();
     }
 
-    @Override
-    public void onEnter(Object data) {
-        mDataIn = data;
+    /**
+     * Display the dialog, adding the fragment using an existing transaction
+     * and then committing the transaction.
+     *
+     * @param transaction An existing transaction in which to add the fragment.
+     * @param tag         The tag for this fragment, as per
+     *                    {@link FragmentTransaction#add(Fragment, String) FragmentTransaction.add}.
+     * @return Returns the identifier of the committed transaction, as per
+     * {@link FragmentTransaction#commit() FragmentTransaction.commit()}.
+     */
+    public int show(FragmentTransaction transaction, String tag) {
+        mDismissed = false;
+        mShownByMe = true;
+        transaction.add(this, tag);
+        mViewDestroyed = false;
+        mBackStackId = transaction.commit();
+        return mBackStackId;
     }
 
-    @Override
-    public void onLeave() {
-        mLifeCycleComponentManager.onBecomesTotallyInvisible();
+    /**
+     * Dismiss the fragment and its dialog.  If the fragment was added to the
+     * back stack, all back stack state up to and including this entry will
+     * be popped.  Otherwise, a new transaction will be committed to remove
+     * the fragment.
+     */
+    public void dismiss() {
+        dismissInternal(false);
     }
 
-    @Override
-    public void onBack() {
-        mLifeCycleComponentManager.onBecomesVisibleFromTotallyInvisible();
+    /**
+     * Version of {@link #dismiss()} that uses
+     * {@link FragmentTransaction#commitAllowingStateLoss()
+     * FragmentTransaction.commitAllowingStateLoss()}.  See linked
+     * documentation for further details.
+     */
+    public void dismissAllowingStateLoss() {
+        dismissInternal(true);
     }
 
-    @Override
-    public void onBackWithData(Object data) {
-        mLifeCycleComponentManager.onBecomesVisibleFromTotallyInvisible();
+    void dismissInternal(boolean allowStateLoss) {
+        if (mDismissed) {
+            return;
+        }
+        mDismissed = true;
+        mShownByMe = false;
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
+        mViewDestroyed = true;
+        if (mBackStackId >= 0) {
+            getFragmentManager().popBackStack(mBackStackId,
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            mBackStackId = -1;
+        } else {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.remove(this);
+            if (allowStateLoss) {
+                ft.commitAllowingStateLoss();
+            } else {
+                ft.commit();
+            }
+        }
     }
 
-    @Override
-    public boolean processBackPressed() {
-        return false;
+    public Dialog getDialog() {
+        return mDialog;
+    }
+
+    public int getTheme() {
+        return mTheme;
+    }
+
+    /**
+     * Control whether the shown Dialog is cancelable.  Use this instead of
+     * directly calling {@link Dialog#setCancelable(boolean)
+     * Dialog.setCancelable(boolean)}, because DialogFragment needs to change
+     * its behavior based on this.
+     *
+     * @param cancelable If true, the dialog is cancelable.  The default
+     *                   is true.
+     */
+    public void setCancelable(boolean cancelable) {
+        mCancelable = cancelable;
+        if (mDialog != null) mDialog.setCancelable(cancelable);
+    }
+
+    /**
+     * Return the current value of {@link #setCancelable(boolean)}.
+     */
+    public boolean isCancelable() {
+        return mCancelable;
+    }
+
+    /**
+     * Controls whether this fragment should be shown in a dialog.  If not
+     * set, no Dialog will be created in {@link #onActivityCreated(Bundle)},
+     * and the fragment's view hierarchy will thus not be added to it.  This
+     * allows you to instead use it as a normal fragment (embedded inside of
+     * its activity).
+     * <p/>
+     * <p>This is normally set for you based on whether the fragment is
+     * associated with a container view ID passed to
+     * {@link FragmentTransaction#add(int, Fragment) FragmentTransaction.add(int, Fragment)}.
+     * If the fragment was added with a container, setShowsDialog will be
+     * initialized to false; otherwise, it will be true.
+     *
+     * @param showsDialog If true, the fragment will be displayed in a Dialog.
+     *                    If false, no Dialog will be created and the fragment's view hierarchly
+     *                    left undisturbed.
+     */
+    public void setShowsDialog(boolean showsDialog) {
+        mShowsDialog = showsDialog;
+    }
+
+    /**
+     * Return the current value of {@link #setShowsDialog(boolean)}.
+     */
+    public boolean getShowsDialog() {
+        return mShowsDialog;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        if (!mShownByMe) {
+            // If not explicitly shown through our API, take this as an
+            // indication that the dialog is no longer dismissed.
+            mDismissed = false;
+        }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (!mFirstResume) {
-            onBack();
+    public void onDetach() {
+        super.onDetach();
+        if (!mShownByMe && !mDismissed) {
+            // The fragment was not shown by a direct call here, it is not
+            // dismissed, and now it is being detached...  well, okay, thou
+            // art now dismissed.  Have fun.
+            mDismissed = true;
         }
-        if (mFirstResume) {
-            mFirstResume = false;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mShowsDialog = true;
+
+        if (savedInstanceState != null) {
+            mStyle = savedInstanceState.getInt(SAVED_STYLE, STYLE_NORMAL);
+            mTheme = savedInstanceState.getInt(SAVED_THEME, 0);
+            mCancelable = savedInstanceState.getBoolean(SAVED_CANCELABLE, true);
+            mShowsDialog = savedInstanceState.getBoolean(SAVED_SHOWS_DIALOG, mShowsDialog);
+            mBackStackId = savedInstanceState.getInt(SAVED_BACK_STACK_ID, -1);
+        }
+
+    }
+
+    /**
+     * @hide
+     */
+    @Override
+    public LayoutInflater getLayoutInflater(Bundle savedInstanceState) {
+        if (!mShowsDialog) {
+            return super.getLayoutInflater(savedInstanceState);
+        }
+
+        mDialog = onCreateDialog(savedInstanceState);
+        switch (mStyle) {
+            case STYLE_NO_INPUT:
+                mDialog.getWindow().addFlags(
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                // fall through...
+            case STYLE_NO_FRAME:
+            case STYLE_NO_TITLE:
+                mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+        if (mDialog != null) {
+            return (LayoutInflater) mDialog.getContext().getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
+        }
+        return (LayoutInflater) mDialog.getContext().getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    /**
+     * Override to build your own custom Dialog container.  This is typically
+     * used to show an AlertDialog instead of a generic Dialog; when doing so,
+     * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)} does not need
+     * to be implemented since the AlertDialog takes care of its own content.
+     * <p/>
+     * <p>This method will be called after {@link #onCreate(Bundle)} and
+     * before {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.  The
+     * default implementation simply instantiates and returns a {@link Dialog}
+     * class.
+     * <p/>
+     * <p><em>Note: DialogFragment own the {@link Dialog#setOnCancelListener
+     * Dialog.setOnCancelListener} and {@link Dialog#setOnDismissListener
+     * Dialog.setOnDismissListener} callbacks.  You must not set them yourself.</em>
+     * To find out about these events, override {@link #onCancel(DialogInterface)}
+     * and {@link #onDismiss(DialogInterface)}.</p>
+     *
+     * @param savedInstanceState The last saved instance state of the Fragment,
+     *                           or null if this is a freshly created Fragment.
+     * @return Return a new Dialog instance to be displayed by the Fragment.
+     */
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new Dialog(getActivity(), getTheme());
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (!mViewDestroyed) {
+            // Note: we need to use allowStateLoss, because the dialog
+            // dispatches this asynchronously so we can receive the call
+            // after the activity is paused.  Worst case, when the user comes
+            // back to the activity they see the dialog again.
+            dismissInternal(true);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (!mShowsDialog) {
+            return;
+        }
+
+        View view = getView();
+        if (view != null) {
+            if (view.getParent() != null) {
+                throw new IllegalStateException("DialogFragment can not be attached to a container view");
+            }
+            mDialog.setContentView(view);
+        }
+        mDialog.setOwnerActivity(getActivity());
+        mDialog.setCancelable(mCancelable);
+
+        if (savedInstanceState != null) {
+            Bundle dialogState = savedInstanceState.getBundle(SAVED_DIALOG_STATE_TAG);
+            if (dialogState != null) {
+                mDialog.onRestoreInstanceState(dialogState);
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mDialog != null) {
+            mViewDestroyed = false;
+            mDialog.show();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mDialog != null) {
+            Bundle dialogState = mDialog.onSaveInstanceState();
+            if (dialogState != null) {
+                outState.putBundle(SAVED_DIALOG_STATE_TAG, dialogState);
+            }
+        }
+        if (mStyle != STYLE_NORMAL) {
+            outState.putInt(SAVED_STYLE, mStyle);
+        }
+        if (mTheme != 0) {
+            outState.putInt(SAVED_THEME, mTheme);
+        }
+        if (!mCancelable) {
+            outState.putBoolean(SAVED_CANCELABLE, mCancelable);
+        }
+        if (!mShowsDialog) {
+            outState.putBoolean(SAVED_SHOWS_DIALOG, mShowsDialog);
+        }
+        if (mBackStackId != -1) {
+            outState.putInt(SAVED_BACK_STACK_ID, mBackStackId);
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        onLeave();
+        if (mDialog != null) {
+            mDialog.hide();
+        }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mLifeCycleComponentManager.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
+    /**
+     * Remove dialog.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mDialog != null) {
+            // Set removed here because this dismissal is just to hide
+            // the dialog -- we don't want this to cause the fragment to
+            // actually be removed.
+            mViewDestroyed = true;
+            mDialog.dismiss();
+            mDialog = null;
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public void dump(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
+        super.dump(prefix, fd, writer, args);
+        writer.print(prefix);
+        writer.println("DialogFragment:");
+        writer.print(prefix);
+        writer.print("  mStyle=");
+        writer.print(mStyle);
+        writer.print(" mTheme=0x");
+        writer.println(Integer.toHexString(mTheme));
+        writer.print(prefix);
+        writer.print("  mCancelable=");
+        writer.print(mCancelable);
+        writer.print(" mShowsDialog=");
+        writer.print(mShowsDialog);
+        writer.print(" mBackStackId=");
+        writer.println(mBackStackId);
+        writer.print(prefix);
+        writer.print("  mDialog=");
+        writer.println(mDialog);
+        writer.print(prefix);
+        writer.print("  mViewDestroyed=");
+        writer.print(mViewDestroyed);
+        writer.print(" mDismissed=");
+        writer.print(mDismissed);
+        writer.print(" mShownByMe=");
+        writer.println(mShownByMe);
     }
 }
