@@ -125,10 +125,10 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View v) {
                 mItemManger.removeShownLayouts(holder.swipeLayout);
-                mDataset.remove(position - 1);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, mDataset.size());
                 mItemManger.closeAllItems();
+
+                int pos = holder.getLayoutPosition();
+                mOnItemClickListener.onItemDeleteClick(holder.deleteButton, pos);
             }
         });
 
@@ -188,23 +188,6 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
         return MIN_ITEM_COUNT + mDataset.size() + itemsCount;
     }
 
-    public void addItem() {
-/*        itemsCount++;
-        notifyItemInserted(MIN_ITEM_COUNT + mDataset.size() + itemsCount - 1);*/
-        HashMap<String, Object> hashMap = new HashMap<String, Object>();
-        hashMap.put(BOOK_NAME, "ABC");
-        hashMap.put(BOOK_COLOR_INDEX, 0);
-        hashMap.put(BOOK_ALARM_TIME, "2015-09-10");
-        mDataset.add(hashMap);
-
-        notifyItemInserted(MIN_ITEM_COUNT + mDataset.size() - 1);
-//        notifyItemRangeChanged(MIN_ITEM_COUNT + mDataset.size() - 2, mDataset.size());
-    }
-
-    public void updateItems() {
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getSwipeLayoutResourceId(int i) {
         return R.id.swipe;
@@ -241,12 +224,14 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
     }
 
     public HashMap<String, Object> getItemData(int position) {
-        return mDataset.get(position-1);
+        return mDataset.get(position - 1);
     }
 
     //itemClick interface
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);
+
+        void onItemDeleteClick(View view, int position);
     }
 
     private OnItemClickListener mOnItemClickListener;

@@ -8,14 +8,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.adapters.RoutinesAdapter;
 import com.agenthun.readingroutine.fragments.CalendarDialogFragment;
+import com.agenthun.readingroutine.fragments.MenuFragment;
+import com.agenthun.readingroutine.fragments.RoutinesFragment;
 import com.agenthun.readingroutine.fragments.SettingsFragment;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.Random;
 
@@ -24,6 +29,8 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class BookActivity extends TActivity {
+
+    private static final String SELECT_BOOK_ALARM_TIME = "SELECT_BOOK_ALARM_TIME";
 
     private MaterialMenuIconToolbar materialMenuIconToolbar;
     @InjectView(R.id.toolbar)
@@ -35,6 +42,7 @@ public class BookActivity extends TActivity {
     @InjectView(R.id.alarm_time)
     TextView alarmTime;
     private String getBookAlarmTime;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +64,7 @@ public class BookActivity extends TActivity {
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.color_white));
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.color_white));
 
-        Intent intent = getIntent();
+        intent = getIntent();
         String getBookName = intent.getStringExtra(RoutinesAdapter.BOOK_NAME);
         collapsingToolbarLayout.setTitle(getBookName);
 
@@ -85,13 +93,38 @@ public class BookActivity extends TActivity {
         return 0;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     @OnClick(R.id.alarm_time)
     public void onAlarmTimeClick() {
-        new CalendarDialogFragment().show(getSupportFragmentManager(), "onAlarmTimeClick");
+//        new CalendarDialogFragment().show(getSupportFragmentManager(), "onAlarmTimeClick");
+        Intent intent = new Intent(this, SplashActivity.class);
+        intent.putExtra(SELECT_BOOK_ALARM_TIME, getBookAlarmTime);
+//        startActivityFromFragment(new CalendarDialogFragment(), intent, 1);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.delete)
+    public void onDeleteClick() {
+        setResult(RoutinesFragment.DELETE_BOOK, intent);
+        finish();
     }
 
     @OnClick(R.id.save)
     public void onSaveClick() {
-        Log.d("BookActivity", "onSaveClick");
+        String name = bookName.getText().toString();
+        if (name.isEmpty()) {
+            Toast.makeText(this, R.string.error_invalid_bookname, Toast.LENGTH_SHORT).show();
+            YoYo.with(Techniques.Wobble).duration(500).delay(100).playOn(bookName);
+            return;
+        } else {
+            intent.putExtra(RoutinesAdapter.BOOK_NAME, name);
+            intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, alarmTime.getText().toString());
+            setResult(RoutinesFragment.RENEW_BOOK, intent);
+            finish();
+        }
     }
 }
