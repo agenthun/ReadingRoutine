@@ -199,7 +199,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
 
                 @Override
                 public void onItemDeleteClick(View view, int position) {
-                    deleteItem(position - 1);
+                    deleteItem(position - 1, true);
                 }
             });
 
@@ -243,7 +243,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                     time = data.getStringExtra(RoutinesAdapter.BOOK_ALARM_TIME);
                     updateItem(itemPosition - 1, name, colorIndex, time);
                 } else if (resultCode == DELETE_BOOK) {
-                    deleteItem(itemPosition - 1);
+                    deleteItem(itemPosition - 1, false);
                 }
                 break;
             case NEW_BOOK:
@@ -267,17 +267,22 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, colorIndex);
         hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, time);
         mDataSet.add(0, hashMap);
-        routinesAdapter.notifyItemInserted(1);
-        routinesAdapter.notifyItemRangeChanged(1, mDataSet.size());
+        routinesAdapter.notifyDataSetChanged();
+/*        routinesAdapter.notifyItemInserted(1);
+        routinesAdapter.notifyItemRangeChanged(1, mDataSet.size());*/
     }
 
     //删除
-    private void deleteItem(int position) {
+    private void deleteItem(int position, boolean setAnimator) {
         int size = mDataSet.size();
         if (size > 0 && position < size) {
             mDataSet.remove(position);
-            routinesAdapter.notifyItemRemoved(position + 1);
-            routinesAdapter.notifyItemRangeChanged(position + 1, mDataSet.size());
+            if (setAnimator) {
+                routinesAdapter.notifyItemRemoved(position + 1);
+                routinesAdapter.notifyItemRangeChanged(position + 1, mDataSet.size());
+            } else {
+                routinesAdapter.notifyDataSetChanged();
+            }
         }
     }
 
