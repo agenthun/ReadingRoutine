@@ -42,4 +42,14 @@ public class BookInfo extends BmobObject {
     public void setBookAlarmTime(String bookAlarmTime) {
         this.bookAlarmTime = bookAlarmTime;
     }
+
+    @Override
+    public String toString() {
+        return "BookInfo{" +
+                "userData=" + userData +
+                ", bookName='" + bookName + '\'' +
+                ", bookColor=" + bookColor +
+                ", bookAlarmTime='" + bookAlarmTime + '\'' +
+                '}';
+    }
 }

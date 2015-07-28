@@ -29,7 +29,7 @@ public class LoginActivity extends Activity {
     @InjectView(R.id.login_password)
     EditText loginPassword;
 
-    public UserData userData;
+    public static UserData userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
