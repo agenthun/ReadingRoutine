@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.fragments.MenuFragment;
+import com.agenthun.readingroutine.fragments.SettingsFragment;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
@@ -134,6 +135,12 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
                 String menuItemTitle = menuItem.getTitle() + "";
                 Log.i(TAG, menuItemTitle);
                 switch (menuItemTitle) {
+                    case "首页":
+                        drawerLayout.closeDrawers();
+                        break;
+                    case "设置":
+                        drawerLayout.closeDrawers();
+                        break;
                     case "退出":
                         LoginActivity.getUser().logOut(getApplicationContext());
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class));

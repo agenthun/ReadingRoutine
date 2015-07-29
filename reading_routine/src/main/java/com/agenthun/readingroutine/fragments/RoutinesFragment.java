@@ -34,6 +34,7 @@ import java.util.Random;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -292,6 +293,19 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         bookInfo.setBookColor(colorIndex);
         bookInfo.setBookAlarmTime(time);
         databaseUtil.insertBookInfo(bookInfo);
+
+        //服务器
+        bookInfo.save(getContext(), new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Log.i(TAG, "上传服务器成功");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.i(TAG, s);
+            }
+        });
 
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put(RoutinesAdapter.BOOK_NAME, name);

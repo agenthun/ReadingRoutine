@@ -6,6 +6,8 @@ import cn.bmob.v3.BmobObject;
  * Created by Agent Henry on 2015/7/19.
  */
 public class BookInfo extends BmobObject {
+    private static final long serialVersionUID = 1L;
+
     private UserData userData;
     private String bookName;
     private Integer bookColor;
