@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
+import com.agenthun.readingroutine.datastore.BookInfo;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
@@ -22,6 +23,7 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,9 +51,9 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
 
     private int lastAnimatedItem = 0;
     private int itemsCount = 0;
-    private ArrayList<HashMap<String, Object>> mDataset;
+    private List<BookInfo> mDataset;
 
-    public RoutinesAdapter(Context context, ArrayList<HashMap<String, Object>> objects) {
+    public RoutinesAdapter(Context context, List<BookInfo> objects) {
         this.context = context;
         this.cellHeight = (int) (UiUtils.getScreenWidthPixels(context) / 2 * 1.2);
         this.cellWidth = UiUtils.getScreenWidthPixels(context) / 2;
@@ -111,7 +113,7 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
     private void bindRoutine(final RoutineViewHolder holder, final int position) {
 
         animateRoutine(holder);
-        String item = (String) mDataset.get(position - 1).get(BOOK_NAME);
+        String item = (String) mDataset.get(position - 1).getBookName();
 
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
@@ -143,7 +145,7 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
         }
 
         int[] colorBook = context.getResources().getIntArray(R.array.style_book_color);
-        int colorIndex = (int) mDataset.get(position - 1).get(BOOK_COLOR_INDEX);
+        int colorIndex = (int) mDataset.get(position - 1).getBookColor();
         holder.swipeLayout.setBackgroundColor(colorBook[colorIndex]);
 
 //        holder.textViewPosition.setText(position + "");
@@ -223,7 +225,7 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
         this.lockedAnimations = lockedAnimations;
     }
 
-    public HashMap<String, Object> getItemData(int position) {
+    public BookInfo getItemData(int position) {
         return mDataset.get(position - 1);
     }
 

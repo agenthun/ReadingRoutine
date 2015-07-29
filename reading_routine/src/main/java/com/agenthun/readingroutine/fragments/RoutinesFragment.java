@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.ButterKnife;
@@ -58,7 +59,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
 
     private RoutinesAdapter routinesAdapter;
     private boolean pendingIntro;
-    private ArrayList<HashMap<String, Object>> mDataSet;
+    private List<BookInfo> mDataSet;
     private int itemPosition = 1;
     DatabaseUtil databaseUtil;
 
@@ -83,20 +84,17 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     }
 
     private void setupDatabase() {
-        mDataSet = new ArrayList<HashMap<String, Object>>();
         databaseUtil = new DatabaseUtil(getContext());
+        mDataSet = databaseUtil.queryBookInfo();
+/*        mDataSet = new ArrayList<BookInfo>();
 
         ArrayList<BookInfo> bookInfos = databaseUtil.queryBookInfo();
         if (bookInfos != null) {
             int size = bookInfos.size();
             for (int i = 0; i < size; i++) {
-                HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                hashMap.put(RoutinesAdapter.BOOK_NAME, bookInfos.get(size - 1 - i).getBookName());
-                hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, bookInfos.get(size - 1 - i).getBookColor());
-                hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, bookInfos.get(size - 1 - i).getBookAlarmTime());
-                mDataSet.add(hashMap);
+                mDataSet.add(bookInfos.get(i));
             }
-        }
+        }*/
 
         //测试数据
 /*        HashMap<String, Object> hashMap;
@@ -197,11 +195,11 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 @Override
                 public void onItemClick(View view, int position) {
                     itemPosition = position;
-                    HashMap<String, Object> getData = routinesAdapter.getItemData(position);
+                    BookInfo getData = routinesAdapter.getItemData(position);
                     Intent intent = new Intent(getContext(), BookActivity.class);
-                    intent.putExtra(RoutinesAdapter.BOOK_NAME, (String) getData.get(RoutinesAdapter.BOOK_NAME));
-                    intent.putExtra(RoutinesAdapter.BOOK_COLOR_INDEX, (int) getData.get(RoutinesAdapter.BOOK_COLOR_INDEX));
-                    intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, (String) getData.get(RoutinesAdapter.BOOK_ALARM_TIME));
+                    intent.putExtra(RoutinesAdapter.BOOK_NAME, (String) getData.getBookName());
+                    intent.putExtra(RoutinesAdapter.BOOK_COLOR_INDEX, (int) getData.getBookColor());
+                    intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, (String) getData.getBookAlarmTime());
                     startActivityForResult(intent, UPDATE_BOOK);
                 }
 
@@ -293,11 +291,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         bookInfo.setBookAlarmTime(time);
         databaseUtil.insertBookInfo(bookInfo);
 
-        HashMap<String, Object> hashMap = new HashMap<String, Object>();
-        hashMap.put(RoutinesAdapter.BOOK_NAME, name);
-        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, colorIndex);
-        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, time);
-        mDataSet.add(0, hashMap);
+        mDataSet=databaseUtil.queryBookInfo();
         routinesAdapter.notifyDataSetChanged();
         /*        routinesAdapter.notifyItemInserted(1);
                 routinesAdapter.notifyItemRangeChanged(1, mDataSet.size());*/
@@ -308,12 +302,14 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         BookInfo bookInfo = new BookInfo();
         bookInfo.setUserData(LoginActivity.userData);
         bookInfo.setObjectId(mDataSet.size() - 1 - position + "");
-        bookInfo.setBookName((String) mDataSet.get(position).get(RoutinesAdapter.BOOK_NAME));
-        bookInfo.setBookColor((Integer) mDataSet.get(position).get(RoutinesAdapter.BOOK_COLOR_INDEX));
-        bookInfo.setBookAlarmTime((String) mDataSet.get(position).get(RoutinesAdapter.BOOK_ALARM_TIME));
+        bookInfo.setBookName((String) mDataSet.get(position).getBookName());
+        bookInfo.setBookColor((Integer) mDataSet.get(position).getBookColor());
+        bookInfo.setBookAlarmTime((String) mDataSet.get(position).getBookAlarmTime());
         databaseUtil.deleteBookInfo(bookInfo);
 
-        int size = mDataSet.size();
+        mDataSet=databaseUtil.queryBookInfo();
+        routinesAdapter.notifyDataSetChanged();
+/*        int size = mDataSet.size();
         if (size > 0 && position < size) {
             mDataSet.remove(position);
             if (setAnimator) {
@@ -322,7 +318,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             } else {
                 routinesAdapter.notifyDataSetChanged();
             }
-        }
+        }*/
     }
 
     //更新
@@ -335,7 +331,9 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         bookInfo.setBookAlarmTime(time);
         databaseUtil.insertBookInfo(bookInfo);
 
-        int size = mDataSet.size();
+        mDataSet=databaseUtil.queryBookInfo();
+        routinesAdapter.notifyDataSetChanged();
+/*        int size = mDataSet.size();
         if (position < size) {
             HashMap<String, Object> hashMap = mDataSet.get(position);
             hashMap.put(RoutinesAdapter.BOOK_NAME, name);
@@ -343,6 +341,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, time);
             mDataSet.set(position, hashMap);
             routinesAdapter.notifyDataSetChanged();
-        }
+        }*/
     }
 }
