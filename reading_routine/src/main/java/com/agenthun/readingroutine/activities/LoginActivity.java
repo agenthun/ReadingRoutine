@@ -50,6 +50,10 @@ public class LoginActivity extends Activity {
         }
     }
 
+    public static UserData getUser() {
+        return userData;
+    }
+
     @OnClick(R.id.sign_in_button)
     public void onSignInBtnClick() {
         String name = loginName.getText().toString();

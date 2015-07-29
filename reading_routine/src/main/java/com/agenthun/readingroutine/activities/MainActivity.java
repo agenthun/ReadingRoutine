@@ -1,5 +1,6 @@
 package com.agenthun.readingroutine.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -25,6 +26,7 @@ import cn.bmob.v3.Bmob;
 
 public class MainActivity extends TActivity implements MenuFragment.OnMenuInteractionListener {
 
+    private static final String TAG = "MainActivity";
     private MaterialMenuIconToolbar materialMenuIconToolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private boolean direction;
@@ -129,7 +131,15 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Log.d("MainActivity", menuItem.getItemId() + "");
+                String menuItemTitle = menuItem.getTitle() + "";
+                Log.i(TAG, menuItemTitle);
+                switch (menuItemTitle) {
+                    case "退出":
+                        LoginActivity.getUser().logOut(getApplicationContext());
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        finish();
+                        break;
+                }
                 return false;
             }
         });
