@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="172dp"
-    android:paddingTop="25dp"
     android:background="@drawable/material_l1"
+    android:paddingTop="25dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
@@ -15,12 +15,12 @@
         android:src="@drawable/icon_avatar" />
 
     <TextView
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/email"
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginStart="@dimen/margin_horizontal"
-        android:text="hun"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <TextView
@@ -28,9 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_horizontal"
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginStart="@dimen/margin_horizontal"
-        android:layout_marginBottom="@dimen/margin_horizontal"
-        android:text="hun@agent.com"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 </RelativeLayout>

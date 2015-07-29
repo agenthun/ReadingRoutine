@@ -22,6 +22,8 @@ import cn.bmob.v3.listener.SaveListener;
  */
 public class LoginActivity extends Activity {
 
+    public static final String USER_NAME = "USER_NAME";
+    public static final String EMAIL = "EMAIL";
     public static String BMOB_APP_ID = "cc4a89ea058246d6693bcc479b1951e2";
 
     @InjectView(R.id.login_name)
@@ -43,6 +45,8 @@ public class LoginActivity extends Activity {
         userData = UserData.getCurrentUser(this, UserData.class);
         if (userData != null) {
             Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(USER_NAME, userData.getUsername());
+            intent.putExtra(EMAIL, userData.getEmail());
             startActivity(intent);
             finish();
         } else {
@@ -76,6 +80,8 @@ public class LoginActivity extends Activity {
             public void onSuccess() {
                 Toast.makeText(LoginActivity.this, R.string.msg_success, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(USER_NAME, userData.getUsername());
+                intent.putExtra(EMAIL, userData.getEmail());
                 startActivity(intent);
                 finish();
             }

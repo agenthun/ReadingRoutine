@@ -288,7 +288,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     private void addItem(String name, int colorIndex, String time) {
         BookInfo bookInfo = new BookInfo();
         bookInfo.setUserData(LoginActivity.userData);
-        bookInfo.setObjectId(mDataSet.size() + "");
+//        bookInfo.setObjectId(mDataSet.size() + "");
         bookInfo.setBookName(name);
         bookInfo.setBookColor(colorIndex);
         bookInfo.setBookAlarmTime(time);
@@ -303,7 +303,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
 
             @Override
             public void onFailure(int i, String s) {
-                Log.i(TAG, s);
+                Log.i(TAG, "上传服务器失败: " + s);
             }
         });
 

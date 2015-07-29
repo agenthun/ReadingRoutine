@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.fragments.MenuFragment;
@@ -32,6 +33,11 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private boolean direction;
 
+    @InjectView(R.id.name)
+    TextView name;
+    @InjectView(R.id.email)
+    TextView email;
+
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.drawer_layout)
@@ -45,6 +51,10 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         setContentView(R.layout.activity_main);
 
         ButterKnife.inject(this);
+
+        Intent intent = getIntent();
+        name.setText(intent.getStringExtra(LoginActivity.USER_NAME));
+        email.setText(intent.getStringExtra(LoginActivity.EMAIL));
 
         materialMenuIconToolbar = new MaterialMenuIconToolbar(this, getResources().getColor(R.color.color_white), MaterialMenuDrawable.Stroke.REGULAR) {
             @Override
