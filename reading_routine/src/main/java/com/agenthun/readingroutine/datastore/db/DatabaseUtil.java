@@ -22,7 +22,7 @@ public class DatabaseUtil {
     private DBHelper dbHelper;
 
     //单例模型
-    public DatabaseUtil(Context context) {
+    private DatabaseUtil(Context context) {
         dbHelper = new DBHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -107,11 +107,11 @@ public class DatabaseUtil {
         bookInfos = new ArrayList<>();
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             BookInfo bookInfo = new BookInfo();
+            bookInfo.setObjectId(cursor.getString(cursor.getColumnIndex(DBHelper.BookinfoTable.OBJECT_ID)));
             bookInfo.setBookName(cursor.getString(3));
             bookInfo.setBookColor(cursor.getInt(4));
             bookInfo.setBookAlarmTime(cursor.getString(5));
-//            bookInfos.add(0, bookInfo);
-            bookInfos.add(bookInfo);
+            bookInfos.add(0, bookInfo);
         }
         if (cursor != null) {
             cursor.close();

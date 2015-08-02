@@ -21,7 +21,6 @@ import com.agenthun.readingroutine.activities.BookActivity;
 import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.adapters.RoutinesAdapter;
 import com.agenthun.readingroutine.datastore.BookInfo;
-import com.agenthun.readingroutine.datastore.UserData;
 import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
@@ -29,13 +28,11 @@ import com.agenthun.readingroutine.views.RevealBackgroundView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -93,17 +90,9 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         mDataSet = databaseUtil.queryBookInfo();
         if (mDataSet == null) mDataSet = new ArrayList<>();
 
-/*        ArrayList<BookInfo> bookInfos = databaseUtil.queryBookInfo();
-        if (bookInfos != null) {
-            int size = bookInfos.size();
-            for (int i = 0; i < size; i++) {
-                HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                hashMap.put(RoutinesAdapter.BOOK_NAME, bookInfos.get(size - 1 - i).getBookName());
-                hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, bookInfos.get(size - 1 - i).getBookColor());
-                hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, bookInfos.get(size - 1 - i).getBookAlarmTime());
-                mDataSet.add(hashMap);
-            }
-        }*/
+        for (int i = 0; i < mDataSet.size(); i++) {
+            Log.i("mDataSet[" + i + "] = ", mDataSet.get(i).getObjectId());
+        }
 
         //测试数据
 /*        HashMap<String, Object> hashMap;
@@ -234,8 +223,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
 
     @OnClick(R.id.addBtn)
     public void onAddClick() {
-        System.out.println("onAddClick");
-//        routinesAdapter.addItem();
         itemPosition = Integer.MAX_VALUE;
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
@@ -262,14 +249,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 } else if (resultCode == DELETE_BOOK) {
                     deleteItem(itemPosition - 1, false);
                 }
-
-                ArrayList<BookInfo> bookInfos = databaseUtil.queryBookInfo();
-                if (bookInfos != null) {
-                    for (int i = 0; i < bookInfos.size(); i++) {
-                        Log.i(TAG, bookInfos.get(i).toString());
-                    }
-                }
-
                 break;
             case NEW_BOOK:
                 if (resultCode == RENEW_BOOK) {
@@ -277,13 +256,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                     colorIndex = data.getIntExtra(RoutinesAdapter.BOOK_COLOR_INDEX, new Random().nextInt(4));
                     time = data.getStringExtra(RoutinesAdapter.BOOK_ALARM_TIME);
                     addItem(name, colorIndex, time);
-
-                    bookInfos = databaseUtil.queryBookInfo();
-                    if (bookInfos != null) {
-                        for (int i = 0; i < bookInfos.size(); i++) {
-                            Log.i(TAG, bookInfos.get(i).toString());
-                        }
-                    }
                 }
                 break;
             default:
@@ -315,26 +287,14 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             }
         });
 
-
-//        mDataSet.add(0, bookInfo);
-        mDataSet.add(bookInfo);
+        mDataSet.add(0, bookInfo);
         routinesAdapter.notifyDataSetChanged();
-        /*        routinesAdapter.notifyItemInserted(1);
-                routinesAdapter.notifyItemRangeChanged(1, mDataSet.size());*/
     }
 
     //删除
     private void deleteItem(int position, boolean setAnimator) {
-/*        BookInfo bookInfo = new BookInfo();
-        bookInfo.setUserData(LoginActivity.userData);
-        bookInfo.setObjectId(mDataSet.size() - 1 - position + "");
-        bookInfo.setBookName((String) mDataSet.get(position).get(RoutinesAdapter.BOOK_NAME));
-        bookInfo.setBookColor((Integer) mDataSet.get(position).get(RoutinesAdapter.BOOK_COLOR_INDEX));
-        bookInfo.setBookAlarmTime((String) mDataSet.get(position).get(RoutinesAdapter.BOOK_ALARM_TIME));*/
-
         final BookInfo bookInfo = mDataSet.get(position);
-        Log.i(TAG, "bookInfo = " + bookInfo.toString());
-        Log.i(TAG, "getObjectId() = " + bookInfo.getObjectId());
+        //服务器
         bookInfo.delete(getContext(), bookInfo.getObjectId(), new DeleteListener() {
             @Override
             public void onSuccess() {
@@ -347,7 +307,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 Log.i(TAG, "删除失败: " + s);
             }
         });
-
 
         int size = mDataSet.size();
         if (size > 0 && position < size) {
@@ -363,10 +322,11 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
 
     //更新
     private void updateItem(int position, String name, int colorIndex, String time) {
-        final BookInfo bookInfo = routinesAdapter.getItemData(position);
+        final BookInfo bookInfo = mDataSet.get(position);
         bookInfo.setBookName(name);
         bookInfo.setBookColor(colorIndex);
         bookInfo.setBookAlarmTime(time);
+        //服务器
         bookInfo.update(getContext(), bookInfo.getObjectId(), new UpdateListener() {
             @Override
             public void onSuccess() {
@@ -379,7 +339,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 Log.i(TAG, "更新服务器失败: " + s);
             }
         });
-
 
         int size = mDataSet.size();
         if (position < size) {
