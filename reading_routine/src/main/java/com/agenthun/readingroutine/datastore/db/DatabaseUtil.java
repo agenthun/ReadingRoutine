@@ -56,8 +56,8 @@ public class DatabaseUtil {
 /*            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 String name = cursor.getString(cursor.getColumnIndex(DBHelper.BookinfoTable.BOOK_NAME));
                 if (name == bookInfo.getBookName()) {*/
-                    dbHelper.delete(DBHelper.TABLE_NAME, where, null);
-                    Log.i(TAG, "delete success");
+            dbHelper.delete(DBHelper.TABLE_NAME, where, null);
+            Log.i(TAG, "delete success");
 /*                }
             }*/
         }
@@ -110,6 +110,7 @@ public class DatabaseUtil {
             bookInfo.setBookName(cursor.getString(3));
             bookInfo.setBookColor(cursor.getInt(4));
             bookInfo.setBookAlarmTime(cursor.getString(5));
+//            bookInfos.add(0, bookInfo);
             bookInfos.add(bookInfo);
         }
         if (cursor != null) {
