@@ -7,33 +7,29 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
-
-import com.agenthun.readingroutine.R;
-
-import java.util.ArrayList;
 
 /**
  * Created by Agent Henry on 2015/8/24.
  */
-public class PaperTextView extends View {
+public class PaperView extends View {
     private PaperPath mPaperPath;
     private Paint mPaperPaint;
+    private Paint mLinePaint;
     private Paint mShadowPaint;
     private int mViewWidth;
     private int mViewHeight;
 
-    public PaperTextView(Context context) {
+    public PaperView(Context context) {
         super(context);
         initView();
     }
 
-    public PaperTextView(Context context, AttributeSet attrs) {
+    public PaperView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
-    public PaperTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PaperView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
@@ -48,6 +44,13 @@ public class PaperTextView extends View {
         mPaperPaint.setStyle(Paint.Style.FILL);
         mPaperPaint.setAntiAlias(true);
         mPaperPaint.setColor(0xfffafafa);
+
+        mLinePaint = new Paint();
+        mLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mLinePaint.setStrokeWidth(2.0f * getResources().getDisplayMetrics().density);
+        mLinePaint.setAntiAlias(true);
+        mLinePaint.setDither(true);
+        mLinePaint.setColor(0xffe9e7d2);
 
         mShadowPaint = new Paint();
         mShadowPaint.setStyle(Paint.Style.FILL);
@@ -73,5 +76,6 @@ public class PaperTextView extends View {
         super.onDraw(canvas);
         canvas.drawPath(mPaperPath.getShadowPath(), mShadowPaint);
         canvas.drawPath(mPaperPath.getPaperPath(), mPaperPaint);
+        canvas.drawPath(mPaperPath.getLinePath(), mLinePaint);
     }
 }

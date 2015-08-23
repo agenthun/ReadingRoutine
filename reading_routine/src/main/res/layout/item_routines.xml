@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.agenthun.readingroutine.views.PaperTextView
+            <com.agenthun.readingroutine.views.PaperView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center" />

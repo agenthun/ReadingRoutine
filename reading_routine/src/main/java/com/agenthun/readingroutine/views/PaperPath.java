@@ -7,10 +7,12 @@ import android.graphics.Path;
  */
 public class PaperPath {
     private Path mPaperPath;
+    private Path mLinePath;
     private Path mShadowPath;
 
     public PaperPath() {
         mPaperPath = new Path();
+        mLinePath = new Path();
         mShadowPath = new Path();
     }
 
@@ -42,6 +44,15 @@ public class PaperPath {
                 0.03f * width, 0.136f * height,
                 0.038f * width, 0.025f * height);
 
+        mLinePath.moveTo(0.15f * width, 0.08f * height);
+        mLinePath.lineTo(0.68f * width, 0.08f * height);
+        mLinePath.moveTo(0.186f * width, 0.12f * height);
+        mLinePath.lineTo(0.698f * width, 0.12f * height);
+/*        mLinePath.moveTo(0.334f * width, 0.82f * height);
+        mLinePath.lineTo(0.85f * width, 0.82f * height);
+        mLinePath.moveTo(0.32f * width, 0.86f * height);
+        mLinePath.lineTo(0.832f * width, 0.86f * height);*/
+
         mShadowPath.moveTo(0.03f * width, 0.03f * height);
         mShadowPath.lineTo(0.03f * width, 0.96f * height);
         mShadowPath.lineTo(0.98f * width, 0.96f * height);
@@ -51,6 +62,10 @@ public class PaperPath {
 
     public Path getPaperPath() {
         return mPaperPath;
+    }
+
+    public Path getLinePath() {
+        return mLinePath;
     }
 
     public Path getShadowPath() {
