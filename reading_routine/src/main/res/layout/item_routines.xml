@@ -66,15 +66,25 @@
 
         <!--</LinearLayout>-->
 
-
-        <TextView
-            android:id="@+id/text_data"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent">
 
-            android:gravity="center"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/abc_text_size_title_material" />
+            <com.agenthun.readingroutine.views.PaperTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/text_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:gravity="center"
+                android:textColor="@color/text_color_green"
+                android:textSize="@dimen/abc_text_size_title_material" />
+        </RelativeLayout>
+
 
         <!--android:background="@drawable/style_book"-->
 
@@ -85,4 +95,5 @@
                     android:src="@drawable/item_selector" />-->
 
     </com.daimajia.swipe.SwipeLayout>
+
 </FrameLayout>
