@@ -22,4 +22,5 @@
         android:text="@string/time_setting_finish"
         android:textColor="@color/background_daytime_material_blue"
         android:textStyle="bold" />
+
 </LinearLayout>

@@ -26,6 +26,10 @@ import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 import butterknife.ButterKnife;
@@ -34,6 +38,7 @@ import butterknife.OnClick;
 
 public class BookActivity extends TActivity {
 
+    private static final String TAG = "BookActivity";
     private static final String SELECT_BOOK_ALARM_TIME = "SELECT_BOOK_ALARM_TIME";
 
     private MaterialMenuIconToolbar materialMenuIconToolbar;
@@ -47,6 +52,7 @@ public class BookActivity extends TActivity {
     TextView alarmTime;
     private String getBookAlarmTime;
     private Intent intent;
+    private Date mDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,52 +108,18 @@ public class BookActivity extends TActivity {
         super.onBackPressed();
     }
 
-    @Override
-    public void goToFragment(Class<?> cls, Object data) {
-        if (cls == null) {
-            return;
-        }
-        CalendarDialogFragment fragment = (CalendarDialogFragment) getSupportFragmentManager().findFragmentByTag(cls.toString());
-        if (fragment != null) {
-//            mCurrentTFragment = fragment;
-            fragment.onBackWithData(data);
-        }
-        getSupportFragmentManager().popBackStackImmediate(cls.toString(), 0);
-    }
-
-    @Override
-    public void pushFragmentToBackStack(Class<?> cls, Object data) {
-        FragmentParam param = new FragmentParam();
-        param.cls = cls;
-        param.data = data;
-
-        String fragmentTag = getFragmentTag(param);
-        FragmentManager fm = getSupportFragmentManager();
-        CalendarDialogFragment fragment = (CalendarDialogFragment) fm.findFragmentByTag(fragmentTag);
-
-        fragment.onEnter(param.data);
-
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.setCustomAnimations(android.support.v7.appcompat.R.anim.abc_fade_in, android.support.v7.appcompat.R.anim.abc_fade_out,
-                android.support.v7.appcompat.R.anim.abc_fade_in, android.support.v7.appcompat.R.anim.abc_fade_out);
-        if (fragment.isAdded()) {
-            ft.show(fragment);
-        } else {
-            ft.add(getFragmentContainerId(), fragment, fragmentTag);
-        }
-
-        ft.addToBackStack(fragmentTag);
-        ft.commitAllowingStateLoss();
-    }
-
     @OnClick(R.id.alarm_time)
     public void onAlarmTimeClick() {
-//        pushFragmentToBackStack(CalendarDialogFragment.class, getBookAlarmTime);
-        new CalendarDialogFragment().show(getSupportFragmentManager(), "onAlarmTimeClick");
-//        Intent intent = new Intent(this, SplashActivity.class);
-//        intent.putExtra(SELECT_BOOK_ALARM_TIME, getBookAlarmTime);
-//        startActivity(intent);
+        try {
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+            mDate = DATE_FORMAT.parse(getBookAlarmTime);
+        } catch (ParseException e) {
+            Calendar calendar = Calendar.getInstance();
+            mDate = calendar.getTime();
+        }
+        CalendarDialogFragment calendarDialogFragment = new CalendarDialogFragment(mDate);
+        calendarDialogFragment.show(getSupportFragmentManager(), TAG);
+        calendarDialogFragment.setCalendarCallback(mCalendarFragmentCallback);
     }
 
     @OnClick(R.id.delete)
@@ -169,5 +141,19 @@ public class BookActivity extends TActivity {
             setResult(RoutinesFragment.RENEW_BOOK, intent);
             finish();
         }
+    }
+
+    private CalendarDialogFragment.CalendarCallback mCalendarFragmentCallback = new CalendarDialogFragment.CalendarCallback() {
+        @Override
+        public void onDateTimeSet(Date date) {
+            mDate = date;
+            updateAlarmTimeView();
+        }
+    };
+
+    private void updateAlarmTimeView() {
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        alarmTime.setText(DATE_FORMAT.format(mDate));
+        Log.d(TAG, DATE_FORMAT.format(mDate));
     }
 }

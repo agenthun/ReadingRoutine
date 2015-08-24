@@ -149,8 +149,8 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
         //设置随机颜色
         int[] colorBook = context.getResources().getIntArray(R.array.style_book_color);
         int colorIndex = (int) mDataset.get(position - 1).getBookColor();
-//        holder.swipeLayout.setBackgroundColor(colorBook[colorIndex]);
-        holder.paperView.setColor(colorBook[colorIndex]);
+        holder.swipeLayout.setBackgroundColor(colorBook[colorIndex]);
+//        holder.paperView.setColor(colorBook[colorIndex]);
 
 //        holder.textViewPosition.setText(position + "");
         holder.textViewData.setText(item);

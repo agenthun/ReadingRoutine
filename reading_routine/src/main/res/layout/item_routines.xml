@@ -82,7 +82,7 @@
                 android:layout_height="match_parent"
 
                 android:gravity="center"
-                android:textColor="@color/color_white"
+                android:textColor="@color/text_color_green"
                 android:textSize="@dimen/abc_text_size_title_material" />
         </RelativeLayout>
 
