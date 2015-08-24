@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
 import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.views.PaperView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
@@ -145,9 +146,11 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
             });
         }
 
+        //设置随机颜色
         int[] colorBook = context.getResources().getIntArray(R.array.style_book_color);
         int colorIndex = (int) mDataset.get(position - 1).getBookColor();
-        holder.swipeLayout.setBackgroundColor(colorBook[colorIndex]);
+//        holder.swipeLayout.setBackgroundColor(colorBook[colorIndex]);
+        holder.paperView.setColor(colorBook[colorIndex]);
 
 //        holder.textViewPosition.setText(position + "");
         holder.textViewData.setText(item);
@@ -215,6 +218,8 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
         SwipeLayout swipeLayout;
         @InjectView(R.id.ic_trash)
         ImageView deleteButton;
+        @InjectView(R.id.paperView)
+        PaperView paperView;
 
         public RoutineViewHolder(View view) {
             super(view);

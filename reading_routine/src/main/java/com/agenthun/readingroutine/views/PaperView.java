@@ -78,4 +78,9 @@ public class PaperView extends View {
         canvas.drawPath(mPaperPath.getPaperPath(), mPaperPaint);
         canvas.drawPath(mPaperPath.getLinePath(), mLinePaint);
     }
+
+    public void setColor(int color) {
+        mPaperPaint.setColor(color);
+        invalidate();
+    }
 }
