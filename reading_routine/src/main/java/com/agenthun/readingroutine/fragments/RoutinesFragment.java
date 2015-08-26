@@ -1,7 +1,10 @@
 package com.agenthun.readingroutine.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -28,12 +31,15 @@ import com.agenthun.readingroutine.views.RevealBackgroundView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.DeleteListener;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -87,12 +93,38 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     private void setupDatabase() {
         databaseUtil = DatabaseUtil.getInstance(getContext());
 //        UserData userData = UserData.getCurrentUser(getContext(), UserData.class);
-        mDataSet = databaseUtil.queryBookInfo();
+        if (isNetworkAvailable(getContext())) {
+
+            BmobQuery<BookInfo> bmobQuery = new BmobQuery<>();
+            bmobQuery.setLimit(10);
+//        bmobQuery.order("createdAt");
+            boolean isCache = bmobQuery.hasCachedResult(getContext(), BookInfo.class);
+            if (isCache) {
+                bmobQuery.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
+            } else {
+                bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+            }
+            bmobQuery.findObjects(getContext(), new FindListener<BookInfo>() {
+                @Override
+                public void onSuccess(List<BookInfo> list) {
+                    mDataSet = (ArrayList<BookInfo>) databaseUtil.setBookInfos(list);
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    Log.i(TAG, "获取服务端数据失败");
+                    mDataSet = databaseUtil.queryBookInfos();
+                }
+            });
+        } else {
+            mDataSet = databaseUtil.queryBookInfos();
+        }
+
         if (mDataSet == null) mDataSet = new ArrayList<>();
 
-        for (int i = 0; i < mDataSet.size(); i++) {
-            Log.i("mDataSet[" + i + "] = ", mDataSet.get(i).getObjectId());
-        }
+/*        for (int i = 0; i < mDataSet.size(); i++) {
+            Log.i("mDataSet[" + i + "] = ", mDataSet.get(i).getObjectId() + " ");
+        }*/
 
         //测试数据
 /*        HashMap<String, Object> hashMap;
@@ -284,6 +316,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             @Override
             public void onFailure(int i, String s) {
                 Log.i(TAG, "上传服务器失败: " + s);
+                databaseUtil.insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
             }
         });
 
@@ -305,6 +338,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             @Override
             public void onFailure(int i, String s) {
                 Log.i(TAG, "删除失败: " + s);
+                databaseUtil.deleteBookInfo(bookInfo, true);
             }
         });
 
@@ -321,29 +355,73 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     }
 
     //更新
-    private void updateItem(int position, String name, int colorIndex, String time) {
+    private void updateItem(final int position, String name, int colorIndex, String time) {
         final BookInfo bookInfo = mDataSet.get(position);
+        final BookInfo bookInfoOld = new BookInfo(bookInfo.getUserData(), bookInfo.getBookName(), bookInfo.getBookColor(), bookInfo.getBookAlarmTime());
         bookInfo.setBookName(name);
         bookInfo.setBookColor(colorIndex);
         bookInfo.setBookAlarmTime(time);
-        //服务器
-        bookInfo.update(getContext(), bookInfo.getObjectId(), new UpdateListener() {
-            @Override
-            public void onSuccess() {
-                Log.i(TAG, "更新服务器成功");
-                databaseUtil.insertBookInfo(bookInfo);
-            }
 
-            @Override
-            public void onFailure(int i, String s) {
-                Log.i(TAG, "更新服务器失败: " + s);
-            }
-        });
+        Log.i(TAG, "test id = " + bookInfo.getObjectId());
+        if (bookInfo.getObjectId() == null) {
+            Log.i(TAG, "into : test id = null");
+            bookInfo.save(getContext(), new SaveListener() {
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "上传服务器成功");
+                    Log.i(TAG, bookInfo.getObjectId());
+                    databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true);
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    Log.i(TAG, "上传服务器失败: " + s);
+                    databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
+                }
+            });
+        } else {
+            //服务器
+            bookInfo.update(getContext(), bookInfo.getObjectId(), new UpdateListener() {
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "更新服务器成功");
+                    databaseUtil.insertBookInfo(bookInfo);
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    Log.i(TAG, "更新服务器失败: " + s);
+                    switch (i) {
+                        case 9010:
+                        case 9016:
+                            databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
+                            break;
+                    }
+                }
+            });
+        }
 
         int size = mDataSet.size();
         if (position < size) {
             mDataSet.set(position, bookInfo);
             routinesAdapter.notifyDataSetChanged();
         }
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager != null) {
+                NetworkInfo info = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI | ConnectivityManager.TYPE_MOBILE);
+                if (info != null && info.isConnected()) {
+                    if (info.getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
     }
 }

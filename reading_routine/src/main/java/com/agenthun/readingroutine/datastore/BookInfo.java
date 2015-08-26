@@ -13,6 +13,17 @@ public class BookInfo extends BmobObject {
     private Integer bookColor;
     private String bookAlarmTime;
 
+    public BookInfo() {
+
+    }
+
+    public BookInfo(UserData userData, String bookName, Integer bookColor, String bookAlarmTime) {
+        this.userData = userData;
+        this.bookName = bookName;
+        this.bookColor = bookColor;
+        this.bookAlarmTime = bookAlarmTime;
+    }
+
     public UserData getUserData() {
         return userData;
     }
@@ -48,6 +59,7 @@ public class BookInfo extends BmobObject {
     @Override
     public String toString() {
         return "BookInfo{" +
+                "ObjectId=" + getObjectId() + '\'' +
                 "userData=" + userData +
                 ", bookName='" + bookName + '\'' +
                 ", bookColor=" + bookColor +
