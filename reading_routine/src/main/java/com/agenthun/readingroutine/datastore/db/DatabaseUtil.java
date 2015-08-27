@@ -195,7 +195,7 @@ public class DatabaseUtil {
 
     public List<BookInfo> setBookInfos(List<BookInfo> lists) {
         Cursor cursor = null;
-        if (lists != null & lists.size() > 0) {
+        if (lists != null && lists.size() > 0) {
             for (Iterator iterator = lists.iterator(); iterator.hasNext(); ) {
                 BookInfo bookInfo = (BookInfo) iterator.next();
                 insertBookInfo(bookInfo);
@@ -206,5 +206,29 @@ public class DatabaseUtil {
             dbHelper.close();
         }
         return lists;
+    }
+
+    public ArrayList<BookInfo> queryInsertBatchBookInfos() {
+        ArrayList<BookInfo> bookInfos = null;
+        String where = DBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+                + "' AND " + DBHelper.BookinfoTable.OBJECT_ID + " is null";
+        Cursor cursor = dbHelper.query(DBHelper.TABLE_NAME, null, where, null, null, null, null);
+        Log.i(TAG, cursor.getCount() + "");
+
+        if (cursor == null) {
+            return null;
+        }
+        bookInfos = new ArrayList<>();
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            BookInfo bookInfo = new BookInfo();
+            bookInfo.setBookName(cursor.getString(3));
+            bookInfo.setBookColor(cursor.getInt(4));
+            bookInfo.setBookAlarmTime(cursor.getString(5));
+            bookInfos.add(0, bookInfo);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return bookInfos;
     }
 }

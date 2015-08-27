@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -18,6 +20,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.activities.BookActivity;
@@ -61,8 +64,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     RecyclerView routinesRecyclerView;
     @InjectView(R.id.addBtn)
     ImageButton addRoutinesItemBtn;
-    /*    @InjectView(R.id.addBtn2)
-        FloatingActionButton addRoutinesItemBtn2;*/
 
     private RoutinesAdapter routinesAdapter;
     private boolean pendingIntro;
@@ -81,6 +82,9 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         View view = inflater.inflate(R.layout.fragment_base_item, container, false);
         ButterKnife.inject(this, view);
 
+        Toolbar toolbar = (Toolbar) getContext().findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_routines);
+
         setupDatabase();
         setupGridLayout();
         setupRevealBackground(savedInstanceState);
@@ -93,8 +97,8 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     private void setupDatabase() {
         databaseUtil = DatabaseUtil.getInstance(getContext());
 //        UserData userData = UserData.getCurrentUser(getContext(), UserData.class);
-        if (isNetworkAvailable(getContext())) {
-
+        mDataSet = databaseUtil.queryBookInfos();
+        if (mDataSet == null) {
             BmobQuery<BookInfo> bmobQuery = new BmobQuery<>();
             bmobQuery.setLimit(10);
 //        bmobQuery.order("createdAt");
@@ -113,14 +117,10 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 @Override
                 public void onError(int i, String s) {
                     Log.i(TAG, "获取服务端数据失败");
-                    mDataSet = databaseUtil.queryBookInfos();
+                    mDataSet = new ArrayList<>();
                 }
             });
-        } else {
-            mDataSet = databaseUtil.queryBookInfos();
         }
-
-        if (mDataSet == null) mDataSet = new ArrayList<>();
 
 /*        for (int i = 0; i < mDataSet.size(); i++) {
             Log.i("mDataSet[" + i + "] = ", mDataSet.get(i).getObjectId() + " ");

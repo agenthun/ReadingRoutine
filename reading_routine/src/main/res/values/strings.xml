@@ -28,4 +28,5 @@
     <string name="action_sign_up">注册</string>
     <string name="time_setting_finish">完成</string>
     <string name="error_invalid_bookname">无效书名</string>
+    <string name="text_refresh">同步</string>
 </resources>
