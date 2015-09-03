@@ -83,7 +83,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         ButterKnife.inject(this, view);
 
         Toolbar toolbar = (Toolbar) getContext().findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_routines);
+
 
         setupDatabase();
         setupGridLayout();
@@ -406,22 +406,5 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             mDataSet.set(position, bookInfo);
             routinesAdapter.notifyDataSetChanged();
         }
-    }
-
-    public boolean isNetworkAvailable(Context context) {
-        try {
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivityManager != null) {
-                NetworkInfo info = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI | ConnectivityManager.TYPE_MOBILE);
-                if (info != null && info.isConnected()) {
-                    if (info.getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return false;
     }
 }
