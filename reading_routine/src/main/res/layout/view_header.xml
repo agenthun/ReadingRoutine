@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/routinesHeader"
+    android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,7 +19,6 @@
         android:layout_marginTop="30.0dp"
         android:gravity="center_horizontal"
         android:paddingTop="10.0dp"
-        android:text="@string/text_routines"
         android:textColor="@color/background_daytime_material_blue"
         android:textSize="27.0sp" />
 
@@ -29,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/headerGraphics"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="68.0dp"
-        android:src="@drawable/routines_badge2" />
+        android:layout_marginTop="68.0dp" />
 
 </RelativeLayout>
