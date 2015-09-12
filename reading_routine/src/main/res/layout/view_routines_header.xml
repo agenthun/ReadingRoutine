@@ -12,7 +12,6 @@
         android:src="@drawable/view_header" />
 
     <TextView
-        android:id="@+id/headerTitle"
         android:layout_width="match_parent"
         android:layout_height="50.0dp"
         android:layout_alignTop="@id/headerGraphics"
@@ -24,7 +23,6 @@
         android:textSize="27.0sp" />
 
     <ImageView
-        android:id="@+id/headerIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/headerGraphics"
