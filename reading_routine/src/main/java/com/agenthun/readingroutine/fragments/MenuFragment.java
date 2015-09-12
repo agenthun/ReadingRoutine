@@ -87,7 +87,7 @@ public class MenuFragment extends TFragment {
     public void onManagementClick() {
         if (mListener != null) {
             mListener.onFragmentInteraction(MANAGEMEUNT_FRAGMENT);
-            getContext().pushFragmentToBackStack(ManagementFragment.class, null);
+            getContext().pushFragmentToBackStack(ReadingFragment.class, null);
         }
     }
 

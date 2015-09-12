@@ -11,12 +11,18 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 
-import com.agenthun.readingroutine.adapters.ManagementAdapter;
+import com.agenthun.readingroutine.adapters.ReadingAdapter;
 import com.agenthun.readingroutine.R;
+import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,7 +30,7 @@ import butterknife.InjectView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ManagementFragment extends TFragment implements RevealBackgroundView.OnStateChangeListener {
+public class ReadingFragment extends TFragment implements RevealBackgroundView.OnStateChangeListener {
 
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
 
@@ -35,10 +41,13 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
     @InjectView(R.id.addBtn)
     ImageButton addManagementItemBtn;
 
-    private ManagementAdapter managementAdapter;
+    private ReadingAdapter readingAdapter;
     private boolean pendingIntro;
 
-    public ManagementFragment() {
+    private ArrayList<BookInfo> mDataSet;
+    DatabaseUtil databaseUtil;
+
+    public ReadingFragment() {
         // Required empty public constructor
     }
 
@@ -49,6 +58,9 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
         View view = inflater.inflate(R.layout.fragment_base_item, container, false);
         ButterKnife.inject(this, view);
 
+        databaseUtil = DatabaseUtil.getInstance(getContext());
+        mDataSet = databaseUtil.queryBookInfos();
+
         setupGridLayout();
         setupRevealBackground(savedInstanceState);
 
@@ -57,7 +69,7 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
             public boolean onPreDraw() {
                 addManagementItemBtn.getViewTreeObserver().removeOnPreDrawListener(this);
                 pendingIntro = true;
-                addManagementItemBtn.setTranslationY(addManagementItemBtn.getHeight());
+                addManagementItemBtn.setTranslationY(2 * addManagementItemBtn.getHeight());
                 return true;
             }
         });
@@ -66,13 +78,13 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
     }
 
     private void setupGridLayout() {
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         managementRecyclerView.setLayoutManager(layoutManager);
         managementRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                managementAdapter.setLockedAnimations(true);
+                readingAdapter.setLockedAnimations(true);
             }
         });
     }
@@ -91,7 +103,7 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
             });
         } else {
             revealBackgroundView.setToFinishedFrame();
-            managementAdapter.setLockedAnimations(true);
+            readingAdapter.setLockedAnimations(true);
         }
     }
 
@@ -99,8 +111,21 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
     public void onStateChange(int state) {
         if (RevealBackgroundView.STATE_FINISHED == state) {
             managementRecyclerView.setVisibility(View.VISIBLE);
-            managementAdapter = new ManagementAdapter(getContext().getApplicationContext());
-            managementRecyclerView.setAdapter(managementAdapter);
+            List<String> mDataset = new ArrayList<>();
+            mDataset.add("a");
+            mDataset.add("b");
+            mDataset.add("c");
+            mDataset.add("d");
+            mDataset.add("e");
+            mDataset.add("f");
+            mDataset.add("g");
+            mDataset.add("h");
+
+            readingAdapter = new ReadingAdapter(getContext().getApplicationContext(),
+                    getString(R.string.text_reading),
+                    getResources().getDrawable(R.drawable.management_badge2),
+                    mDataset);
+            managementRecyclerView.setAdapter(readingAdapter);
             if (pendingIntro) {
                 startIntroAnimation();
             }
@@ -110,7 +135,7 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
     }
 
     private void startIntroAnimation() {
-        addManagementItemBtn.animate().translationY(0).setDuration(400).setInterpolator(INTERPOLATOR).start();
+        addManagementItemBtn.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(1.0f)).start();
     }
 
 }
