@@ -14,7 +14,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 
-import com.agenthun.readingroutine.adapters.ManagementAdapter;
+import com.agenthun.readingroutine.adapters.ReadingAdapter;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.BookInfo;
 import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
@@ -40,7 +40,7 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
     @InjectView(R.id.addBtn)
     ImageButton addManagementItemBtn;
 
-    private ManagementAdapter managementAdapter;
+    private ReadingAdapter readingAdapter;
     private boolean pendingIntro;
 
     private ArrayList<BookInfo> mDataSet;
@@ -77,13 +77,13 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
     }
 
     private void setupGridLayout() {
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         managementRecyclerView.setLayoutManager(layoutManager);
         managementRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                managementAdapter.setLockedAnimations(true);
+                readingAdapter.setLockedAnimations(true);
             }
         });
     }
@@ -102,7 +102,7 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
             });
         } else {
             revealBackgroundView.setToFinishedFrame();
-            managementAdapter.setLockedAnimations(true);
+            readingAdapter.setLockedAnimations(true);
         }
     }
 
@@ -110,10 +110,10 @@ public class ManagementFragment extends TFragment implements RevealBackgroundVie
     public void onStateChange(int state) {
         if (RevealBackgroundView.STATE_FINISHED == state) {
             managementRecyclerView.setVisibility(View.VISIBLE);
-            managementAdapter = new ManagementAdapter(getContext().getApplicationContext(),
-                    getString(R.string.text_management),
+            readingAdapter = new ReadingAdapter(getContext().getApplicationContext(),
+                    getString(R.string.text_reading),
                     getResources().getDrawable(R.drawable.management_badge2));
-            managementRecyclerView.setAdapter(managementAdapter);
+            managementRecyclerView.setAdapter(readingAdapter);
             if (pendingIntro) {
                 startIntroAnimation();
             }

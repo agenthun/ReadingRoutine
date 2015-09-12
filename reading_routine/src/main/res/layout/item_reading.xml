@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:elevation="@dimen/cardview_default_elevation"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="@dimen/margin_horizontal_small">
+
+    <RelativeLayout
+        android:id="@+id/block"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.agenthun.readingroutine.views.PaperView
+            android:id="@+id/paperView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/text_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:gravity="center"
+            android:textColor="@color/text_color_green"
+            android:textSize="@dimen/abc_text_size_title_material" />
+    </RelativeLayout>
+
+</FrameLayout>

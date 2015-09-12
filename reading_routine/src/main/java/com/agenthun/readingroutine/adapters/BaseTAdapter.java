@@ -39,10 +39,10 @@ public abstract class BaseTAdapter extends RecyclerSwipeAdapter<RecyclerView.Vie
 
     protected abstract void bindBodyViewHolder(RecyclerView.ViewHolder viewHolder, int position);
 
-    public BaseTAdapter(Context context, CharSequence title, Drawable drawable) {
+    public BaseTAdapter(Context context, CharSequence title, Drawable icon) {
         this.context = context;
         this.mTitle = title;
-        this.mDrawable = drawable;
+        this.mDrawable = icon;
     }
 
     @Override
@@ -66,7 +66,8 @@ public abstract class BaseTAdapter extends RecyclerSwipeAdapter<RecyclerView.Vie
             headerViewHolder.setHeaderIcon(mDrawable);
             return headerViewHolder;
         } else if (viewType == TYPE_BODY) {
-            createBodyViewHolder(context, parent);
+            RecyclerView.ViewHolder holder = createBodyViewHolder(context, parent);
+            return holder;
         }
         return null;
     }
