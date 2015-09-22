@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <!-- Push SDK权限 start -->
-    <permission
+<!--    <permission
         android:name="cn.bmob.permission.push"
-        android:protectionLevel="normal"></permission>
+        android:protectionLevel="normal"></permission>-->
     <uses-permission android:name="cn.bmob.permission.push" />
     <!-- 添加自定义的权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
