@@ -2,17 +2,24 @@ package com.agenthun.readingroutine.views;
 
 import android.content.Context;
 import android.graphics.BlurMaskFilter;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 
 /**
  * Created by Agent Henry on 2015/9/12.
  */
-public class BookView extends View {
+public class BookView extends ImageView {
     private Paint mBookPaint;
     private Paint mLinePaint;
-    private Paint mShadowPaint;
+
+    private Path mPath;
+    private Shape shape;
+    private ViewShape viewShape;
+
     private int mViewWidth;
     private int mViewHeight;
 
@@ -32,6 +39,16 @@ public class BookView extends View {
     }
 
     private void initView() {
+        shape = new Shape();
+
+        shape.setNumVertex(6);
+        shape.setRotation(0.0f);
+        shape.setCornerRadius(0.0f);
+        shape.setHasShadow(true);
+        shape.setHasBorder(true);
+        shape.setBorderColor(Color.WHITE);
+        shape.setBorderWidth(4.0f);
+
         initPaint();
     }
 
@@ -47,10 +64,5 @@ public class BookView extends View {
         mLinePaint.setAntiAlias(true);
         mLinePaint.setDither(true);
         mLinePaint.setColor(0xffe9e7d2);
-
-        mShadowPaint = new Paint();
-        mShadowPaint.setStyle(Paint.Style.FILL);
-        mShadowPaint.setColor(0x70000000);
-        mShadowPaint.setMaskFilter(new BlurMaskFilter(16, BlurMaskFilter.Blur.NORMAL));
     }
 }
