@@ -8,7 +8,7 @@ import android.graphics.Color;
  * @date 15/9/24 上午12:28.
  */
 public class Shape {
-
+    
     private static final float DEFAULT_SHADOW_RADIUS = 7.5f;
     private static final int DEFAULT_SHADOW_COLOR = Color.BLACK;
     private static final float DEFAULT_SHADOW_XOFFSET = 0.0f;

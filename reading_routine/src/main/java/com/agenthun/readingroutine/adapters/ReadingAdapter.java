@@ -1,6 +1,7 @@
 package com.agenthun.readingroutine.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -17,7 +18,9 @@ import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
 import com.agenthun.readingroutine.datastore.BookInfo;
 import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
+import com.agenthun.readingroutine.views.BookView;
 import com.agenthun.readingroutine.views.PaperView;
+import com.agenthun.readingroutine.views.StarShape;
 import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
@@ -39,9 +42,11 @@ public class ReadingAdapter extends BaseTAdapter {
 
     private int lastAnimatedItem = 0;
     private List<String> mDataset;
+    private Context mContext;
 
     public ReadingAdapter(Context context, CharSequence title, Drawable icon, List<String> objects) {
         super(context, title, icon);
+        this.mContext = context;
         this.cellHeight = (int) (UiUtils.getScreenWidthPixels(context) / 2 * 1.2);
         this.cellWidth = UiUtils.getScreenWidthPixels(context) / 2;
         this.mDataset = objects;
@@ -64,6 +69,15 @@ public class ReadingAdapter extends BaseTAdapter {
         animateReading((ReadingViewHolder) viewHolder);
         String item = mDataset.get(position - 1);
         ((ReadingViewHolder) viewHolder).textViewData.setText(item);
+
+/*        ((ReadingViewHolder) viewHolder).bookView = new BookView(mContext);
+        ((ReadingViewHolder) viewHolder).bookView.setImageResource(R.drawable.style_book);
+        ((ReadingViewHolder) viewHolder).bookView.addShadow();
+        ((ReadingViewHolder) viewHolder).bookView.addBorder(10, Color.WHITE);
+        ((ReadingViewHolder) viewHolder).bookView.setCornerRadius(10);*/
+/*        ((ReadingViewHolder) viewHolder).bookView.setVertices(6);
+        ((ReadingViewHolder) viewHolder).bookView.setBaseShape(new StarShape(0.8f, false));*/
+
         if (lastAnimatedItem < position) lastAnimatedItem = position;
     }
 
@@ -104,6 +118,8 @@ public class ReadingAdapter extends BaseTAdapter {
         SwipeLayout swipeLayout;
         @InjectView(R.id.text_data)
         TextView textViewData;
+/*        @InjectView(R.id.bookView)
+        BookView bookView;*/
 
         public ReadingViewHolder(View view) {
             super(view);

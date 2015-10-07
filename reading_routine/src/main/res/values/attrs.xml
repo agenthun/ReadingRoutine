@@ -11,4 +11,9 @@
         <item>@color/style_book_color_blue</item>
         <item>@color/style_book_color_grey</item>
     </integer-array>
+
+    <declare-styleable name="BookView">
+        <attr name="radius_size" format="integer" />
+        <attr name="shadow_size" format="integer" />
+    </declare-styleable>
 </resources>
