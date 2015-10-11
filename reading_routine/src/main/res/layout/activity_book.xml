@@ -27,10 +27,12 @@
 
             <ImageView
                 android:id="@+id/pic"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
+                android:src="@drawable/ic_reading_routine_white_no_annulus"
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
@@ -159,7 +161,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/btn_fab_margins"
-        android:foregroundGravity="bottom|right"
         android:src="@drawable/ic_save_white_48dp"
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom|right|end" />

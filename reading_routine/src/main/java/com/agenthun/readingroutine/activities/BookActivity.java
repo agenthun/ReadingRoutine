@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -51,6 +52,8 @@ public class BookActivity extends TActivity {
     Toolbar toolbar;
     @InjectView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @InjectView(R.id.fab)
+    FloatingActionButton floatingActionButton;
     @InjectView(R.id.book_name_edittext)
     EditText bookName;
     @InjectView(R.id.alarm_time)
@@ -83,7 +86,7 @@ public class BookActivity extends TActivity {
 
         int[] colorBook = getResources().getIntArray(R.array.style_book_color);
         int getBookColorIndex = intent.getIntExtra(RoutinesAdapter.BOOK_COLOR_INDEX, new Random().nextInt(4));
-        toolbar.setBackgroundColor(colorBook[getBookColorIndex]);
+        //toolbar.setBackgroundColor(colorBook[getBookColorIndex]);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +98,7 @@ public class BookActivity extends TActivity {
 
         String getBookName = intent.getStringExtra(RoutinesAdapter.BOOK_NAME);
         collapsingToolbarLayout.setTitle(getBookName);
+        appBarLayout.setBackgroundColor(colorBook[getBookColorIndex]);
 
         if (getBookName.compareTo(getResources().getString(R.string.text_book)) != 0) {
             bookName.setText(getBookName);
@@ -136,6 +140,21 @@ public class BookActivity extends TActivity {
 
     @OnClick(R.id.save)
     public void onSaveClick() {
+        String name = bookName.getText().toString();
+        if (name.isEmpty()) {
+            Toast.makeText(this, R.string.error_invalid_bookname, Toast.LENGTH_SHORT).show();
+            YoYo.with(Techniques.Wobble).duration(500).delay(100).playOn(bookName);
+            return;
+        } else {
+            intent.putExtra(RoutinesAdapter.BOOK_NAME, name);
+            intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, alarmTime.getText().toString());
+            setResult(RoutinesFragment.RENEW_BOOK, intent);
+            finish();
+        }
+    }
+
+    @OnClick(R.id.fab)
+    public void onFabSaveClick() {
         String name = bookName.getText().toString();
         if (name.isEmpty()) {
             Toast.makeText(this, R.string.error_invalid_bookname, Toast.LENGTH_SHORT).show();
