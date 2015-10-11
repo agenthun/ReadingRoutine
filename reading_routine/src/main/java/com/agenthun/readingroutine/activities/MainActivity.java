@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -218,19 +219,19 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     }
 
     private void openShoppingFragment() {
-//        toolbar.setBackgroundColor(getResources().getColor(R.color.color_accent));
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 /*        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
         materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);*/
     }
 
     private void openAboutFragment() {
-//        toolbar.setBackgroundColor(getResources().getColor(R.color.color_accent));
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 /*        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
         materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);*/
     }
 
     private void openNotesFragment() {
-//        toolbar.setBackgroundColor(getResources().getColor(R.color.color_accent));
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 /*        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
         materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);*/
     }

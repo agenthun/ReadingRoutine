@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#65dbd5</color>
+    <color name="colorPrimaryDark">#009688</color>
+    <color name="colorAccent">#2196F3</color>
+
     <color name="background_daytime_material_blue">#65dbd5</color>
     <!--80CBC4--><!--7ecec9  81dad2-->
     <color name="background_night_material_blue">#05212d</color>
 
-    <color name="color_accent">#2196F3</color>
     <color name="text_color_green">#009688</color>
     <color name="text_color_hint">#42000000</color>
 

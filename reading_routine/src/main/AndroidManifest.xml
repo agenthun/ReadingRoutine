@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <!-- Push SDK权限 start -->
-<!--    <permission
-        android:name="cn.bmob.permission.push"
-        android:protectionLevel="normal"></permission>-->
+    <!--    <permission
+            android:name="cn.bmob.permission.push"
+            android:protectionLevel="normal"></permission>-->
     <uses-permission android:name="cn.bmob.permission.push" />
     <!-- 添加自定义的权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -35,6 +35,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_rr_launcher"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
@@ -55,7 +56,8 @@
             android:name=".activities.MainActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <!--            <intent-filter>
                             <action android:name="android.intent.action.MAIN" />
 
@@ -64,7 +66,8 @@
         </activity>
         <activity
             android:name=".activities.BookActivity"
-            android:label="@string/title_activity_book"></activity>
+            android:label="@string/title_activity_book"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
     </application>
 

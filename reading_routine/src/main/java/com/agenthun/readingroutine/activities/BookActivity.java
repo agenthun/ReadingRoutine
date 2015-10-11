@@ -1,6 +1,8 @@
 package com.agenthun.readingroutine.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Interpolator;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +45,8 @@ public class BookActivity extends TActivity {
     private static final String SELECT_BOOK_ALARM_TIME = "SELECT_BOOK_ALARM_TIME";
 
     private MaterialMenuIconToolbar materialMenuIconToolbar;
+    @InjectView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.collapsingToolbarLayout)
@@ -71,12 +76,10 @@ public class BookActivity extends TActivity {
 
 /*        toolbar.setTitleTextColor(getResources().getColor(R.color.color_white));
         toolbar.setTitle(R.string.text_book);*/
-        collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.color_white));
-        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.color_white));
+        //collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.color_white));
+        //collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.color_white));
 
         intent = getIntent();
-        String getBookName = intent.getStringExtra(RoutinesAdapter.BOOK_NAME);
-        collapsingToolbarLayout.setTitle(getBookName);
 
         int[] colorBook = getResources().getIntArray(R.array.style_book_color);
         int getBookColorIndex = intent.getIntExtra(RoutinesAdapter.BOOK_COLOR_INDEX, new Random().nextInt(4));
@@ -89,6 +92,9 @@ public class BookActivity extends TActivity {
                 finish();
             }
         });
+
+        String getBookName = intent.getStringExtra(RoutinesAdapter.BOOK_NAME);
+        collapsingToolbarLayout.setTitle(getBookName);
 
         if (getBookName.compareTo(getResources().getString(R.string.text_book)) != 0) {
             bookName.setText(getBookName);

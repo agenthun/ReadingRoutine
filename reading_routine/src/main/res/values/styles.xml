@@ -1,15 +1,31 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimaryDark">#56bab5</item>
-        <!--0097A7-->
-        <item name="colorPrimary">@color/background_daytime_material_blue</item>
-        <item name="android:windowNoTitle">true</item>
-        <!-- <item name="colorAccent">@color/highlighted_text_material_light</item>-->
-        <!-- <item name="android:textColorHint">@color/text_color_hint</item>-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+            &lt;!&ndash; Customize your theme here. &ndash;&gt;
+            <item name="colorPrimaryDark">#56bab5</item>
+            &lt;!&ndash;0097A7&ndash;&gt;
+            <item name="colorPrimary">@color/background_daytime_material_blue</item>
+            <item name="android:windowNoTitle">true</item>
+            &lt;!&ndash; <item name="colorAccent">@color/highlighted_text_material_light</item>&ndash;&gt;
+            &lt;!&ndash; <item name="android:textColorHint">@color/text_color_hint</item>&ndash;&gt;
+        </style>-->
 
     <style name="ActionBarThemeOverlay" parent="">
         <item name="android:textColorPrimary">#fff</item>
