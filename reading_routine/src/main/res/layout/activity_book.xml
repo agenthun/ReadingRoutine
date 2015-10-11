@@ -18,7 +18,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
-            android:layout_height="192dp"
+            android:layout_height="270dp"
             android:theme="@style/Theme.AppCompat"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Large"
@@ -26,7 +26,7 @@
             app:statusBarScrim="@color/colorPrimaryDark">
 
             <ImageView
-                android:id="@+id/pic"
+                android:id="@+id/ic_reading_routine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -161,8 +161,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/btn_fab_margins"
+        android:elevation="6dp"
         android:src="@drawable/ic_save_white_48dp"
         app:layout_anchor="@id/appBarLayout"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|right|end"
+        app:pressedTranslationZ="12dp" />
 
 </android.support.design.widget.CoordinatorLayout>

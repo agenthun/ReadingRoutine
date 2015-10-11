@@ -13,8 +13,7 @@
         android:layout_height="match_parent"
         swipe:leftEdgeSwipeOffset="0dp"
         swipe:rightEdgeSwipeOffset="0dp">
-        <!--android:background="@drawable/item_selector"-->
-        <!--android:background="#73c778"-->
+
         <LinearLayout
             android:layout_width="56dp"
             android:layout_height="match_parent"
@@ -28,43 +27,6 @@
                 android:layout_height="30dp"
                 android:src="@drawable/ic_delete_white_48dp" />
         </LinearLayout>
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@drawable/style_book"-->
-        <!--android:orientation="vertical">-->
-        <!--&lt;!&ndash;android:background="@drawable/item_selector"&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<com.agenthun.readingroutine.view.SquareImageView&ndash;&gt;-->
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:scaleType="centerCrop"-->
-        <!--android:src="@drawable/ic_book" />-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/position"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:padding="@dimen/margin_horizontal_medium"-->
-        <!--android:textColor="@color/color_white" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/text_data"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:padding="@dimen/margin_horizontal_medium"-->
-        <!--android:textColor="@color/color_white" />-->
-        <!--</LinearLayout>-->
-
-        <!--</LinearLayout>-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -85,15 +47,6 @@
                 android:textColor="@color/text_color_green"
                 android:textSize="@dimen/abc_text_size_title_material" />
         </RelativeLayout>
-
-
-        <!--android:background="@drawable/style_book"-->
-
-
-        <!--        <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/item_selector" />-->
 
     </com.daimajia.swipe.SwipeLayout>
 

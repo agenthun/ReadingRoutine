@@ -1,34 +1,36 @@
 package com.agenthun.readingroutine.activities;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Interpolator;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.adapters.RoutinesAdapter;
 import com.agenthun.readingroutine.fragments.CalendarDialogFragment;
-import com.agenthun.readingroutine.fragments.MenuFragment;
 import com.agenthun.readingroutine.fragments.RoutinesFragment;
-import com.agenthun.readingroutine.fragments.SettingsFragment;
-import com.agenthun.readingroutine.transitionmanagers.FragmentParam;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
-import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,11 +55,13 @@ public class BookActivity extends TActivity {
     @InjectView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
     @InjectView(R.id.fab)
-    FloatingActionButton floatingActionButton;
+    FloatingActionButton fab;
     @InjectView(R.id.book_name_edittext)
     EditText bookName;
     @InjectView(R.id.alarm_time)
     TextView alarmTime;
+    @InjectView(R.id.ic_reading_routine)
+    ImageView icon;
     private String getBookAlarmTime;
     private Intent intent;
     private Date mDate;
@@ -106,6 +110,49 @@ public class BookActivity extends TActivity {
 
         getBookAlarmTime = intent.getStringExtra(RoutinesAdapter.BOOK_ALARM_TIME);
         alarmTime.setText(getBookAlarmTime);
+
+ /*       ImageLoader.getInstance().displayImage("", icon,
+                new DisplayImageOptions.Builder()
+                        .cacheInMemory(true)
+                        .showImageOnFail(R.drawable.ic_reading_routine_white_no_annulus)
+                        .resetViewBeforeLoading(true).build(),
+                new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        Palette palette = Palette.generate(loadedImage);
+                        ColorStateList colorStateList = new ColorStateList(
+                                new int[][]{
+                                        new int[]{}
+                                },
+                                new int[]{
+                                        palette.getMutedColor(Color.parseColor("#66000000"))
+                                }
+                        );
+                        fab.setBackgroundTintList(colorStateList);
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+
+                    }
+                });*/
+
+/*        fab.setVisibility(View.VISIBLE);
+        fab.animate().scaleY(1.0f).scaleX(1.0f).alpha(1.0f)
+                .setDuration(200)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .setStartDelay(2000)
+                .start();*/
     }
 
     @Override

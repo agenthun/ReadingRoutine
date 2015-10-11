@@ -1,7 +1,6 @@
 package com.agenthun.readingroutine.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -10,20 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
-import com.agenthun.readingroutine.datastore.BookInfo;
-import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
-import com.agenthun.readingroutine.views.BookView;
-import com.agenthun.readingroutine.views.PaperView;
-import com.agenthun.readingroutine.views.StarShape;
 import com.daimajia.swipe.SwipeLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;

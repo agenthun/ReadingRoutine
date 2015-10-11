@@ -40,11 +40,11 @@
                             android:layout_height="match_parent"
                             android:gravity="center" />-->
 
-            <com.agenthun.readingroutine.views.BookViewX
+            <com.agenthun.readingroutine.views.BookView
                 android:id="@+id/bookView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/style_book" />
+                android:src="@drawable/material_l" />
 
             <TextView
                 android:id="@+id/text_data"
