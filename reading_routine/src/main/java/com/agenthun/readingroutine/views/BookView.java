@@ -10,12 +10,15 @@ import android.graphics.ColorFilter;
 import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -25,17 +28,24 @@ import com.agenthun.readingroutine.R;
  * Created by Agent Henry on 2015/9/12.
  */
 public class BookView extends ImageView {
-    private PaperPath mPaperPath;
     private Paint mPaperPaint;
     private Paint mLinePaint;
     private Paint mShadowPaint;
 
+    private BookPath mBookPath;
     private Path mPath;
     private Paint mBookPaint;
     private Paint mBorderPaint;
 
     private int mViewWidth;
     private int mViewHeight;
+
+    private float borderPadding;
+    private float xPadding;
+    private float yPadding;
+    private float diameter;
+    private float centerX;
+    private float centerY;
 
     public BookView(Context context) {
         super(context);
@@ -77,20 +87,25 @@ public class BookView extends ImageView {
 
 
         mBookPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mBookPaint.setPathEffect(new CornerPathEffect(6f));
+        mBookPaint.setStyle(Paint.Style.STROKE);
+        mBookPaint.setPathEffect(new CornerPathEffect(5.0f));
+        mBookPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 
         mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setColor(Color.WHITE);
         mBorderPaint.setStrokeWidth(12);
-        mBorderPaint.setPathEffect(new CornerPathEffect(6f));
+        mBorderPaint.setPathEffect(new CornerPathEffect(5.0f));
+        mBorderPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+        initPath();
     }
 
     private void initPath() {
-        mPaperPath = new PaperPath();
-        mPaperPath.setWidth(mViewWidth, mViewHeight);
+        mBookPath = new BookPath();
+        mBookPath.setWidth(borderPadding, xPadding, yPadding, diameter, centerX, centerY);
 
-        float borderPadding = 12.0f;
+/*        float borderPadding = 12.0f;
         float xPadding = getPaddingLeft() + getPaddingRight() + borderPadding * 2;
         float yPadding = getPaddingTop() + getPaddingBottom() + borderPadding * 2;
         float diameter = Math.min((float) mViewWidth - xPadding, (float) mViewHeight - yPadding);
@@ -121,7 +136,7 @@ public class BookView extends ImageView {
             currentPointY = rotatedPointY;
             i++;
         } while (i <= num);
-        mPath.close();
+        mPath.close();*/
     }
 
     private void addEffect(float currentX, float currentY, float nextX, float nextY) {
@@ -131,21 +146,29 @@ public class BookView extends ImageView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         mViewWidth = w;
         mViewHeight = h;
-//        updatePolygonSize();
+        updatePolygonSize();
+
         initPath();
+
+        if (mViewWidth != oldw || mViewHeight != oldh) {
+            refreshImage();
+        }
     }
 
     private void updatePolygonSize() {
-        float borderPadding = 6.0f;
-        float xPadding = getPaddingLeft() + getPaddingRight() + borderPadding * 2;
-        float yPadding = getPaddingTop() + getPaddingBottom() + borderPadding * 2;
-        float diameter = Math.min((float) mViewWidth - xPadding, (float) mViewHeight - yPadding);
+        updatePolygonSize(getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
+    }
 
-        float centerX = diameter / 2 + (float) (getPaddingLeft() + getPaddingRight()) / 2 + borderPadding;
-        float centerY = diameter / 2 + (float) (getPaddingTop() + getPaddingBottom()) / 2 + borderPadding;
+    private void updatePolygonSize(int l, int t, int r, int b) {
+        borderPadding = 6.0f;
+        xPadding = l + r + borderPadding * 2;
+        yPadding = t + b + borderPadding * 2;
+        diameter = Math.min((float) mViewWidth - xPadding, (float) mViewHeight - yPadding);
+
+        centerX = diameter / 2 + (float) (l + r) / 2 + borderPadding;
+        centerY = diameter / 2 + (float) (t + b) / 2 + borderPadding;
     }
 
     @Override
@@ -154,8 +177,12 @@ public class BookView extends ImageView {
         /*canvas.drawPath(mPaperPath.getShadowPath(), mShadowPaint);
         canvas.drawPath(mPaperPath.getPaperPath(), mPaperPaint);
         canvas.drawPath(mPaperPath.getLinePath(), mLinePaint);*/
-        canvas.drawPath(mPath, mBorderPaint);
-        //canvas.drawPath(mPath, mBookPaint);
+
+        canvas.drawPath(mBookPath.getmBookPath(), mBorderPaint);
+        canvas.drawPath(mBookPath.getmBookPath(), mBookPaint);
+
+/*        canvas.drawCircle(centerX, centerY, diameter / 2, mBorderPaint);
+        canvas.drawCircle(centerX, centerY, diameter / 2, mBookPaint);*/
     }
 
     public void setColor(int color) {
@@ -176,8 +203,7 @@ public class BookView extends ImageView {
     }
 
     private int measureHeight(int measureSpecHeight) {
-        //Force do not square measure to solve bug (use base 2 better performance)
-        return (measure(measureSpecHeight) + 2);
+        return (measure(measureSpecHeight));
     }
 
     private int measure(int measureSpec) {
@@ -192,6 +218,37 @@ public class BookView extends ImageView {
         }
 
         return result;
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        super.setImageBitmap(bm);
+        refreshImage();
+        invalidate();
+    }
+
+    @Override
+    public void setImageDrawable(Drawable drawable) {
+        super.setImageDrawable(drawable);
+        refreshImage();
+        invalidate();
+    }
+
+    @Override
+    public void setImageResource(@DrawableRes int resId) {
+        super.setImageResource(resId);
+        refreshImage();
+        invalidate();
+    }
+
+    private void refreshImage() {
+        Bitmap bitmap = drawableToBitmap(getDrawable());
+        int size = Math.min(mViewWidth, mViewHeight);
+        if (size > 0 && bitmap != null) {
+            BitmapShader shader = new BitmapShader(ThumbnailUtils.extractThumbnail(bitmap, size, size),
+                    Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            mBookPaint.setShader(shader);
+        }
     }
 
     private Bitmap drawableToBitmap(Drawable drawable) {
@@ -220,34 +277,22 @@ public class BookView extends ImageView {
     }
 
     @Override
-    public void setImageBitmap(Bitmap bm) {
-        super.setImageBitmap(bm);
-        refreshImage();
-        invalidate();
-    }
-
-    @Override
-    public void setImageDrawable(Drawable drawable) {
-        super.setImageDrawable(drawable);
-        refreshImage();
-        invalidate();
-    }
-
-    @Override
-    public void setImageResource(int resId) {
-        super.setImageResource(resId);
-        refreshImage();
-        invalidate();
-    }
-
-    private void refreshImage() {
-        Bitmap bitmap = drawableToBitmap(getDrawable());
-        int size = Math.min(mViewWidth, mViewHeight);
-    }
-
-    @Override
     public void setColorFilter(ColorFilter cf) {
         mBookPaint.setColorFilter(cf);
         invalidate();
+    }
+
+    @Override
+    public void setPaddingRelative(int start, int top, int end, int bottom) {
+        super.setPaddingRelative(start, top, end, bottom);
+        updatePolygonSize();
+        invalidate();
+    }
+
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(left, top, right, bottom);
+        updatePolygonSize(left, top, right, bottom);
+        invalidate(left, top, right, bottom);
     }
 }
