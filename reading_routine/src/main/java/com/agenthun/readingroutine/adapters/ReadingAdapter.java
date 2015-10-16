@@ -109,8 +109,10 @@ public class ReadingAdapter extends BaseTAdapter {
         SwipeLayout swipeLayout;
         @InjectView(R.id.text_data)
         TextView textViewData;
-/*        @InjectView(R.id.bookView)
-        BookView bookView;*/
+        /*        @InjectView(R.id.bookView)
+                BookView bookView;*/
+/*        @InjectView(R.id.cat)
+        PolygonImageView cat;*/
 
         public ReadingViewHolder(View view) {
             super(view);

@@ -34,35 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--            <com.agenthun.readingroutine.views.PaperView
-                            android:id="@+id/paperView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center" />-->
-
-            <!--            <com.agenthun.readingroutine.views.BookViewX
-                            android:id="@+id/bookView"
-                            android:layout_width="250dp"
-                            android:layout_height="250dp"
-                            android:src="@drawable/cat06" />-->
-
-            <!--            <com.agenthun.readingroutine.views.RoundImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/cat06" />-->
-
-            <net.grobas.view.PolygonImageView
-                android:id="@+id/cat"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:src="@drawable/cat06"
-                app:poly_border="true"
-                app:poly_border_color="@color/color_white"
-                app:poly_border_width="15dp"
-                app:poly_corner_radius="5"
-                app:poly_rotation_angle="0"
-                app:poly_shadow="true"
-                app:poly_vertices="100" />
+            <com.agenthun.readingroutine.views.BookView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/book_picture_2" />
 
             <TextView
                 android:id="@+id/text_data"

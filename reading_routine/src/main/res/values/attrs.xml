@@ -12,8 +12,12 @@
         <item>@color/style_book_color_grey</item>
     </integer-array>
 
-    <declare-styleable name="BookView">
+    <declare-styleable name="BaseView">
+        <attr name="is_square" format="boolean" />
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
         <attr name="radius_size" format="integer" />
         <attr name="shadow_size" format="integer" />
     </declare-styleable>
+
 </resources>
