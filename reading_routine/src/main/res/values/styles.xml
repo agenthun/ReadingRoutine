@@ -42,4 +42,9 @@
         <item name="pressedTranslationZ">12dp</item>
         <item name="rippleColor">@color/color_white</item>
     </style>
+
+    <style name="SelectableDarkBackgroundBorderless">
+        <item name="android:background">@drawable/ripple_dark_effect_feedback</item>
+    </style>
+
 </resources>

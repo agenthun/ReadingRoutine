@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 /**
  * Created by Agent Henry on 2015/5/9.
  */
-public class SexangleViewGroup extends ViewGroup {
+public class SixangleViewGroup extends ViewGroup {
 
-    public SexangleViewGroup(Context context, AttributeSet attrs) {
+    public SixangleViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

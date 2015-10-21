@@ -43,11 +43,13 @@ public class PaperPath {
                 0.041f * width, 0.196f * height,
                 0.03f * width, 0.136f * height,
                 0.038f * width, 0.025f * height);
+        mPaperPath.close();
 
         mLinePath.moveTo(0.15f * width, 0.08f * height);
         mLinePath.lineTo(0.68f * width, 0.08f * height);
         mLinePath.moveTo(0.186f * width, 0.12f * height);
         mLinePath.lineTo(0.698f * width, 0.12f * height);
+        mLinePath.close();
 /*        mLinePath.moveTo(0.334f * width, 0.82f * height);
         mLinePath.lineTo(0.85f * width, 0.82f * height);
         mLinePath.moveTo(0.32f * width, 0.86f * height);

@@ -115,11 +115,11 @@ public class ReadingFragment extends TFragment implements RevealBackgroundView.O
             mDataset.add("a");
             mDataset.add("b");
             mDataset.add("c");
-/*            mDataset.add("d");
+            mDataset.add("d");
             mDataset.add("e");
             mDataset.add("f");
             mDataset.add("g");
-            mDataset.add("h");*/
+            mDataset.add("h");
 
             readingAdapter = new ReadingAdapter(getContext().getApplicationContext(),
                     getString(R.string.text_reading),

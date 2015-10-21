@@ -35,9 +35,9 @@
             android:layout_height="match_parent">
 
             <com.agenthun.readingroutine.views.BookView
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="150dp"
-                android:src="@drawable/book_picture_2" />
+                android:src="@drawable/book_picture_1" />
 
             <TextView
                 android:id="@+id/text_data"

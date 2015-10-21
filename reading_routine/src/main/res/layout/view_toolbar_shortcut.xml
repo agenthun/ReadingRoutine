@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_shortcut"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/quitReadingBtn"
+        style="@style/SelectableDarkBackgroundBorderless"
+        android:layout_width="?actionBarSize"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_account" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorPrimary"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/layout_inner_shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"></LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>
