@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="200" android:exitFadeDuration="200">
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
-            <solid android:color="@color/teal_400" />
+            <solid android:color="@color/colorPrimary" />
         </shape>
     </item>
     <item android:state_pressed="true">

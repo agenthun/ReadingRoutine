@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#65dbd5</color>
-    <color name="colorPrimaryDark">#009688</color>
+    <color name="colorPrimaryDark">#26a69a</color>
     <color name="colorAccent">#2196F3</color>
 
     <color name="background_daytime_material_blue">#65dbd5</color>
@@ -17,6 +17,7 @@
     <color name="grey_300">#e0e0e0</color>
     <color name="teal_300">#4db6ac</color>
     <color name="teal_400">#26a69a</color>
+    <color name="teal_500">#009688</color>
 
     <color name="fab_add_color_pressed">#1565C0</color>
     <color name="fab_color_pressed">@color/bright_foreground_disabled_material_dark</color>
