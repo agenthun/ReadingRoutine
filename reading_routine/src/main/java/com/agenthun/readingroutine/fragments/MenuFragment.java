@@ -1,6 +1,7 @@
 package com.agenthun.readingroutine.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.agenthun.readingroutine.R;
+import com.agenthun.readingroutine.activities.ReadingActivity;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 
 import butterknife.ButterKnife;
@@ -117,6 +119,7 @@ public class MenuFragment extends TFragment {
     public void onNotesClick() {
         if (mListener != null) {
             mListener.onFragmentInteraction(NOTES_FRAGMENT);
+            startActivity(new Intent(getContext(), ReadingActivity.class));
         }
     }
 
