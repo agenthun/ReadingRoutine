@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_decrease_font"
+        android:actionViewClass="android.widget.ImageView"
+        android:icon="@drawable/ic_decrease_font"
+        android:orderInCategory="100"
+        android:title="缩小字体"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/action_increase_font"
+        android:actionViewClass="android.widget.ImageView"
+        android:icon="@drawable/ic_increase_font"
+        android:orderInCategory="101"
+        android:title="放大字体"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/action_change_background"
+        android:actionViewClass="android.widget.ImageView"
+        android:icon="@drawable/ic_reading_background"
+        android:orderInCategory="102"
+        android:title="切换背景色"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/action_mark"
+        android:actionViewClass="android.widget.ImageView"
+        android:icon="@drawable/ic_marking"
+        android:orderInCategory="103"
+        android:title="标记"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/action_copy"
+        android:actionViewClass="android.widget.ImageView"
+        android:icon="@drawable/ic_copy"
+        android:orderInCategory="104"
+        android:title="复制"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/action_list"
+        android:actionViewClass="android.widget.ImageView"
+        android:icon="@drawable/ic_reading_list"
+        android:orderInCategory="105"
+        android:title="列表"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/action_open"
+        android:actionViewClass="android.widget.ImageView"
+        android:icon="@drawable/ic_reading_open"
+        android:orderInCategory="106"
+        android:title="打开"
+        app:showAsAction="always|withText" />
+</menu>
