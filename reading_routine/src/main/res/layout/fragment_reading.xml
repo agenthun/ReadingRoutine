@@ -10,5 +10,11 @@
     <RelativeLayout
         android:id="@+id/page_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+        android:layout_height="match_parent">
+
+<!--        <com.agenthun.readingroutine.views.PageView
+            android:id="@+id/page_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />-->
+    </RelativeLayout>
 </LinearLayout>

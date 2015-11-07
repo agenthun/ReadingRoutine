@@ -68,7 +68,7 @@ public class FilePageFactory {
         mappedByteBuffer = new RandomAccessFile(file, "r").getChannel().map(FileChannel.MapMode.READ_ONLY, 0, len);
     }
 
-    protected byte[] readParagraphBack(int position) {
+    private byte[] readParagraphBack(int position) {
         int end = position;
         int i;
         byte b0, b1;
@@ -106,18 +106,16 @@ public class FilePageFactory {
                 i--;
             }
         }
-        if (i < 0)
-            i = 0;
-        int nParaSize = end - i;
-        int j;
-        byte[] buf = new byte[nParaSize];
-        for (j = 0; j < nParaSize; j++) {
+        if (i < 0) i = 0;
+        int size = end - i;
+        byte[] buf = new byte[size];
+        for (int j = 0; j < size; j++) {
             buf[j] = mappedByteBuffer.get(i + j);
         }
         return buf;
     }
 
-    protected byte[] readParagraphForward(int position) {
+    private byte[] readParagraphForward(int position) {
         int begin = position;
         int i = begin;
         byte b0, b1;
@@ -146,15 +144,15 @@ public class FilePageFactory {
                 }
             }
         }
-        int nParaSize = i - begin;
-        byte[] buf = new byte[nParaSize];
-        for (i = 0; i < nParaSize; i++) {
+        int size = i - begin;
+        byte[] buf = new byte[size];
+        for (i = 0; i < size; i++) {
             buf[i] = mappedByteBuffer.get(position + i);
         }
         return buf;
     }
 
-    protected Vector<String> pageDown() {
+    private Vector<String> pageDown() {
         String strParagraph = "";
         Vector<String> lines = new Vector<>();
         while (lines.size() < mLineCount && mappedByteBufferEnd < mappedByteBufferLen) {
@@ -196,11 +194,11 @@ public class FilePageFactory {
         return lines;
     }
 
-    protected void pageUp() {
-        if (mappedByteBufferBegin < 0)
-            mappedByteBufferBegin = 0;
-        Vector<String> lines = new Vector<>();
+    private void pageUp() {
+        if (mappedByteBufferBegin < 0) mappedByteBufferBegin = 0;
+
         String strParagraph = "";
+        Vector<String> lines = new Vector<>();
         while (lines.size() < mLineCount && mappedByteBufferBegin > 0) {
             Vector<String> paraLines = new Vector<>();
             byte[] paraBuf = readParagraphBack(mappedByteBufferBegin);
@@ -264,10 +262,11 @@ public class FilePageFactory {
         if (mLines.size() == 0)
             mLines = pageDown();
         if (mLines.size() > 0) {
-            if (backgroundBitmap == null)
+            if (backgroundBitmap == null) {
                 canvas.drawColor(backgroundColor);
-            else
+            } else {
                 canvas.drawBitmap(backgroundBitmap, 0, 0, null);
+            }
 
             int h = marginHeight;
             for (String strLine : mLines) {
@@ -282,6 +281,19 @@ public class FilePageFactory {
         String strPercent = df.format(fPercent * 100) + "%";
         int nPercentWidth = (int) mPaint.measureText("999.9%") + 1;
         canvas.drawText(strPercent, mWidth - nPercentWidth, mHeight - 5, mPaint);
+    }
+
+    public int getWidth() {
+        return mWidth;
+    }
+
+    public int getHeight() {
+        return mHeight;
+    }
+
+    public void setViewSize(int width, int height) {
+        this.mWidth = width;
+        this.mHeight = height;
     }
 
     public void setBackgroundBitmap(Bitmap backgroundBitmap) {
@@ -302,6 +314,7 @@ public class FilePageFactory {
 
     public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
+        mPaint.setTextSize(fontSize);
     }
 
     public int getTextColor() {
@@ -310,6 +323,7 @@ public class FilePageFactory {
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
+        mPaint.setColor(textColor);
     }
 
     public int getMarginWidth() {
