@@ -56,7 +56,7 @@ public class ReadingActivity extends TActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.fragment_reading);
+        setContentView(R.layout.activity_reading);
         ButterKnife.inject(this);
 
         //for Shortcut
@@ -282,9 +282,16 @@ public class ReadingActivity extends TActivity {
         return 0;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     @OnClick(R.id.quitReadingBtn)
     public void onQuitReadingClick() {
         Log.d(TAG, "onQuitReadingClick() returned: ");
+        finish();
+        super.onBackPressed();
     }
 
     int fontSize = 34;

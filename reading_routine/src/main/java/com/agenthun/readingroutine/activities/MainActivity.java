@@ -6,26 +6,22 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.fragments.MenuFragment;
-import com.agenthun.readingroutine.fragments.SettingsFragment;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.bmob.v3.Bmob;
 
 public class MainActivity extends TActivity implements MenuFragment.OnMenuInteractionListener {
 
@@ -183,8 +179,8 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     @Override
     public void onFragmentInteraction(int fragmentIndex) {
         switch (fragmentIndex) {
-            case MenuFragment.MANAGEMEUNT_FRAGMENT:
-                openManagementFragment();
+            case MenuFragment.READING_FRAGMENT:
+                openReadingFragment();
                 break;
             case MenuFragment.ROUTINES_FRAGMENT:
                 openRoutinesFragment();
@@ -204,11 +200,11 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         }
     }
 
-    private void openManagementFragment() {
-        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
+    private void openReadingFragment() {
+/*        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
         materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);
         toolbar.setTitle(R.string.text_null);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.color_white));
+        toolbar.setBackgroundColor(getResources().getColor(R.color.color_white));*/
     }
 
     private void openRoutinesFragment() {
@@ -231,9 +227,10 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     }
 
     private void openNotesFragment() {
-//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-/*        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
-        materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);*/
+        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
+        materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);
+        toolbar.setTitle(R.string.text_null);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.color_white));
     }
 
     private void openSettingsFragment() {

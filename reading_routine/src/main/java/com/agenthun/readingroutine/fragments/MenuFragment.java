@@ -21,7 +21,7 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class MenuFragment extends TFragment {
-    public static final int MANAGEMEUNT_FRAGMENT = 1;
+    public static final int READING_FRAGMENT = 1;
     public static final int ROUTINES_FRAGMENT = 2;
     public static final int SHOPPING_FRAGMENT = 3;
     public static final int ABOUT_FRAGMENT = 4;
@@ -86,10 +86,10 @@ public class MenuFragment extends TFragment {
     }
 
     @OnClick(R.id.ic_management)
-    public void onManagementClick() {
+    public void onReadingClick() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(MANAGEMEUNT_FRAGMENT);
-            getContext().pushFragmentToBackStack(ReadingFragment.class, null);
+            mListener.onFragmentInteraction(READING_FRAGMENT);
+            startActivity(new Intent(getContext(), ReadingActivity.class));
         }
     }
 
@@ -119,7 +119,7 @@ public class MenuFragment extends TFragment {
     public void onNotesClick() {
         if (mListener != null) {
             mListener.onFragmentInteraction(NOTES_FRAGMENT);
-            startActivity(new Intent(getContext(), ReadingActivity.class));
+            getContext().pushFragmentToBackStack(NotesFragment.class, null);
         }
     }
 

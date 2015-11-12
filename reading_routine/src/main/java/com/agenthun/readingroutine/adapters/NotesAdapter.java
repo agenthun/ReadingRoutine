@@ -23,7 +23,7 @@ import butterknife.InjectView;
 /**
  * Created by Henry on 2015/5/20.
  */
-public class ReadingAdapter extends BaseTAdapter {
+public class NotesAdapter extends BaseTAdapter {
 
     private static final int MAX_ITEM_ANIMATION_DELAY = 500;
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
@@ -35,7 +35,7 @@ public class ReadingAdapter extends BaseTAdapter {
     private List<String> mDataset;
     private Context mContext;
 
-    public ReadingAdapter(Context context, CharSequence title, Drawable icon, List<String> objects) {
+    public NotesAdapter(Context context, CharSequence title, Drawable icon, List<String> objects) {
         super(context, title, icon);
         this.mContext = context;
         this.cellHeight = (int) (UiUtils.getScreenWidthPixels(context) / 2 * 1.2);
@@ -45,34 +45,34 @@ public class ReadingAdapter extends BaseTAdapter {
 
     @Override
     protected RecyclerView.ViewHolder createBodyViewHolder(Context context, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_reading, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_notes, parent, false);
         StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
         layoutParams.height = cellHeight;
         layoutParams.width = cellWidth;
         layoutParams.setFullSpan(false);
         view.setLayoutParams(layoutParams);
-        RecyclerView.ViewHolder readingViewHolder = new ReadingViewHolder(view);
-        return readingViewHolder;
+        RecyclerView.ViewHolder notesViewHolder = new NotesViewHolder(view);
+        return notesViewHolder;
     }
 
     @Override
     protected void bindBodyViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        animateReading((ReadingViewHolder) viewHolder);
+        animateNotes((NotesViewHolder) viewHolder);
         String item = mDataset.get(position - 1);
-        ((ReadingViewHolder) viewHolder).textViewData.setText(item);
+        ((NotesViewHolder) viewHolder).textViewData.setText(item);
 
-/*        ((ReadingViewHolder) viewHolder).bookView = new BookView(mContext);
-        ((ReadingViewHolder) viewHolder).bookView.setImageResource(R.drawable.style_book);
-        ((ReadingViewHolder) viewHolder).bookView.addShadow();
-        ((ReadingViewHolder) viewHolder).bookView.addBorder(10, Color.WHITE);
-        ((ReadingViewHolder) viewHolder).bookView.setCornerRadius(10);*/
-/*        ((ReadingViewHolder) viewHolder).bookView.setVertices(6);
-        ((ReadingViewHolder) viewHolder).bookView.setBaseShape(new StarShape(0.8f, false));*/
+/*        ((NotesViewHolder) viewHolder).bookView = new BookView(mContext);
+        ((NotesViewHolder) viewHolder).bookView.setImageResource(R.drawable.style_book);
+        ((NotesViewHolder) viewHolder).bookView.addShadow();
+        ((NotesViewHolder) viewHolder).bookView.addBorder(10, Color.WHITE);
+        ((NotesViewHolder) viewHolder).bookView.setCornerRadius(10);*/
+/*        ((NotesViewHolder) viewHolder).bookView.setVertices(6);
+        ((NotesViewHolder) viewHolder).bookView.setBaseShape(new StarShape(0.8f, false));*/
 
         if (lastAnimatedItem < position) lastAnimatedItem = position;
     }
 
-    private void animateReading(ReadingViewHolder holder) {
+    private void animateNotes(NotesViewHolder holder) {
         if (!isLockedAnimations()) {
             if (lastAnimatedItem == holder.getPosition()) {
                 setLockedAnimations(true);
@@ -104,7 +104,7 @@ public class ReadingAdapter extends BaseTAdapter {
         return 0;
     }
 
-    static class ReadingViewHolder extends RecyclerView.ViewHolder {
+    static class NotesViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.swipe)
         SwipeLayout swipeLayout;
         @InjectView(R.id.text_data)
@@ -114,7 +114,7 @@ public class ReadingAdapter extends BaseTAdapter {
 /*        @InjectView(R.id.cat)
         PolygonImageView cat;*/
 
-        public ReadingViewHolder(View view) {
+        public NotesViewHolder(View view) {
             super(view);
             ButterKnife.inject(this, view);
         }

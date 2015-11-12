@@ -14,7 +14,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 
-import com.agenthun.readingroutine.adapters.ReadingAdapter;
+import com.agenthun.readingroutine.adapters.NotesAdapter;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.BookInfo;
 import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
@@ -30,24 +30,24 @@ import butterknife.InjectView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReadingFragment extends TFragment implements RevealBackgroundView.OnStateChangeListener {
+public class NotesFragment extends TFragment implements RevealBackgroundView.OnStateChangeListener {
 
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
 
     @InjectView(R.id.revealBackgroundView)
     RevealBackgroundView revealBackgroundView;
     @InjectView(R.id.itemRecyclerView)
-    RecyclerView managementRecyclerView;
+    RecyclerView notesRecyclerView;
     @InjectView(R.id.addBtn)
-    ImageButton addManagementItemBtn;
+    ImageButton addNotesItemBtn;
 
-    private ReadingAdapter readingAdapter;
+    private NotesAdapter notesAdapter;
     private boolean pendingIntro;
 
     private ArrayList<BookInfo> mDataSet;
     DatabaseUtil databaseUtil;
 
-    public ReadingFragment() {
+    public NotesFragment() {
         // Required empty public constructor
     }
 
@@ -64,12 +64,12 @@ public class ReadingFragment extends TFragment implements RevealBackgroundView.O
         setupGridLayout();
         setupRevealBackground(savedInstanceState);
 
-        addManagementItemBtn.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        addNotesItemBtn.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                addManagementItemBtn.getViewTreeObserver().removeOnPreDrawListener(this);
+                addNotesItemBtn.getViewTreeObserver().removeOnPreDrawListener(this);
                 pendingIntro = true;
-                addManagementItemBtn.setTranslationY(2 * addManagementItemBtn.getHeight());
+                addNotesItemBtn.setTranslationY(2 * addNotesItemBtn.getHeight());
                 return true;
             }
         });
@@ -79,12 +79,12 @@ public class ReadingFragment extends TFragment implements RevealBackgroundView.O
 
     private void setupGridLayout() {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        managementRecyclerView.setLayoutManager(layoutManager);
-        managementRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        notesRecyclerView.setLayoutManager(layoutManager);
+        notesRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                readingAdapter.setLockedAnimations(true);
+                notesAdapter.setLockedAnimations(true);
             }
         });
     }
@@ -103,14 +103,14 @@ public class ReadingFragment extends TFragment implements RevealBackgroundView.O
             });
         } else {
             revealBackgroundView.setToFinishedFrame();
-            readingAdapter.setLockedAnimations(true);
+            notesAdapter.setLockedAnimations(true);
         }
     }
 
     @Override
     public void onStateChange(int state) {
         if (RevealBackgroundView.STATE_FINISHED == state) {
-            managementRecyclerView.setVisibility(View.VISIBLE);
+            notesRecyclerView.setVisibility(View.VISIBLE);
             List<String> mDataset = new ArrayList<>();
             mDataset.add("a");
             mDataset.add("b");
@@ -121,21 +121,21 @@ public class ReadingFragment extends TFragment implements RevealBackgroundView.O
             mDataset.add("g");
             mDataset.add("h");
 
-            readingAdapter = new ReadingAdapter(getContext().getApplicationContext(),
-                    getString(R.string.text_reading),
-                    getResources().getDrawable(R.drawable.management_badge2),
+            notesAdapter = new NotesAdapter(getContext().getApplicationContext(),
+                    getString(R.string.text_note),
+                    getResources().getDrawable(R.drawable.notes_badge),
                     mDataset);
-            managementRecyclerView.setAdapter(readingAdapter);
+            notesRecyclerView.setAdapter(notesAdapter);
             if (pendingIntro) {
                 startIntroAnimation();
             }
         } else {
-            managementRecyclerView.setVisibility(View.INVISIBLE);
+            notesRecyclerView.setVisibility(View.INVISIBLE);
         }
     }
 
     private void startIntroAnimation() {
-        addManagementItemBtn.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(1.0f)).start();
+        addNotesItemBtn.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(1.0f)).start();
     }
 
 }
