@@ -2,13 +2,15 @@ package com.agenthun.readingroutine.activities;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -29,42 +31,73 @@ import butterknife.OnClick;
 public class ReadingActivity extends TActivity {
     private static final String TAG = "ReadingActivity";
 
+    @InjectView(R.id.layout_shortcut)
+    LinearLayout layoutShortcut;
     @InjectView(R.id.horizontalScrollView)
     HorizontalScrollView scrollView;
     @InjectView(R.id.layout_inner_shortcut)
     LinearLayout layoutInnerShortcut;
     @InjectView(R.id.page_container)
-    RelativeLayout layout;
-    //@InjectView(R.id.page_view)
+    RelativeLayout pageContainerLayout;
+    @InjectView(R.id.page_view)
     PageView pageView;
 
     Bitmap curPageBitmap, nextPageBitmap;
     Canvas curPageCanvas, nextPageCanvas;
     FilePageFactory filePageFactory;
+    private boolean pendingIntro;
+    private boolean isFistOrLastPage = true;
+    private float lastX;
+    private float moveLenght;// 手指滑动的距离
+    private float moveLenghtThreshold = 5;// 手指滑动的距离阈值
+    private int mEvents;// 判断触摸事件
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.fragment_reading);
         ButterKnife.inject(this);
 
-/*        // for HorizontalScrollView
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
+        //for Shortcut
+        initShortcut(layoutShortcut);
+/*        pageContainerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.d(TAG, "onTouch() returned: " + v.getId());
-                Log.d(TAG, "onTouch() returned: " + R.id.increase_font);
+            public void onClick(View v) {
+                if (pendingIntro) {
+                    layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(0.72f)).start();
+                    pendingIntro = false;
+                    Log.d(TAG, "onClick() returned: on" + pendingIntro);
+                } else {
+                    layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                    pendingIntro = true;
+                    Log.d(TAG, "onClick() returned: off" + pendingIntro);
+                }
+            }
+        });*/
+/*        pageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (pendingIntro) {
+                    layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(0.72f)).start();
+                    pendingIntro = false;
+                    Log.d(TAG, "onClick() returned: on" + pendingIntro);
+                } else {
+                    layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                    pendingIntro = true;
+                    Log.d(TAG, "onClick() returned: off" + pendingIntro);
+                }
                 return false;
             }
         });*/
 
         // for PageView
-        pageView = new PageView(this);
+        //pageView = new PageView(this);
 
         int width = pageView.getViewWidth();
         int height = pageView.getViewHeight();
 
-        Log.d(TAG, "onCreate() returned: " + pageView.getViewWidth() + ", " + pageView.getViewHeight());
+        //Log.d(TAG, "onCreate() returned: " + pageView.getViewWidth() + ", " + pageView.getViewHeight());
 
         curPageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         nextPageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -72,30 +105,29 @@ public class ReadingActivity extends TActivity {
         nextPageCanvas = new Canvas(nextPageBitmap);
 
         pageView.setBitmaps(curPageBitmap, curPageBitmap);
-        layout.addView(pageView);
+        //pageContainerLayout.addView(pageView);
 
         filePageFactory = new FilePageFactory(width, height);
-        //filePageFactory = pageView.getPageFactory();
 
         // open file
         try {
-            filePageFactory.openFile("/sdcard/Download/test3.txt");
+            filePageFactory.openFile("/sdcard/Download/The Third Way of Love.txt");
             filePageFactory.onDraw(curPageCanvas);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+
         // PageView Listen
         pageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                boolean ret = false;
-                if (v == pageView) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+/*                //Version 1
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
                         pageView.abortAnimation();
                         pageView.calcCornerXY(event.getX(), event.getY());
 
-                        filePageFactory.onDraw(curPageCanvas);
                         if (pageView.dragToRight()) {
                             // 向前翻页
                             try {
@@ -104,7 +136,6 @@ public class ReadingActivity extends TActivity {
                                 e.printStackTrace();
                             }
                             if (filePageFactory.isFirstPage()) return false;
-                            filePageFactory.onDraw(nextPageCanvas);
                         } else {
                             // 向后翻页
                             try {
@@ -113,73 +144,137 @@ public class ReadingActivity extends TActivity {
                                 e.printStackTrace();
                             }
                             if (filePageFactory.isLastPage()) return false;
-                            filePageFactory.onDraw(nextPageCanvas);
                         }
+                        filePageFactory.onDraw(nextPageCanvas);
                         pageView.setBitmaps(curPageBitmap, nextPageBitmap);
-                    }
-                    ret = pageView.doTouchEvent(event);
-                    return ret;
+
+                        pageView.setTouch(event.getX(), event.getY());
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        pageView.setTouch(event.getX(), event.getY());
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        filePageFactory.onDraw(curPageCanvas);
+                        Log.d(TAG, "onTouch() returned: canDragOver()=" + pageView.canDragOver());
+                        if (pageView.canDragOver()) {
+                            pageView.startAnimation(1200);
+                            pageView.refresh();
+                        } else {
+                            pageView.setTouch(pageView.getCornerX() - 0.09f, pageView.getCornerY() - 0.09f);
+                        }
+                        break;
                 }
-                return false;
-            }
-        });
+                return true;*/
 
+                //Version 2
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        pageView.abortAnimation();
+                        pageView.calcCornerXY(event.getX(), event.getY());
 
-        /*        ImageView imageView = new ImageView(this);
-        imageView.setImageBitmap(curPageBitmap);
-        layout.addView(imageView);
+                        lastX = event.getX();
+                        mEvents = 0;
+                        break;
+                    case MotionEvent.ACTION_POINTER_DOWN:
+                    case MotionEvent.ACTION_POINTER_UP:
+                        mEvents = -1;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        //Log.d(TAG, "onTouch() returned: mEvents=" + mEvents);
 
-        layout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                boolean ret = false;
-                if (v == layout) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        //filePageFactory.onDraw(curPageCanvas);
+                        moveLenght = event.getX() - lastX;
 
-                        int mCornerX = 0;
-                        int mCornerY = 0;
-                        float x = event.getX();
-                        float y = event.getY();
-
-                        if (x <= v.getWidth() / 2) {
-                            mCornerX = 0;
-                        } else {
-                            mCornerX = v.getWidth();
-                        }
-                        if (y <= v.getHeight() / 2) {
-                            mCornerY = 0;
-                        } else {
-                            mCornerY = v.getHeight();
-                        }
-
-                        Log.d(TAG, "onTouch() returned: " + mCornerX);
-                        if (mCornerX > 0) {
-                            // 向后翻页
-                            try {
-                                filePageFactory.nextPage();
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                        if (moveLenght > moveLenghtThreshold && mEvents == 0) {
+                            mEvents = 1;
+//                            Log.d(TAG, "onTouch() returned: right");
+                            if (!pendingIntro) {
+                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                                pendingIntro = true;
                             }
-                            if (filePageFactory.isLastPage()) return false;
-                            filePageFactory.onDraw(curPageCanvas);
-                        } else {
+
                             // 向前翻页
                             try {
                                 filePageFactory.prePage();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            if (filePageFactory.isFirstPage()) return false;
-                            filePageFactory.onDraw(curPageCanvas);
+                            if (filePageFactory.isFirstPage()) {
+                                isFistOrLastPage = true;
+                                return false;
+                            } else {
+                                isFistOrLastPage = false;
+                            }
+
+                            filePageFactory.onDraw(nextPageCanvas);
+                            pageView.setBitmaps(curPageBitmap, nextPageBitmap);
+
+                            pageView.setTouch(event.getX(), event.getY());
+                        } else if (moveLenght < -moveLenghtThreshold && mEvents == 0) {
+                            mEvents = 1;
+//                            Log.d(TAG, "onTouch() returned: left");
+                            if (!pendingIntro) {
+                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                                pendingIntro = true;
+                            }
+
+                            // 向后翻页
+                            try {
+                                filePageFactory.nextPage();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (filePageFactory.isLastPage()) {
+                                isFistOrLastPage = true;
+                                return false;
+                            } else {
+                                isFistOrLastPage = false;
+                            }
+                            filePageFactory.onDraw(nextPageCanvas);
+                            pageView.setBitmaps(curPageBitmap, nextPageBitmap);
+
+                            pageView.setTouch(event.getX(), event.getY());
                         }
-                    }
-                    layout.postInvalidate();
-                    return ret;
+                        if (mEvents == 1 && isFistOrLastPage == false) {
+                            pageView.setTouch(event.getX(), event.getY());
+                        }
+                        lastX = event.getX();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (mEvents == 1) {
+                            filePageFactory.onDraw(curPageCanvas);
+//                            Log.d(TAG, "onTouch() returned: canDragOver()=" + pageView.canDragOver());
+                            if (pageView.canDragOver()) {
+                                pageView.startAnimation(1200);
+                                pageView.refresh();
+                            } else {
+                                pageView.setTouch(pageView.getCornerX() - 0.09f, pageView.getCornerY() - 0.09f);
+                            }
+                        } else if (mEvents == 0) {
+                            if (pendingIntro) {
+                                layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(0.72f)).start();
+                                pendingIntro = false;
+                            } else {
+                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                                pendingIntro = true;
+                            }
+                        }
+                        break;
                 }
-                return false;
+                return true;
             }
-        });*/
+        });
+    }
+
+    private void initShortcut(final LinearLayout layoutShortcut) {
+        layoutShortcut.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                layoutShortcut.getViewTreeObserver().removeOnPreDrawListener(this);
+                layoutShortcut.setTranslationY(-layoutShortcut.getHeight());
+                pendingIntro = true;
+                return true;
+            }
+        });
     }
 
     @Override
@@ -192,7 +287,7 @@ public class ReadingActivity extends TActivity {
         Log.d(TAG, "onQuitReadingClick() returned: ");
     }
 
-    int fontSize = 24;
+    int fontSize = 34;
 
     @OnClick(R.id.decrease_font)
     public void onDecreaseFontClick() {

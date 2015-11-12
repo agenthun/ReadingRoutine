@@ -3,7 +3,6 @@ package com.agenthun.readingroutine.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
-import android.widget.TextView;
 
 import com.agenthun.readingroutine.UiUtils;
 
@@ -175,25 +173,31 @@ public class PageView extends View {
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             mTouch.x = event.getX();
             mTouch.y = event.getY();
-            this.postInvalidate();
-        }
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            postInvalidate();
+        } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
             mTouch.x = event.getX();
             mTouch.y = event.getY();
-        }
-        if (event.getAction() == MotionEvent.ACTION_UP) {
+            calcCornerXY(mTouch.x, mTouch.y);
+            postInvalidate();
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
             if (canDragOver()) {
                 startAnimation(1200);
             } else {
                 mTouch.x = mCornerX - 0.09f;
                 mTouch.y = mCornerY - 0.09f;
             }
-            this.postInvalidate();
+            postInvalidate();
         }
         return true;
     }
 
-    private boolean canDragOver() {
+    public void setTouch(float x, float y) {
+        this.mTouch.x = x;
+        this.mTouch.y = y;
+        this.postInvalidate();
+    }
+
+    public boolean canDragOver() {
         if (mTouchToCornerDis > mViewWidth / 10)
             return true;
         return false;
@@ -210,7 +214,7 @@ public class PageView extends View {
         }
     }
 
-    private void startAnimation(int delayMillis) {
+    public void startAnimation(int delayMillis) {
         int dx, dy;
         if (mCornerX > 0) {
             dx = -(int) (mViewWidth + mTouch.x);
@@ -520,9 +524,25 @@ public class PageView extends View {
         refresh();
     }
 
-    public void setBitmaps(Bitmap mCurPageBitmap, Bitmap mNextPageBitmap) {
+    public void setBitmaps(Bitmap bitmap1, Bitmap bitmap2) {
+        this.mCurPageBitmap = bitmap1;
+        this.mNextPageBitmap = bitmap2;
+    }
+
+    public void setCurPageBitmap(Bitmap mCurPageBitmap) {
         this.mCurPageBitmap = mCurPageBitmap;
+    }
+
+    public void setNextPageBitmap(Bitmap mNextPageBitmap) {
         this.mNextPageBitmap = mNextPageBitmap;
+    }
+
+    public int getCornerX() {
+        return mCornerX;
+    }
+
+    public int getCornerY() {
+        return mCornerY;
     }
 
     public void refresh() {

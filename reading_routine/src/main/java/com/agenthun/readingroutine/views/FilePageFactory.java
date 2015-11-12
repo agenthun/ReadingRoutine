@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,8 +21,10 @@ import java.util.Vector;
  * @date 15/11/5 下午7:20.
  */
 public class FilePageFactory {
-    private int mWidth;
-    private int mHeight;
+    private static final String TAG = "FilePageFactory";
+    private float mWidth;
+    private float mHeight;
+    private float ratio;
 
     private File file = null;
 
@@ -34,11 +37,13 @@ public class FilePageFactory {
 
     private Paint mPaint;
 
-    private int fontSize = 24;
-    private int textColor = Color.BLACK;
-    private int backgroundColor = Color.WHITE;
-    private int marginWidth = 16;
-    private int marginHeight = 16;
+    private int fontSize = 34;
+    private int fontMarginHeight = 4;
+    private float fontHeight;
+    private int textColor = Color.parseColor("#332e2c");
+    private int backgroundColor = Color.parseColor("#fffaf5");
+    private float marginWidth = 32;
+    private float marginHeight = 48;
     private Bitmap backgroundBitmap = null;
 
     private Vector<String> mLines = new Vector<>();
@@ -50,15 +55,24 @@ public class FilePageFactory {
     private boolean mIsLastPage;
 
     public FilePageFactory(int w, int h) {
-        this.mWidth = w;
-        this.mHeight = h;
+        mWidth = (float) w / 720;
+        mHeight = (float) h / 1280;
+        ratio = Math.min(mWidth, mHeight);
+
+        fontSize = Math.round(fontSize * ratio);
+        fontMarginHeight = Math.round(fontSize * 10 / 34);
+
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextAlign(Paint.Align.LEFT);
         mPaint.setTextSize(fontSize);
         mPaint.setColor(textColor);
-        mVisibleWidth = mWidth - marginWidth * 2;
-        mVisibleHeight = mHeight - marginHeight * 2;
-        mLineCount = (int) (mVisibleHeight / fontSize);
+
+        marginWidth = marginWidth * ratio;
+        marginHeight = marginHeight * ratio;
+
+        mVisibleWidth = w - marginWidth * 2;
+        mVisibleHeight = h - marginHeight * 2;
+        mLineCount = (int) (Math.floor(mVisibleHeight / (fontSize + fontMarginHeight)) - 1);
     }
 
     public void openFile(String strFilePath) throws IOException {
@@ -244,10 +258,14 @@ public class FilePageFactory {
         mLines.clear();
         pageUp();
         mLines = pageDown();
+/*        Log.d(TAG, "prePage() returned: begin=" + mappedByteBufferBegin);
+        Log.d(TAG, "prePage() returned: end=" + mappedByteBufferEnd);
+        Log.d(TAG, "prePage() returned: size=" + mLines.size());*/
     }
 
     public void nextPage() throws IOException {
         if (mappedByteBufferEnd >= mappedByteBufferLen) {
+            mappedByteBufferEnd = mappedByteBufferLen;
             mIsLastPage = true;
             return;
         } else {
@@ -256,11 +274,15 @@ public class FilePageFactory {
         mLines.clear();
         mappedByteBufferBegin = mappedByteBufferEnd;
         mLines = pageDown();
+/*        Log.d(TAG, "nextPage() returned: begin=" + mappedByteBufferBegin);
+        Log.d(TAG, "nextPage() returned: end=" + mappedByteBufferEnd);
+        Log.d(TAG, "nextPage() returned: size=" + mLines.size());*/
     }
 
     public void onDraw(Canvas canvas) {
-        if (mLines.size() == 0)
+        if (mLines.size() == 0) {
             mLines = pageDown();
+        }
         if (mLines.size() > 0) {
             if (backgroundBitmap == null) {
                 canvas.drawColor(backgroundColor);
@@ -268,28 +290,27 @@ public class FilePageFactory {
                 canvas.drawBitmap(backgroundBitmap, 0, 0, null);
             }
 
-            int h = marginHeight;
+            float h = marginHeight;
             for (String strLine : mLines) {
-                h += fontSize;
+                h += fontSize + fontMarginHeight;
                 canvas.drawText(strLine, marginWidth, h, mPaint);
             }
         }
-
         //计算阅读%
         float fPercent = (float) (mappedByteBufferBegin * 1.0 / mappedByteBufferLen);
         DecimalFormat df = new DecimalFormat("#0.0");
         String strPercent = df.format(fPercent * 100) + "%";
-        int nPercentWidth = (int) mPaint.measureText("999.9%") + 1;
-        canvas.drawText(strPercent, mWidth - nPercentWidth, mHeight - 5, mPaint);
+        float nPercentWidth = mPaint.measureText("99.9%");
+        canvas.drawText(strPercent, mVisibleWidth + marginWidth - nPercentWidth, mVisibleHeight + marginHeight / 2, mPaint);
     }
 
-    public int getWidth() {
+/*    public int getWidth() {
         return mWidth;
     }
 
     public int getHeight() {
         return mHeight;
-    }
+    }*/
 
     public void setViewSize(int width, int height) {
         this.mWidth = width;
@@ -313,8 +334,10 @@ public class FilePageFactory {
     }
 
     public void setFontSize(int fontSize) {
-        this.fontSize = fontSize;
-        mPaint.setTextSize(fontSize);
+        this.fontSize = Math.round(fontSize * ratio);
+        fontMarginHeight = Math.round(this.fontSize * 10 / 34);
+        mPaint.setTextSize(this.fontSize);
+        mLineCount = (int) (Math.floor(mVisibleHeight / (fontSize + fontMarginHeight)) - 1);
     }
 
     public int getTextColor() {
@@ -324,22 +347,6 @@ public class FilePageFactory {
     public void setTextColor(int textColor) {
         this.textColor = textColor;
         mPaint.setColor(textColor);
-    }
-
-    public int getMarginWidth() {
-        return marginWidth;
-    }
-
-    public void setMarginWidth(int marginWidth) {
-        this.marginWidth = marginWidth;
-    }
-
-    public int getMarginHeight() {
-        return marginHeight;
-    }
-
-    public void setMarginHeight(int marginHeight) {
-        this.marginHeight = marginHeight;
     }
 
     public int getBackgroundColor() {

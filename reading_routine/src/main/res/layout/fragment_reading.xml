@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <include layout="@layout/view_toolbar_shortcut" />
-    <!--android:visibility="gone"-->
 
     <RelativeLayout
         android:id="@+id/page_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <com.agenthun.readingroutine.views.PageView
+        <com.agenthun.readingroutine.views.PageView
             android:id="@+id/page_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />-->
+            android:layout_height="match_parent" />
     </RelativeLayout>
-</LinearLayout>
+
+    <include layout="@layout/view_toolbar_shortcut" />
+    <!--android:visibility="gone"-->
+</FrameLayout>
