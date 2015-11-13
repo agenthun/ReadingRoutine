@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 
 /**
  * @project ReadingRoutine
@@ -31,14 +30,14 @@ public class BookPath extends BasePath {
 
         mLinePaint = new Paint();
         mLinePaint.setAntiAlias(true);
-        mLinePaint.setStrokeWidth(borderWidth * 1.2f);
+        mLinePaint.setStrokeWidth(mBorderWidth * 1.2f);
         mLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mLinePaint.setDither(true);
         mLinePaint.setColor(Color.WHITE);
 
         mTagPaint = new Paint();
         mTagPaint.setAntiAlias(true);
-        mTagPaint.setStrokeWidth(borderWidth);
+        mTagPaint.setStrokeWidth(mBorderWidth);
         mTagPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mTagPaint.setDither(true);
         mTagPaint.setColor(Color.parseColor("#DADAC0"));
@@ -75,8 +74,8 @@ public class BookPath extends BasePath {
         mBodyPath.addRoundRect(rectF, 10.0f, 10.0f, Path.Direction.CW);
         mBodyPath.close();
 
-        mLinePath.moveTo(borderWidth, -y);
-        mLinePath.lineTo(borderWidth, y + bitmapHeight);
+        mLinePath.moveTo(mBorderWidth, -y);
+        mLinePath.lineTo(mBorderWidth, y + bitmapHeight);
         mLinePath.close();
     }
 
@@ -84,7 +83,7 @@ public class BookPath extends BasePath {
     public void onSizeChanged(int width, int height) {
         super.onSizeChanged(width, height);
 
-        RectF rectF = new RectF(borderWidth, borderWidth, mViewWidth - borderWidth, mViewHeight - borderWidth);
+        RectF rectF = new RectF(mBorderWidth, mBorderWidth, mViewWidth - mBorderWidth, mViewHeight - mBorderWidth);
         mBorderPath.addRoundRect(rectF, 10.0f, 10.0f, Path.Direction.CW);
 
         float tempY = mViewHeight / 5.0f;

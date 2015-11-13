@@ -13,12 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="270dp"
+            android:fitsSystemWindows="true"
             android:theme="@style/Theme.AppCompat"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Large"
@@ -165,7 +167,7 @@
         android:src="@drawable/ic_save_white_48dp"
         app:borderWidth="0dp"
         app:layout_anchor="@id/appBarLayout"
-        app:layout_anchorGravity="bottom|right|end"
+        app:layout_anchorGravity="bottom|end"
         app:pressedTranslationZ="12dp" />
 
 </android.support.design.widget.CoordinatorLayout>

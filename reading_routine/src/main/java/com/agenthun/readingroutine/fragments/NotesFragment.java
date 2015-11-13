@@ -43,7 +43,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     @InjectView(R.id.itemRecyclerView)
     RecyclerView notesRecyclerView;
     @InjectView(R.id.addBtn)
-    ImageButton addNotesItemBtn;
+    FloatingActionButton addNotesItemBtn;
 
     private NotesAdapter notesAdapter;
     private boolean pendingIntro;
@@ -103,7 +103,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
         }
     }
 
-    private void initAddItemBtn(final ImageButton imageButton) {
+    private void initAddItemBtn(final FloatingActionButton imageButton) {
         imageButton.setImageResource(R.drawable.ic_mode_edit_white_36dp);
         //初始化隐藏Button
         imageButton.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {

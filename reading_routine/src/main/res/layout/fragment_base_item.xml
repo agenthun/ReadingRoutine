@@ -14,30 +14,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/addBtn"
-        android:layout_width="@dimen/btn_fab_size"
-        android:layout_height="@dimen/btn_fab_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/btn_fab_margins"
         android:layout_marginRight="@dimen/btn_fab_margins"
-        android:background="@drawable/btn_fab_add"
-        android:elevation="@dimen/default_elevation"
-        android:translationZ="12dp" />
+        android:elevation="6dp"
+        android:translationZ="12dp"
+        app:borderWidth="0dp"
+        app:layout_anchor="@id/appBarLayout"
+        app:pressedTranslationZ="12dp" />
 
-    <!--    <android.support.design.widget.FloatingActionButton
+    <!--    <ImageButton
             android:id="@+id/addBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/btn_fab_size"
+            android:layout_height="@dimen/btn_fab_size"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/btn_fab_margins"
-            android:elevation="6dp"
-            android:translationZ="12dp"
-            app:borderWidth="0dp"
-            app:layout_anchor="@id/appBarLayout"
-            app:pressedTranslationZ="12dp" />-->
-
-
+            android:layout_marginBottom="@dimen/btn_fab_margins"
+            android:layout_marginRight="@dimen/btn_fab_margins"
+            android:background="@drawable/btn_fab_add"
+            android:elevation="@dimen/default_elevation"
+            android:translationZ="12dp" />-->
 </RelativeLayout>

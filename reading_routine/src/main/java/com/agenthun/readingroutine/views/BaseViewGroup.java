@@ -1,30 +1,28 @@
 package com.agenthun.readingroutine.views;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 /**
  * Created by Agent Henry on 2015/9/12.
  */
-public abstract class BaseView extends ImageView {
+public abstract class BaseViewGroup extends RelativeLayout {
 
     private BasePath basePath;
 
-    public BaseView(Context context) {
+    public BaseViewGroup(Context context) {
         super(context);
         initView(context, null, 0);
     }
 
-    public BaseView(Context context, AttributeSet attrs) {
+    public BaseViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context, attrs, 0);
     }
 
-    public BaseView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BaseViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs, defStyleAttr);
     }
@@ -49,24 +47,6 @@ public abstract class BaseView extends ImageView {
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
-    }
-
-    @Override
-    public void setImageBitmap(Bitmap bm) {
-        super.setImageBitmap(bm);
-        getBasePath().onImageDrawableReset(getDrawable());
-    }
-
-    @Override
-    public void setImageDrawable(Drawable drawable) {
-        super.setImageDrawable(drawable);
-        getBasePath().onImageDrawableReset(getDrawable());
-    }
-
-    @Override
-    public void setImageResource(int resId) {
-        super.setImageResource(resId);
-        getBasePath().onImageDrawableReset(getDrawable());
     }
 
     @Override

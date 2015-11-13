@@ -31,7 +31,7 @@ public abstract class BasePath {
     protected int mViewHeight;
 
     protected int borderColor = Color.WHITE;
-    protected int borderWidth = 10;
+    protected int mBorderWidth = 10;
     protected boolean square = false;
 
     public BasePath() {
@@ -52,14 +52,14 @@ public abstract class BasePath {
     public void init(Context context, AttributeSet attrs, int defStyleAttr) {
         if (attrs != null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseView, defStyleAttr, 0);
-            borderWidth = typedArray.getDimensionPixelOffset(R.styleable.BaseView_border_width, borderWidth);
+            mBorderWidth = typedArray.getDimensionPixelOffset(R.styleable.BaseView_border_width, mBorderWidth);
             borderColor = typedArray.getColor(R.styleable.BaseView_border_color, borderColor);
             square = typedArray.getBoolean(R.styleable.BaseView_is_square, square);
             typedArray.recycle();
         }
 
         mBorderPaint.setColor(borderColor);
-        mBorderPaint.setStrokeWidth(borderWidth);
+        mBorderPaint.setStrokeWidth(mBorderWidth);
         mBorderPaint.setAlpha(255);
     }
 
@@ -95,8 +95,8 @@ public abstract class BasePath {
             int bitmapHeight = bitmap.getHeight();
 
             if (bitmapWidth > 0 && bitmapHeight > 0) {
-                float width = Math.round(mViewWidth - 2f * borderWidth);
-                float height = Math.round(mViewHeight - 2f * borderWidth);
+                float width = Math.round(mViewWidth - 2f * mBorderWidth);
+                float height = Math.round(mViewHeight - 2f * mBorderWidth);
 
                 float scale;
                 float x = 0, y = 0;
@@ -109,7 +109,7 @@ public abstract class BasePath {
                 }
                 matrix.setScale(scale, scale);
                 matrix.preTranslate(x, y);
-                matrix.postTranslate(borderWidth, borderWidth);
+                matrix.postTranslate(mBorderWidth, mBorderWidth);
 
                 calculate(bitmapWidth, bitmapHeight, width, height, scale, x, y);
                 return bitmap;
@@ -148,14 +148,14 @@ public abstract class BasePath {
         }
     }
 
-    public float getBorderWidth() {
-        return borderWidth;
+    public float getmBorderWidth() {
+        return mBorderWidth;
     }
 
-    public void setBorderWidth(int borderWidth) {
-        this.borderWidth = borderWidth;
+    public void setmBorderWidth(int mBorderWidth) {
+        this.mBorderWidth = mBorderWidth;
         if (mBorderPaint != null) {
-            mBorderPaint.setStrokeWidth(borderWidth);
+            mBorderPaint.setStrokeWidth(mBorderWidth);
         }
     }
 

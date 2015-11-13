@@ -59,7 +59,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     @InjectView(R.id.itemRecyclerView)
     RecyclerView routinesRecyclerView;
     @InjectView(R.id.addBtn)
-    ImageButton addRoutinesItemBtn;
+    FloatingActionButton addRoutinesItemBtn;
 
     private RoutinesAdapter routinesAdapter;
     private boolean pendingIntro;
@@ -195,7 +195,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         }
     }
 
-    private void initAddItemBtn(final ImageButton imageButton) {
+    private void initAddItemBtn(final FloatingActionButton imageButton) {
         imageButton.setImageResource(R.drawable.ic_add_white_36dp);
         //初始化隐藏Button
         imageButton.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {

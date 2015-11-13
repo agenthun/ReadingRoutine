@@ -32,23 +32,37 @@
                 android:src="@drawable/ic_delete_white_48dp" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <!--        <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <com.agenthun.readingroutine.views.BookView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="#a3a3a3" />
+                    <com.agenthun.readingroutine.views.BookView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="#a3a3a3" />
+
+                    <TextView
+                        android:id="@+id/text_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:gravity="center"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/abc_text_size_title_material" />
+
+                </RelativeLayout>-->
+        <com.agenthun.readingroutine.views.BookViewGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#a3a3a3">
 
             <TextView
                 android:id="@+id/text_data"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:gravity="center"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/abc_text_size_title_material" />
-        </RelativeLayout>
+        </com.agenthun.readingroutine.views.BookViewGroup>
     </com.daimajia.swipe.SwipeLayout>
 </FrameLayout>

@@ -24,7 +24,7 @@ public class TagPath extends BasePath {
     @Override
     public void init(Context context, AttributeSet attrs, int defStyleAttr) {
         super.init(context, attrs, defStyleAttr);
-        mBorderPaint.setStrokeWidth(borderWidth * 2);
+        mBorderPaint.setStrokeWidth(mBorderWidth * 2);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TagPath extends BasePath {
     public void onSizeChanged(int width, int height) {
         super.onSizeChanged(width, height);
 
-        RectF rectF = new RectF(borderWidth, borderWidth, mViewWidth - borderWidth, mViewHeight - borderWidth);
+        RectF rectF = new RectF(mBorderWidth, mBorderWidth, mViewWidth - mBorderWidth, mViewHeight - mBorderWidth);
         mBorderPath.addRoundRect(rectF, 10.0f, 10.0f, Path.Direction.CW);
     }
 }
