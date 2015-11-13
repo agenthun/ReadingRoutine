@@ -3,8 +3,10 @@ package com.agenthun.readingroutine.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +28,14 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class NotesFragment extends TFragment implements RevealBackgroundView.OnStateChangeListener {
 
+    private static final String TAG = "NotesFragment";
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
 
     @InjectView(R.id.revealBackgroundView)
@@ -64,23 +68,15 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
         setupGridLayout();
         setupRevealBackground(savedInstanceState);
 
-        addNotesItemBtn.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                addNotesItemBtn.getViewTreeObserver().removeOnPreDrawListener(this);
-                pendingIntro = true;
-                addNotesItemBtn.setTranslationY(2 * addNotesItemBtn.getHeight());
-                return true;
-            }
-        });
+        initAddItemBtn(addNotesItemBtn);
 
         return view;
     }
 
     private void setupGridLayout() {
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         notesRecyclerView.setLayoutManager(layoutManager);
-        notesRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        notesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -105,6 +101,20 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
             revealBackgroundView.setToFinishedFrame();
             notesAdapter.setLockedAnimations(true);
         }
+    }
+
+    private void initAddItemBtn(final ImageButton imageButton) {
+        imageButton.setImageResource(R.drawable.ic_mode_edit_white_36dp);
+        //初始化隐藏Button
+        imageButton.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                imageButton.getViewTreeObserver().removeOnPreDrawListener(this);
+                pendingIntro = true;
+                imageButton.setTranslationY(2 * imageButton.getHeight());
+                return true;
+            }
+        });
     }
 
     @Override
@@ -138,4 +148,8 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
         addNotesItemBtn.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(1.0f)).start();
     }
 
+    @OnClick(R.id.addBtn)
+    public void onAddClick() {
+        Log.d(TAG, "onAddClick()");
+    }
 }

@@ -12,6 +12,13 @@
         <item>@color/style_book_color_grey</item>
     </integer-array>
 
+    <integer-array name="style_book_fab_color">
+        <item>@color/style_book_fab_color_amber</item>
+        <item>@color/style_book_fab_color_green</item>
+        <item>@color/style_book_fab_color_blue</item>
+        <item>@color/style_book_fab_color_grey</item>
+    </integer-array>
+
     <declare-styleable name="BaseView">
         <attr name="is_square" format="boolean" />
         <attr name="border_width" format="dimension" />

@@ -30,4 +30,9 @@
     <color name="style_book_color_blue">#5677fc</color>
     <color name="style_book_color_grey">#757575</color>
 
+    <color name="style_book_fab_color_amber">#03A9F4</color>
+    <color name="style_book_fab_color_green">#795548</color>
+    <color name="style_book_fab_color_blue">#FF4081</color>
+    <color name="style_book_fab_color_grey">#536DFE</color>
+
 </resources>

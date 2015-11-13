@@ -38,8 +38,8 @@ public class NotesAdapter extends BaseTAdapter {
     public NotesAdapter(Context context, CharSequence title, Drawable icon, List<String> objects) {
         super(context, title, icon);
         this.mContext = context;
-        this.cellHeight = (int) (UiUtils.getScreenWidthPixels(context) / 2 * 1.2);
-        this.cellWidth = UiUtils.getScreenWidthPixels(context) / 2;
+        this.cellHeight = (int) (UiUtils.getScreenWidthPixels(context) / 2.3f);
+        this.cellWidth = UiUtils.getScreenWidthPixels(context);
         this.mDataset = objects;
     }
 
@@ -47,8 +47,8 @@ public class NotesAdapter extends BaseTAdapter {
     protected RecyclerView.ViewHolder createBodyViewHolder(Context context, ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_notes, parent, false);
         StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
-        layoutParams.height = cellHeight;
-        layoutParams.width = cellWidth;
+/*        layoutParams.height = cellHeight;
+        layoutParams.width = cellWidth;*/
         layoutParams.setFullSpan(false);
         view.setLayoutParams(layoutParams);
         RecyclerView.ViewHolder notesViewHolder = new NotesViewHolder(view);

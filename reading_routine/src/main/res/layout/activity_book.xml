@@ -163,6 +163,7 @@
         android:layout_margin="@dimen/btn_fab_margins"
         android:elevation="6dp"
         android:src="@drawable/ic_save_white_48dp"
+        app:borderWidth="0dp"
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom|right|end"
         app:pressedTranslationZ="12dp" />

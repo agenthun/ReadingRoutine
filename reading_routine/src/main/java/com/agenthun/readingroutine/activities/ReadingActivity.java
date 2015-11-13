@@ -3,6 +3,9 @@ package com.agenthun.readingroutine.activities;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -78,15 +81,7 @@ public class ReadingActivity extends TActivity {
 /*        pageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (pendingIntro) {
-                    layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(0.72f)).start();
-                    pendingIntro = false;
-                    Log.d(TAG, "onClick() returned: on" + pendingIntro);
-                } else {
-                    layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
-                    pendingIntro = true;
-                    Log.d(TAG, "onClick() returned: off" + pendingIntro);
-                }
+                Log.d(TAG, "onLongClick()");
                 return false;
             }
         });*/
@@ -116,7 +111,6 @@ public class ReadingActivity extends TActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         // PageView Listen
         pageView.setOnTouchListener(new View.OnTouchListener() {
@@ -251,10 +245,10 @@ public class ReadingActivity extends TActivity {
                             }
                         } else if (mEvents == 0) {
                             if (pendingIntro) {
-                                layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(0.72f)).start();
+                                layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new LinearOutSlowInInterpolator()).start();
                                 pendingIntro = false;
                             } else {
-                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new FastOutLinearInInterpolator()).start();
                                 pendingIntro = true;
                             }
                         }

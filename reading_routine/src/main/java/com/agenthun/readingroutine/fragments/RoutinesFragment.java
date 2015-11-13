@@ -3,6 +3,7 @@ package com.agenthun.readingroutine.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -195,6 +196,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     }
 
     private void initAddItemBtn(final ImageButton imageButton) {
+        imageButton.setImageResource(R.drawable.ic_add_white_36dp);
         //初始化隐藏Button
         imageButton.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,6 +14,7 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -111,6 +113,8 @@ public class BookActivity extends TActivity {
         getBookAlarmTime = intent.getStringExtra(RoutinesAdapter.BOOK_ALARM_TIME);
         alarmTime.setText(getBookAlarmTime);
 
+        int[] colorFab = getResources().getIntArray(R.array.style_book_fab_color);
+        fab.setBackgroundTintList(ColorStateList.valueOf(colorFab[getBookColorIndex]));
  /*       ImageLoader.getInstance().displayImage("", icon,
                 new DisplayImageOptions.Builder()
                         .cacheInMemory(true)
