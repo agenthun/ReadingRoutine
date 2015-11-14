@@ -1,6 +1,7 @@
 package com.agenthun.readingroutine.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
+import com.agenthun.readingroutine.views.TagView;
 import com.daimajia.swipe.SwipeLayout;
 
 import java.util.List;
@@ -62,6 +64,16 @@ public class NotesAdapter extends BaseTAdapter {
         String item = mDataset.get(position - 1);
         ((NotesViewHolder) viewHolder).textViewData.setText(item);
 
+        // set tag color
+        if (position % 4 == 0)
+            ((NotesViewHolder) viewHolder).tag.setTagMaskColor(Color.parseColor("#F0E093"));
+        else if (position % 4 == 1)
+            ((NotesViewHolder) viewHolder).tag.setTagMaskColor(Color.parseColor("#96BBB3"));
+        else if (position % 4 == 2)
+            ((NotesViewHolder) viewHolder).tag.setTagMaskColor(Color.parseColor("#DFD576"));
+        else if (position % 4 == 3)
+            ((NotesViewHolder) viewHolder).tag.setTagMaskColor(Color.parseColor("#A08880"));
+
 /*        ((NotesViewHolder) viewHolder).bookView = new BookView(mContext);
         ((NotesViewHolder) viewHolder).bookView.setImageResource(R.drawable.style_book);
         ((NotesViewHolder) viewHolder).bookView.addShadow();
@@ -108,12 +120,10 @@ public class NotesAdapter extends BaseTAdapter {
     static class NotesViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.swipe)
         SwipeLayout swipeLayout;
+        @InjectView(R.id.tag)
+        TagView tag;
         @InjectView(R.id.text_data)
         TextView textViewData;
-        /*        @InjectView(R.id.bookView)
-                BookView bookView;*/
-/*        @InjectView(R.id.cat)
-        PolygonImageView cat;*/
 
         public NotesViewHolder(View view) {
             super(view);

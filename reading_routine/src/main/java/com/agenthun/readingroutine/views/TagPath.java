@@ -1,79 +1,84 @@
 package com.agenthun.readingroutine.views;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
-import android.util.AttributeSet;
 
 /**
  * @project ReadingRoutine
  * @authors agenthun
- * @date 15/10/17 上午2:28.
+ * @date 15/11/14 下午10:44.
  */
-public class TagPath extends BasePath {
-    private Path mBodyPath;
+public class TagPath {
+    private Path mTagPath;
     private Path mBorderPath;
+    private Path mShadowPath;
 
-    private int triangleHeight = 50;
+    private float radius = 10f;
+    private float triangleHeight = 80f;
+    private float borderWidth = 20f;
 
     public TagPath() {
-        mBodyPath = new Path();
+        mTagPath = new Path();
         mBorderPath = new Path();
+        mShadowPath = new Path();
+
+        mTagPath.setFillType(Path.FillType.EVEN_ODD);
+        mBorderPath.setFillType(Path.FillType.EVEN_ODD);
     }
 
-    @Override
-    public void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        super.init(context, attrs, defStyleAttr);
-//        mBorderPaint.setStrokeWidth(mBorderWidth * 2);
+    public void setPath(float width, float height) {
+        float shadowWidth = width * 0.998f;
+        float shadowHeight = height * 0.968f;
+        float tagWidth = width * 0.993f;
+        float tagHeight = height * 0.92f;
+
+        mShadowPath.moveTo(0, 0);
+        mShadowPath.lineTo(tagWidth - triangleHeight, 0);
+        mShadowPath.lineTo(shadowWidth, height / 2f);
+        mShadowPath.lineTo(shadowWidth - triangleHeight, shadowHeight);
+        mShadowPath.lineTo(0, shadowHeight);
+        mShadowPath.close();
+
+        mBorderPath.moveTo(0, 0);
+        mBorderPath.lineTo(tagWidth - triangleHeight, 0);
+        mBorderPath.lineTo(tagWidth, tagHeight / 2f);
+        mBorderPath.lineTo(tagWidth - triangleHeight, tagHeight);
+        mBorderPath.lineTo(0, tagHeight);
+        mBorderPath.close();
+
+        mTagPath.moveTo(borderWidth, borderWidth);
+        mTagPath.lineTo(tagWidth - triangleHeight - borderWidth / 2.3f, borderWidth);
+        mTagPath.lineTo(tagWidth - borderWidth, tagHeight / 2f);
+        mTagPath.lineTo(tagWidth - triangleHeight - borderWidth / 2.3f, tagHeight - borderWidth / 1.3f);
+        mTagPath.lineTo(borderWidth, tagHeight - borderWidth / 1.3f);
+        mTagPath.close();
     }
 
-    @Override
-    public void draw(Canvas canvas, Paint imagePaint, Paint borderPaint) {
-//        canvas.drawPath(mBorderPath, borderPaint);
-        canvas.save();
-        canvas.concat(matrix);
-        canvas.drawPath(mBodyPath, imagePaint);
-        canvas.restore();
+    public Path getTagPath() {
+        return mTagPath;
     }
 
-    @Override
-    public void reset() {
-        mBodyPath.reset();
+    public Path getBorderPath() {
+        return mBorderPath;
     }
 
-    @Override
-    public void calculate(int bitmapWidth, int bitmapHeight, float width, float height, float scale, float x, float y) {
-        mBodyPath.reset();
-        float x1 = -x;
-        float y1 = -y;
-        float scaledTriangleHeight = triangleHeight / scale;
-        float currWidth = bitmapWidth + 2 * x;
-        float currHeight = bitmapHeight + 2 * y;
-        float centerY = currHeight / 2f + y;
-
-        mBodyPath.setFillType(Path.FillType.EVEN_ODD);
-
-        float rectLeft, rectRight;
-        rectLeft = x;
-        float imgRight = currWidth + rectLeft;
-        rectRight = imgRight - scaledTriangleHeight;
-
-        RectF rectF = new RectF(rectLeft, y, rectRight, y + currHeight);
-        mBodyPath.addRoundRect(rectF, 10.0f, 10.0f, Path.Direction.CW);
-        mBodyPath.moveTo(imgRight, centerY);
-        mBodyPath.lineTo(rectRight, centerY - scaledTriangleHeight);
-        mBodyPath.lineTo(rectRight, centerY + scaledTriangleHeight);
-        mBodyPath.lineTo(imgRight, centerY);
+    public Path getShadowPath() {
+        return mShadowPath;
     }
 
-    @Override
-    public void onSizeChanged(int width, int height) {
-        super.onSizeChanged(width, height);
+    public float getBorderWidth() {
+        return borderWidth;
+    }
 
-        RectF rectF = new RectF(mBorderWidth, mBorderWidth, mViewWidth - mBorderWidth, mViewHeight - mBorderWidth);
-        mBorderPath.addRoundRect(rectF, 10.0f, 10.0f, Path.Direction.CW);
+    public void setBorderWidth(float borderWidth) {
+        this.borderWidth = borderWidth;
+    }
+
+    public float getTriangleHeight() {
+        return triangleHeight;
+    }
+
+    public void setTriangleHeight(float triangleHeight) {
+        this.triangleHeight = triangleHeight;
     }
 }

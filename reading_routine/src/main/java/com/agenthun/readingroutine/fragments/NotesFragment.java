@@ -22,6 +22,7 @@ import com.agenthun.readingroutine.datastore.BookInfo;
 import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
+import com.agenthun.readingroutine.views.TagView;
 
 import java.util.ArrayList;
 import java.util.List;
