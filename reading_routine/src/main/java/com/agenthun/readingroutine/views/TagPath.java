@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.util.AttributeSet;
 
 /**
@@ -16,6 +17,8 @@ public class TagPath extends BasePath {
     private Path mBodyPath;
     private Path mBorderPath;
 
+    private int triangleHeight = 50;
+
     public TagPath() {
         mBodyPath = new Path();
         mBorderPath = new Path();
@@ -24,12 +27,12 @@ public class TagPath extends BasePath {
     @Override
     public void init(Context context, AttributeSet attrs, int defStyleAttr) {
         super.init(context, attrs, defStyleAttr);
-        mBorderPaint.setStrokeWidth(mBorderWidth * 2);
+//        mBorderPaint.setStrokeWidth(mBorderWidth * 2);
     }
 
     @Override
     public void draw(Canvas canvas, Paint imagePaint, Paint borderPaint) {
-        canvas.drawPath(mBorderPath, borderPaint);
+//        canvas.drawPath(mBorderPath, borderPaint);
         canvas.save();
         canvas.concat(matrix);
         canvas.drawPath(mBodyPath, imagePaint);
@@ -44,10 +47,26 @@ public class TagPath extends BasePath {
     @Override
     public void calculate(int bitmapWidth, int bitmapHeight, float width, float height, float scale, float x, float y) {
         mBodyPath.reset();
+        float x1 = -x;
+        float y1 = -y;
+        float scaledTriangleHeight = triangleHeight / scale;
+        float currWidth = bitmapWidth + 2 * x;
+        float currHeight = bitmapHeight + 2 * y;
+        float centerY = currHeight / 2f + y;
+
         mBodyPath.setFillType(Path.FillType.EVEN_ODD);
 
-        RectF rectF = new RectF(-x, -y, x + bitmapWidth, y + bitmapHeight);
+        float rectLeft, rectRight;
+        rectLeft = x;
+        float imgRight = currWidth + rectLeft;
+        rectRight = imgRight - scaledTriangleHeight;
+
+        RectF rectF = new RectF(rectLeft, y, rectRight, y + currHeight);
         mBodyPath.addRoundRect(rectF, 10.0f, 10.0f, Path.Direction.CW);
+        mBodyPath.moveTo(imgRight, centerY);
+        mBodyPath.lineTo(rectRight, centerY - scaledTriangleHeight);
+        mBodyPath.lineTo(rectRight, centerY + scaledTriangleHeight);
+        mBodyPath.lineTo(imgRight, centerY);
     }
 
     @Override

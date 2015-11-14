@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="144dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_horizontal_medium"
     android:layout_marginLeft="@dimen/margin_horizontal"
     android:layout_marginRight="@dimen/margin_horizontal"
@@ -19,7 +19,7 @@
         <!--android:background="@drawable/item_selector"-->
         <!--android:background="#73c778"-->
         <LinearLayout
-            android:layout_width="56dp"
+            android:layout_width="72dp"
             android:layout_height="match_parent"
             android:background="@drawable/item_selector_behind"
             android:gravity="center"
@@ -51,18 +51,29 @@
                         android:textSize="@dimen/abc_text_size_title_material" />
 
                 </RelativeLayout>-->
-        <com.agenthun.readingroutine.views.BookViewGroup
+        <com.agenthun.readingroutine.views.TagViewGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#a3a3a3">
+            android:background="#a3a3a3"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_data"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="56dp"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/abc_text_size_title_material" />
-        </com.agenthun.readingroutine.views.BookViewGroup>
+                android:textSize="@dimen/abc_text_size_subhead_material" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="56dp"
+                android:text="Test2"
+                android:textColor="#b4ffffff"
+                android:textSize="@dimen/abc_text_size_small_material" />
+        </com.agenthun.readingroutine.views.TagViewGroup>
     </com.daimajia.swipe.SwipeLayout>
 </FrameLayout>

@@ -3,12 +3,13 @@ package com.agenthun.readingroutine.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 /**
  * Created by Agent Henry on 2015/9/12.
  */
-public abstract class BaseViewGroup extends RelativeLayout {
+public abstract class BaseViewGroup extends LinearLayout {
 
     private BasePath basePath;
 
@@ -60,6 +61,7 @@ public abstract class BaseViewGroup extends RelativeLayout {
         if (!getBasePath().onDraw(canvas)) {
             super.onDraw(canvas);
         }
+        getBasePath().onDraw(canvas);
     }
 
     public int getBorderColor() {

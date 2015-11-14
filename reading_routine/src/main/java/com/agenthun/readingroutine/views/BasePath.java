@@ -31,7 +31,7 @@ public abstract class BasePath {
     protected int mViewHeight;
 
     protected int borderColor = Color.WHITE;
-    protected int mBorderWidth = 10;
+    protected int mBorderWidth = 20;
     protected boolean square = false;
 
     public BasePath() {
