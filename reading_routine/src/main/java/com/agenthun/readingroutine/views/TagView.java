@@ -82,7 +82,7 @@ public class TagView extends FrameLayout {
         canvas.drawPath(mTagPath.getShadowPath(), mShadowPaint);
         canvas.drawPath(mTagPath.getBorderPath(), mBorderPaint);
         canvas.drawPath(mTagPath.getTagPath(), mTagPaint);
-        canvas.drawCircle(borderWidth * 3, mViewHeight / 2f, 10f, mBorderPaint);
+        canvas.drawCircle(borderWidth * 4.2f, mViewHeight / 2f, 10f, mBorderPaint);
     }
 
     public void setBorderColor(int color) {
