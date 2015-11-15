@@ -62,7 +62,7 @@ public class NotesAdapter extends BaseTAdapter {
     protected void bindBodyViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         animateNotes((NotesViewHolder) viewHolder);
         String item = mDataset.get(position - 1);
-        ((NotesViewHolder) viewHolder).textViewData.setText(item);
+        ((NotesViewHolder) viewHolder).noteTitle.setText(item);
 
         // set tag color
         if (position % 4 == 0)
@@ -122,8 +122,12 @@ public class NotesAdapter extends BaseTAdapter {
         SwipeLayout swipeLayout;
         @InjectView(R.id.tag)
         TagView tag;
-        @InjectView(R.id.text_data)
-        TextView textViewData;
+        @InjectView(R.id.note_title)
+        TextView noteTitle;
+        @InjectView(R.id.note_time)
+        TextView noteTime;
+        @InjectView(R.id.note_content)
+        TextView noteContent;
 
         public NotesViewHolder(View view) {
             super(view);
