@@ -3,6 +3,7 @@ package com.agenthun.readingroutine.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import butterknife.InjectView;
 //public class RoutinesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> {
 
+    private static final String TAG = "RoutinesAdapter";
     public static final String BOOK_INFO = "BOOK_INFO";
     public static final String BOOK_NAME = "BOOK_NAME";
     public static final String BOOK_COLOR_INDEX = "BOOK_COLOR_INDEX";
@@ -142,6 +144,7 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
                     mOnItemClickListener.onItemClick(holder.textViewData, pos);
+                    Log.d(TAG, "onItemClick() returned: " + pos);
                 }
             });
         }
@@ -212,12 +215,12 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
     static class RoutineViewHolder extends RecyclerView.ViewHolder {
         /*        @InjectView(R.id.position)
                 TextView textViewPosition;*/
-        @InjectView(R.id.text_data)
-        TextView textViewData;
         @InjectView(R.id.swipe)
         SwipeLayout swipeLayout;
         @InjectView(R.id.ic_trash)
         ImageView deleteButton;
+        @InjectView(R.id.text_data)
+        TextView textViewData;
         @InjectView(R.id.paperView)
         PaperView paperView;
 

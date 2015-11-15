@@ -2,6 +2,7 @@ package com.agenthun.readingroutine.fragments;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 
+import com.agenthun.readingroutine.activities.NoteDetailsActivity;
 import com.agenthun.readingroutine.adapters.NotesAdapter;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.BookInfo;
@@ -137,6 +139,22 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                     getResources().getDrawable(R.drawable.notes_badge),
                     mDataset);
             notesRecyclerView.setAdapter(notesAdapter);
+            //item点击
+            notesAdapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    //Log.d(TAG, "onItemClick() returned: " + position);
+
+                    Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onItemDeleteClick(View view, int position) {
+                    //Log.d(TAG, "onItemDeleteClick() returned: " + position);
+                }
+            });
+
             if (pendingIntro) {
                 startIntroAnimation();
             }
