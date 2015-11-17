@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.ScaleAnimation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,6 +64,8 @@ public class BookActivity extends TActivity {
     EditText bookName;
     @InjectView(R.id.alarm_time)
     TextView alarmTime;
+    @InjectView(R.id.save)
+    Button saveBtn;
     @InjectView(R.id.ic_reading_routine)
     ImageView icon;
     private String getBookAlarmTime;
@@ -193,7 +197,7 @@ public class BookActivity extends TActivity {
     public void onSaveClick() {
         String name = bookName.getText().toString();
         if (name.isEmpty()) {
-            Toast.makeText(this, R.string.error_invalid_bookname, Toast.LENGTH_SHORT).show();
+            Snackbar.make(saveBtn, R.string.error_invalid_bookname, Snackbar.LENGTH_SHORT).setAction("Error", null).show();
             YoYo.with(Techniques.Wobble).duration(500).delay(100).playOn(bookName);
             return;
         } else {
@@ -208,7 +212,7 @@ public class BookActivity extends TActivity {
     public void onFabSaveClick() {
         String name = bookName.getText().toString();
         if (name.isEmpty()) {
-            Toast.makeText(this, R.string.error_invalid_bookname, Toast.LENGTH_SHORT).show();
+            Snackbar.make(fab, R.string.error_invalid_bookname, Snackbar.LENGTH_SHORT).setAction("Error", null).show();
             YoYo.with(Techniques.Wobble).duration(500).delay(100).playOn(bookName);
             return;
         } else {

@@ -18,4 +18,11 @@
         <dimen name="status_bar_height">25dp</dimen>
         <dimen name="fab_compat_margin">0dp</dimen>-->
 
+    <!-- Note Details dimens. -->
+    <dimen name="single_line_field_height">56.0dp</dimen>
+    <dimen name="divider_height">0.39999998dp</dimen>
+    <dimen name="single_or_multiline_fields_top_padding">20.0dp</dimen>
+    <dimen name="single_or_multiline_fields_bottom_padding">20.0dp</dimen>
+    <dimen name="editor_line_space_extra">5.0dip</dimen>
+
 </resources>

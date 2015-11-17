@@ -57,4 +57,30 @@
         <item name="android:background">@drawable/ripple_dark_effect_feedback</item>
     </style>
 
+    <!-- Note Details theme. -->
+    <style name="single_line_text_field">
+        <item name="android:textSize">@dimen/abc_text_size_small_material</item>
+        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@color/color_white</item>
+        <item name="android:paddingLeft">@dimen/margin_horizontal</item>
+        <item name="android:paddingRight">@dimen/margin_horizontal</item>
+        <item name="android:layout_height">@dimen/single_line_field_height</item>
+    </style>
+
+    <style name="divider">
+        <item name="android:background">@color/theme_divider</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+    </style>
+
+    <style name="multiline_text_field">
+        <item name="android:textSize">@dimen/abc_text_size_small_material</item>
+        <item name="android:background">@color/color_white</item>
+        <item name="android:paddingLeft">@dimen/margin_horizontal</item>
+        <item name="android:paddingTop">@dimen/single_or_multiline_fields_top_padding</item>
+        <item name="android:paddingRight">@dimen/margin_horizontal</item>
+        <item name="android:paddingBottom">@dimen/single_or_multiline_fields_bottom_padding</item>
+    </style>
+
 </resources>

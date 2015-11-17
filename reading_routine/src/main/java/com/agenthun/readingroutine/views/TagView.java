@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 /**
@@ -14,6 +15,8 @@ import android.widget.FrameLayout;
  * @date 15/11/14 下午11:13.
  */
 public class TagView extends FrameLayout {
+    private static final String TAG = "TagView";
+
     private TagPath mTagPath;
     private Paint mTagPaint;
     private Paint mBorderPaint;
@@ -21,7 +24,8 @@ public class TagView extends FrameLayout {
     private int mViewWidth;
     private int mViewHeight;
 
-    private float borderWidth = 20f;
+    float ratio = 1;
+    private float borderWidth = 6f;
     private float triangleHeight = 80f;
 
     public TagView(Context context) {
@@ -51,6 +55,7 @@ public class TagView extends FrameLayout {
 
         mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBorderPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        borderWidth = borderWidth * getResources().getDisplayMetrics().density;
         mBorderPaint.setStrokeWidth(borderWidth);
         mBorderPaint.setDither(true);
         mBorderPaint.setColor(Color.WHITE);
@@ -63,8 +68,14 @@ public class TagView extends FrameLayout {
 
     private void initPath() {
         mTagPath = new TagPath();
+
+        float width = (float) mViewWidth / 720;
+        float height = (float) mViewHeight / 72;
+        ratio = Math.min(width, height);
+        //Log.d(TAG, "initPath() mViewWidth, mViewHeight: " + mViewWidth + ", " + mViewHeight);
+        //Log.d(TAG, "initPath() ratio: " + ratio);
         mTagPath.setBorderWidth(borderWidth);
-        mTagPath.setTriangleHeight(triangleHeight);
+        mTagPath.setTriangleHeight(triangleHeight * ratio);
         mTagPath.setPath(mViewWidth, mViewHeight);
     }
 
@@ -82,7 +93,7 @@ public class TagView extends FrameLayout {
         canvas.drawPath(mTagPath.getShadowPath(), mShadowPaint);
         canvas.drawPath(mTagPath.getBorderPath(), mBorderPaint);
         canvas.drawPath(mTagPath.getTagPath(), mTagPaint);
-        canvas.drawCircle(borderWidth * 4.2f, mViewHeight / 2f, 10f, mBorderPaint);
+        canvas.drawCircle(borderWidth * 4.2f, mViewHeight / 2f, borderWidth, mBorderPaint);
     }
 
     public void setBorderColor(int color) {

@@ -144,7 +144,6 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                 @Override
                 public void onItemClick(View view, int position) {
                     //Log.d(TAG, "onItemClick() returned: " + position);
-
                     Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
                     startActivity(intent);
                 }

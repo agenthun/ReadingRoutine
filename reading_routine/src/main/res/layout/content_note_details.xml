@@ -4,12 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/color_white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.agenthun.readingroutine.activities.NoteDetailsActivity"
     tools:showIn="@layout/activity_note_details">
+    <!--    android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"-->
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--            <LinearLayout
+                            android:layout_width="0.0dip"
+                            android:layout_height="0.0dip"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:orientation="horizontal" />-->
+
+            <EditText
+                android:id="@+id/edit_note_title"
+                style="@style/single_line_text_field"
+                android:layout_width="fill_parent"
+                android:hint="title"
+                android:singleLine="true" />
+
+            <View style="@style/divider" />
+
+            <EditText
+                android:id="@+id/edit_note_content"
+                style="@style/multiline_text_field"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/color_white"
+                android:gravity="top"
+                android:hint="compose"
+                android:lineSpacingExtra="@dimen/editor_line_space_extra"
+                android:minLines="10"
+                android:textColor="@color/grey_800" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
