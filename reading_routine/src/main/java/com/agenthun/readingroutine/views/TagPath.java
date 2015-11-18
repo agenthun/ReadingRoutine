@@ -14,8 +14,8 @@ public class TagPath {
     private Path mShadowPath;
 
     private float radius = 10f;
+    private float borderWidth = 6f;
     private float triangleHeight = 80f;
-    private float borderWidth = 20f;
 
     public TagPath() {
         mTagPath = new Path();

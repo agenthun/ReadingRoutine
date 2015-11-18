@@ -75,7 +75,8 @@ public class TagView extends FrameLayout {
         //Log.d(TAG, "initPath() mViewWidth, mViewHeight: " + mViewWidth + ", " + mViewHeight);
         //Log.d(TAG, "initPath() ratio: " + ratio);
         mTagPath.setBorderWidth(borderWidth);
-        mTagPath.setTriangleHeight(triangleHeight * ratio);
+        triangleHeight = triangleHeight * ratio;
+        mTagPath.setTriangleHeight(triangleHeight);
         mTagPath.setPath(mViewWidth, mViewHeight);
     }
 
