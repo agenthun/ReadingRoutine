@@ -3,36 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <com.agenthun.readingroutine.views.RevealBackgroundView
-        android:id="@+id/revealBackgroundView"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/itemRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <com.agenthun.readingroutine.views.RevealBackgroundView
+            android:id="@+id/revealBackgroundView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:elevation="6dp"
-        android:translationZ="12dp"
-        app:borderWidth="0dp"
-        app:pressedTranslationZ="12dp" />
-    <!--    <ImageButton
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/itemRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/addBtn"
-            android:layout_width="@dimen/btn_fab_size"
-            android:layout_height="@dimen/btn_fab_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:background="@drawable/btn_fab_add"
-            android:elevation="@dimen/default_elevation"
-            android:translationZ="12dp" />-->
+            android:elevation="6dp"
+            android:translationZ="12dp"
+            app:borderWidth="0dp"
+            app:pressedTranslationZ="12dp" />
+        <!--    <ImageButton
+                android:id="@+id/addBtn"
+                android:layout_width="@dimen/btn_fab_size"
+                android:layout_height="@dimen/btn_fab_size"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:background="@drawable/btn_fab_add"
+                android:elevation="@dimen/default_elevation"
+                android:translationZ="12dp" />-->
+    </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>

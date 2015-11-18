@@ -307,6 +307,7 @@ public class ReadingActivity extends TActivity {
         filePageFactory.setFontSize(fontSize);
         filePageFactory.onDraw(curPageCanvas);
         filePageFactory.onDraw(nextPageCanvas);
+        pageView.setBitmaps(curPageBitmap, nextPageBitmap);
         pageView.refresh();
     }
 
