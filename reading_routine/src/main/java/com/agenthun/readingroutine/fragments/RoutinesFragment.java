@@ -23,7 +23,7 @@ import com.agenthun.readingroutine.activities.BookActivity;
 import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.adapters.RoutinesAdapter;
 import com.agenthun.readingroutine.datastore.BookInfo;
-import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
+import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
 
@@ -65,7 +65,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     private boolean pendingIntro;
     private ArrayList<BookInfo> mDataSet;
     private int itemPosition = 1;
-    DatabaseUtil databaseUtil;
+    BookDatabaseUtil databaseUtil;
 
     public RoutinesFragment() {
         // Required empty public constructor
@@ -91,7 +91,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     }
 
     private void setupDatabase() {
-        databaseUtil = DatabaseUtil.getInstance(getContext());
+        databaseUtil = BookDatabaseUtil.getInstance(getContext());
 //        UserData userData = UserData.getCurrentUser(getContext(), UserData.class);
         mDataSet = databaseUtil.queryBookInfos();
         if (mDataSet == null) {
@@ -118,48 +118,48 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             });
         }
 
-/*        for (int i = 0; i < mDataSet.size(); i++) {
-            Log.i("mDataSet[" + i + "] = ", mDataSet.get(i).getObjectId() + " ");
-        }*/
+		/*        for (int i = 0; i < mDataSet.size(); i++) {
+                    Log.i("mDataSet[" + i + "] = ", mDataSet.get(i).getObjectId() + " ");
+		        }*/
 
         //测试数据
-/*        HashMap<String, Object> hashMap;
+        /*        HashMap<String, Object> hashMap;
 
-        hashMap = new HashMap<String, Object>();
-        hashMap.put(RoutinesAdapter.BOOK_NAME, "The Best of Me");
-        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 0);
-        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
-        mDataSet.add(hashMap);
+		        hashMap = new HashMap<String, Object>();
+		        hashMap.put(RoutinesAdapter.BOOK_NAME, "The Best of Me");
+		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 0);
+		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
+		        mDataSet.add(hashMap);
 
-        hashMap = new HashMap<String, Object>();
-        hashMap.put(RoutinesAdapter.BOOK_NAME, "Dear John");
-        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 2);
-        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
-        mDataSet.add(hashMap);
+		        hashMap = new HashMap<String, Object>();
+		        hashMap.put(RoutinesAdapter.BOOK_NAME, "Dear John");
+		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 2);
+		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
+		        mDataSet.add(hashMap);
 
-        hashMap = new HashMap<String, Object>();
-        hashMap.put(RoutinesAdapter.BOOK_NAME, "The Lucky One");
-        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 1);
-        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
-        mDataSet.add(hashMap);
+		        hashMap = new HashMap<String, Object>();
+		        hashMap.put(RoutinesAdapter.BOOK_NAME, "The Lucky One");
+		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 1);
+		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
+		        mDataSet.add(hashMap);
 
-        hashMap = new HashMap<String, Object>();
-        hashMap.put(RoutinesAdapter.BOOK_NAME, "Safe Haven");
-        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 3);
-        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
-        mDataSet.add(hashMap);
+		        hashMap = new HashMap<String, Object>();
+		        hashMap.put(RoutinesAdapter.BOOK_NAME, "Safe Haven");
+		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 3);
+		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
+		        mDataSet.add(hashMap);
 
-        hashMap = new HashMap<String, Object>();
-        hashMap.put(RoutinesAdapter.BOOK_NAME, "A Walk to Remember");
-        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 2);
-        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
-        mDataSet.add(hashMap);
+		        hashMap = new HashMap<String, Object>();
+		        hashMap.put(RoutinesAdapter.BOOK_NAME, "A Walk to Remember");
+		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 2);
+		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
+		        mDataSet.add(hashMap);
 
-        hashMap = new HashMap<String, Object>();
-        hashMap.put(RoutinesAdapter.BOOK_NAME, "Message in a Bottle");
-        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 1);
-        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
-        mDataSet.add(hashMap);*/
+		        hashMap = new HashMap<String, Object>();
+		        hashMap.put(RoutinesAdapter.BOOK_NAME, "Message in a Bottle");
+		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 1);
+		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
+		        mDataSet.add(hashMap);*/
     }
 
     private void setupGridLayout() {
@@ -172,9 +172,9 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 routinesAdapter.setLockedAnimations(true);
             }
         });
-        /*        RecyclerViewScrollManager scrollManager = new RecyclerViewScrollManager();
-                scrollManager.attach(routinesRecyclerView);
-                scrollManager.addView(addRoutinesItemBtn, RecyclerViewScrollManager.Direction.DOWN); //下滑动画*/
+		/*        RecyclerViewScrollManager scrollManager = new RecyclerViewScrollManager();
+		        scrollManager.attach(routinesRecyclerView);
+		        scrollManager.addView(addRoutinesItemBtn, RecyclerViewScrollManager.Direction.DOWN); //下滑动画*/
     }
 
     private void setupRevealBackground(Bundle savedInstanceState) {

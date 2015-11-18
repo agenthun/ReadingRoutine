@@ -28,6 +28,6 @@
         android:layout_alignTop="@id/headerGraphics"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="68.0dp"
-        android:src="@drawable/routines_badge2" />
+        android:src="@drawable/routines_badge" />
 
 </RelativeLayout>

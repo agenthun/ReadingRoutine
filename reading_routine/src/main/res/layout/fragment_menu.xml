@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_fab_default"
             android:elevation="@dimen/default_elevation"
-            android:src="@drawable/management_badge2" />
+            android:src="@drawable/management_badge" />
 
         <ImageButton
             android:id="@+id/ic_routines"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_fab_default"
             android:elevation="@dimen/default_elevation"
-            android:src="@drawable/routines_badge2" />
+            android:src="@drawable/routines_badge" />
 
         <ImageButton
             android:id="@+id/ic_shopping"

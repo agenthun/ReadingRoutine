@@ -15,13 +15,11 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageButton;
 
 import com.agenthun.readingroutine.activities.NoteDetailsActivity;
 import com.agenthun.readingroutine.adapters.NotesAdapter;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.BookInfo;
-import com.agenthun.readingroutine.datastore.db.DatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
 import com.agenthun.readingroutine.views.TagView;
@@ -52,7 +50,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     private boolean pendingIntro;
 
     private ArrayList<BookInfo> mDataSet;
-    DatabaseUtil databaseUtil;
+    //DatabaseUtil databaseUtil;
 
     public NotesFragment() {
         // Required empty public constructor
@@ -65,8 +63,8 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
         View view = inflater.inflate(R.layout.fragment_base_item, container, false);
         ButterKnife.inject(this, view);
 
-        databaseUtil = DatabaseUtil.getInstance(getContext());
-        mDataSet = databaseUtil.queryBookInfos();
+        //databaseUtil = DatabaseUtil.getInstance(getContext());
+        //mDataSet = databaseUtil.queryBookInfos();
 
         setupGridLayout();
         setupRevealBackground(savedInstanceState);
@@ -143,7 +141,8 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
             notesAdapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    //Log.d(TAG, "onItemClick() returned: " + position);
+                    Log.d(TAG, "onItemClick() returned: " + view.getClass().getName());
+
                     Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
                     startActivity(intent);
                 }

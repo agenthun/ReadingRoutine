@@ -104,6 +104,6 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
     }
 
     private void startIntroAnimation() {
-        saveNotesItemBtn.animate().scaleX(1).scaleY(1).setStartDelay(20).setDuration(400).setInterpolator(new OvershootInterpolator(1.0f)).start();
+        saveNotesItemBtn.animate().scaleX(1).scaleY(1).setStartDelay(50).setDuration(400).setInterpolator(new OvershootInterpolator(1.0f)).start();
     }
 }
