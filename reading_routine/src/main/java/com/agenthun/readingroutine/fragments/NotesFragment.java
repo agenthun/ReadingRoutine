@@ -16,20 +16,30 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 
+import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.activities.NoteDetailsActivity;
 import com.agenthun.readingroutine.adapters.NotesAdapter;
 import com.agenthun.readingroutine.R;
-import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.NoteInfo;
+import com.agenthun.readingroutine.datastore.db.NoteDatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
 import com.agenthun.readingroutine.views.TagView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.DeleteListener;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +48,10 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
 
     private static final String TAG = "NotesFragment";
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
+    public static final int UPDATE_NOTE = 0;
+    public static final int NEW_NOTE = 1;
+    public static final int RENEW_NOTE = 2;
+    public static final int DELETE_NOTE = 3;
 
     @InjectView(R.id.revealBackgroundView)
     RevealBackgroundView revealBackgroundView;
@@ -49,8 +63,9 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     private NotesAdapter notesAdapter;
     private boolean pendingIntro;
 
-    private ArrayList<BookInfo> mDataSet;
-    //DatabaseUtil databaseUtil;
+    private ArrayList<NoteInfo> mDataSet;
+    private int itemPosition = 1;
+    NoteDatabaseUtil databaseUtil;
 
     public NotesFragment() {
         // Required empty public constructor
@@ -63,15 +78,41 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
         View view = inflater.inflate(R.layout.fragment_base_item, container, false);
         ButterKnife.inject(this, view);
 
-        //databaseUtil = DatabaseUtil.getInstance(getContext());
-        //mDataSet = databaseUtil.queryBookInfos();
-
+        setupDatabase();
         setupGridLayout();
         setupRevealBackground(savedInstanceState);
 
         initAddItemBtn(addNotesItemBtn);
 
         return view;
+    }
+
+    private void setupDatabase() {
+        databaseUtil = NoteDatabaseUtil.getInstance(getContext());
+        mDataSet = databaseUtil.queryNoteInfos();
+        if (mDataSet == null) {
+            BmobQuery<NoteInfo> bmobQuery = new BmobQuery<>();
+            bmobQuery.setLimit(10);
+
+            boolean isCache = bmobQuery.hasCachedResult(getContext(), NoteInfo.class);
+            if (isCache) {
+                bmobQuery.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
+            } else {
+                bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+            }
+            bmobQuery.findObjects(getContext(), new FindListener<NoteInfo>() {
+                @Override
+                public void onSuccess(List<NoteInfo> list) {
+                    mDataSet = (ArrayList<NoteInfo>) databaseUtil.setNotes(list);
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    Log.i(TAG, "获取服务端数据失败");
+                    mDataSet = new ArrayList<>();
+                }
+            });
+        }
     }
 
     private void setupGridLayout() {
@@ -122,34 +163,33 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     public void onStateChange(int state) {
         if (RevealBackgroundView.STATE_FINISHED == state) {
             notesRecyclerView.setVisibility(View.VISIBLE);
-            List<String> mDataset = new ArrayList<>();
-            mDataset.add("a");
-            mDataset.add("b");
-            mDataset.add("c");
-            mDataset.add("d");
-            mDataset.add("e");
-            mDataset.add("f");
-            mDataset.add("g");
-            mDataset.add("h");
 
             notesAdapter = new NotesAdapter(getContext().getApplicationContext(),
                     getString(R.string.text_note),
                     getResources().getDrawable(R.drawable.notes_badge),
-                    mDataset);
+                    mDataSet);
+
             notesRecyclerView.setAdapter(notesAdapter);
             //item点击
             notesAdapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Log.d(TAG, "onItemClick() returned: " + view.getClass().getName());
+//                    Log.d(TAG, "onItemClick() returned: " + view.getClass().getName());
 
+                    if (position == 0) return;
+                    itemPosition = position;
+                    NoteInfo getData = notesAdapter.getItemData(position - 1);
                     Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
-                    startActivity(intent);
+                    intent.putExtra(NotesAdapter.NOTE_TITLE, (String) getData.getNoteTitle());
+                    intent.putExtra(NotesAdapter.NOTE_COMPOSE, (String) getData.getNoteCompose());
+                    intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, (String) getData.getNoteCreateTime());
+                    intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, (int) getData.getNoteColor());
+                    startActivityForResult(intent, UPDATE_NOTE);
                 }
 
                 @Override
                 public void onItemDeleteClick(View view, int position) {
-                    //Log.d(TAG, "onItemDeleteClick() returned: " + position);
+                    deleteItem(position - 1, true);
                 }
             });
 
@@ -167,6 +207,158 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
 
     @OnClick(R.id.addBtn)
     public void onAddClick() {
-        Log.d(TAG, "onAddClick()");
+        itemPosition = Integer.MAX_VALUE;
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Calendar calendar = Calendar.getInstance();
+        Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
+        intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, DATE_FORMAT.format(calendar.getTime()));
+        intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, new Random().nextInt(4));
+        startActivityForResult(intent, NEW_NOTE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String title;
+        String compose;
+        String time;
+        int colorIndex;
+
+        switch (requestCode) {
+            case UPDATE_NOTE:
+                if (resultCode == RENEW_NOTE) {
+                    title = data.getStringExtra(NotesAdapter.NOTE_TITLE);
+                    compose = data.getStringExtra(NotesAdapter.NOTE_COMPOSE);
+                    time = data.getStringExtra(NotesAdapter.NOTE_CREATE_TIME);
+                    colorIndex = data.getIntExtra(NotesAdapter.NOTE_COLOR_INDEX, new Random().nextInt(4));
+                    updateItem(itemPosition - 1, title, compose, time, colorIndex);
+                }
+                break;
+            case NEW_NOTE:
+                if (resultCode == RENEW_NOTE) {
+                    title = data.getStringExtra(NotesAdapter.NOTE_TITLE);
+                    compose = data.getStringExtra(NotesAdapter.NOTE_COMPOSE);
+                    time = data.getStringExtra(NotesAdapter.NOTE_CREATE_TIME);
+                    colorIndex = data.getIntExtra(NotesAdapter.NOTE_COLOR_INDEX, new Random().nextInt(4));
+                    addItem(title, compose, time, colorIndex);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    //addItem,deleteItem,updateItem 的position从0开始
+    //添加
+    private void addItem(String title, String compose, String time, int colorIndex) {
+        final NoteInfo noteInfo = new NoteInfo();
+        noteInfo.setUserData(LoginActivity.userData);
+        noteInfo.setNoteTitle(title);
+        noteInfo.setNoteCompose(compose);
+        noteInfo.setNoteCreateTime(time);
+        noteInfo.setNoteColor(colorIndex);
+
+        //服务器
+        noteInfo.save(getContext(), new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Log.i(TAG, "上传服务器成功");
+                Log.i(TAG, noteInfo.getObjectId());
+                databaseUtil.insertNote(noteInfo);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.i(TAG, "上传服务器失败: " + s);
+                databaseUtil.insertNote(noteInfo, noteInfo, true); //无效invalid ObjectId
+            }
+        });
+
+        mDataSet.add(0, noteInfo);
+        notesAdapter.notifyDataSetChanged();
+    }
+
+    //删除
+    private void deleteItem(int position, boolean setAnimator) {
+        final NoteInfo noteInfo = mDataSet.get(position);
+        //服务器
+        noteInfo.delete(getContext(), noteInfo.getObjectId(), new DeleteListener() {
+            @Override
+            public void onSuccess() {
+                Log.i(TAG, "删除成功");
+                databaseUtil.deleteNote(noteInfo);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.i(TAG, "删除失败: " + s);
+                databaseUtil.deleteNote(noteInfo, true);
+            }
+        });
+
+        int size = mDataSet.size();
+        if (size > 0 && position < size) {
+            mDataSet.remove(position);
+            if (setAnimator) {
+                notesAdapter.notifyItemRemoved(position + 1);
+                notesAdapter.notifyItemRangeChanged(position + 1, mDataSet.size());
+            } else {
+                notesAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    //更新
+    private void updateItem(final int position, String title, String compose, String time, int colorIndex) {
+        final NoteInfo noteInfo = mDataSet.get(position);
+        final NoteInfo noteInfoOld = new NoteInfo(noteInfo.getUserData(), noteInfo.getNoteTitle(), noteInfo.getNoteCompose(), noteInfo.getNoteCreateTime(), noteInfo.getNoteColor());
+        noteInfo.setNoteTitle(title);
+        noteInfo.setNoteCompose(compose);
+        noteInfo.setNoteCreateTime(time);
+        noteInfo.setNoteColor(colorIndex);
+
+        Log.i(TAG, "test id = " + noteInfo.getObjectId());
+        if (noteInfo.getObjectId() == null) {
+            Log.i(TAG, "into : test id = null");
+            noteInfo.save(getContext(), new SaveListener() {
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "上传服务器成功");
+                    Log.i(TAG, noteInfo.getObjectId());
+                    databaseUtil.insertNote(noteInfo, noteInfoOld, true);
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    Log.i(TAG, "上传服务器失败: " + s);
+                    databaseUtil.insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
+                }
+            });
+        } else {
+            //服务器
+            noteInfo.update(getContext(), noteInfo.getObjectId(), new UpdateListener() {
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "更新服务器成功");
+                    databaseUtil.insertNote(noteInfo);
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    Log.i(TAG, "更新服务器失败: " + s);
+                    switch (i) {
+                        case 9010:
+                        case 9016:
+                            databaseUtil.insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
+                            break;
+                    }
+                }
+            });
+        }
+
+        int size = mDataSet.size();
+        if (position < size) {
+            mDataSet.set(position, noteInfo);
+            notesAdapter.notifyDataSetChanged();
+        }
     }
 }

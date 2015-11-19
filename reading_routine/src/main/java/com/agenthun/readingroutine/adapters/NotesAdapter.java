@@ -17,12 +17,16 @@ import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.UiUtils;
+import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.NoteInfo;
 import com.agenthun.readingroutine.views.TagView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -34,6 +38,12 @@ import butterknife.InjectView;
 public class NotesAdapter extends BaseTAdapter {
 
     private static final String TAG = "NotesAdapter";
+
+    public static final String NOTE_TITLE = "NOTE_TITLE";
+    public static final String NOTE_COMPOSE = "NOTE_COMPOSE";
+    public static final String NOTE_CREATE_TIME = "NOTE_CREATE_TIME";
+    public static final String NOTE_COLOR_INDEX = "NOTE_COLOR_INDEX";
+
     private static final int MIN_ITEM_COUNT = 1;
     private static final int MAX_ITEM_ANIMATION_DELAY = 500;
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
@@ -42,14 +52,15 @@ public class NotesAdapter extends BaseTAdapter {
     private int cellWidth;
 
     private int lastAnimatedItem = 0;
-    private List<String> mDataset;
+    private List<NoteInfo> mDataset;
     private Context mContext;
+    private int briefComposeLength = 50;
 
-    public NotesAdapter(Context context, CharSequence title, Drawable icon, List<String> objects) {
+    public NotesAdapter(Context context, CharSequence title, Drawable icon, List<NoteInfo> objects) {
         super(context, title, icon);
         this.mContext = context;
-/*        this.cellHeight = (int) (UiUtils.getScreenWidthPixels(context) / 2.3f);
-        this.cellWidth = UiUtils.getScreenWidthPixels(context);*/
+        /*        this.cellHeight = (int) (UiUtils.getScreenWidthPixels(context) / 2.3f);
+                this.cellWidth = UiUtils.getScreenWidthPixels(context);*/
         this.mDataset = objects;
     }
 
@@ -57,8 +68,8 @@ public class NotesAdapter extends BaseTAdapter {
     protected RecyclerView.ViewHolder createBodyViewHolder(Context context, ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_notes, parent, false);
         StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
-/*        layoutParams.height = cellHeight;
-        layoutParams.width = cellWidth;*/
+        /*        layoutParams.height = cellHeight;
+                layoutParams.width = cellWidth;*/
         layoutParams.setFullSpan(false);
         view.setLayoutParams(layoutParams);
         RecyclerView.ViewHolder notesViewHolder = new NotesViewHolder(view);
@@ -68,7 +79,7 @@ public class NotesAdapter extends BaseTAdapter {
     @Override
     protected void bindBodyViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         animateNotes((NotesViewHolder) viewHolder);
-        String item = mDataset.get(position - 1);
+        NoteInfo item = mDataset.get(position - 1);
 
         ((NotesViewHolder) viewHolder).swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         ((NotesViewHolder) viewHolder).swipeLayout.addSwipeListener(new SimpleSwipeListener() {
@@ -103,27 +114,34 @@ public class NotesAdapter extends BaseTAdapter {
         }
 
         // set tag title
-        ((NotesViewHolder) viewHolder).noteTitle.setText(item);
+        ((NotesViewHolder) viewHolder).noteTitle.setText(item.getNoteTitle());
+
+        // set tag brief compose
+        ((NotesViewHolder) viewHolder).noteContent.setText(item.getNoteCompose());
+
+        // set tag create time
+        String createTime = item.getNoteCreateTime();
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Calendar calendar = Calendar.getInstance();
+        String time = crateTimeForm(createTime, DATE_FORMAT.format(calendar.getTime()));
+        ((NotesViewHolder) viewHolder).noteTime.setText(time);
 
         // set tag color
-        if (position % 4 == 0)
-            ((NotesViewHolder) viewHolder).tag.setTagMaskColor(Color.parseColor("#F0E093"));
-        else if (position % 4 == 1)
-            ((NotesViewHolder) viewHolder).tag.setTagMaskColor(Color.parseColor("#96BBB3"));
-        else if (position % 4 == 2)
-            ((NotesViewHolder) viewHolder).tag.setTagMaskColor(Color.parseColor("#DFD576"));
-        else if (position % 4 == 3)
-            ((NotesViewHolder) viewHolder).tag.setTagMaskColor(Color.parseColor("#A08880"));
-
-/*        ((NotesViewHolder) viewHolder).bookView = new BookView(mContext);
-        ((NotesViewHolder) viewHolder).bookView.setImageResource(R.drawable.style_book);
-        ((NotesViewHolder) viewHolder).bookView.addShadow();
-        ((NotesViewHolder) viewHolder).bookView.addBorder(10, Color.WHITE);
-        ((NotesViewHolder) viewHolder).bookView.setCornerRadius(10);*/
-/*        ((NotesViewHolder) viewHolder).bookView.setVertices(6);
-        ((NotesViewHolder) viewHolder).bookView.setBaseShape(new StarShape(0.8f, false));*/
+        int[] colorBook = mContext.getResources().getIntArray(R.array.style_tag_color);
+        int colorIndex = (int) item.getNoteColor();
+        ((NotesViewHolder) viewHolder).tag.setTagMaskColor(colorBook[colorIndex]);
 
         if (lastAnimatedItem < position) lastAnimatedItem = position;
+    }
+
+    private String crateTimeForm(String createTime, String currentTime) {
+        if (!createTime.substring(0, 4).equals(currentTime.substring(0, 4))) {
+            return createTime.substring(0, 4);
+        } else if (!createTime.substring(5, 10).equals(currentTime.substring(5, 10))) {
+            return createTime.substring(5, 10);
+        } else {
+            return createTime.substring(11);
+        }
     }
 
     private void animateNotes(NotesViewHolder holder) {
@@ -176,6 +194,10 @@ public class NotesAdapter extends BaseTAdapter {
             super(view);
             ButterKnife.inject(this, view);
         }
+    }
+
+    public NoteInfo getItemData(int position) {
+        return mDataset.get(position);
     }
 
     //itemClick interface

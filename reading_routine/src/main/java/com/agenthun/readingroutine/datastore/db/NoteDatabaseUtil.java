@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class NoteDatabaseUtil {
     private static final String TAG = "NoteDatabaseUtil";
-    public static final String DATABASE_NAME = "readingroutine.db";
+    public static final String DATABASE_NAME = "readingroutine_note.db";
     public static final int DATABASE_VERSION = 1;
 
     private static NoteDatabaseUtil instance;
@@ -63,7 +63,8 @@ public class NoteDatabaseUtil {
             where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
                     + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle() + "'"
                     + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose() + "'"
-                    + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime() + "'";
+                    + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime() + "'"
+                    + "' AND " + NoteDBHelper.NoteTable.NOTE_COLOR + " = '" + noteInfo.getNoteColor() + "'";
             cursor = noteDBHelper.query(NoteDBHelper.TABLE_NAME, null, where, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 noteDBHelper.delete(NoteDBHelper.TABLE_NAME, where, null);
@@ -82,7 +83,8 @@ public class NoteDatabaseUtil {
         String where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle() + "'"
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose() + "'"
-                + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime() + "'";
+                + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime() + "'"
+                + "' AND " + NoteDBHelper.NoteTable.NOTE_COLOR + " = '" + noteInfo.getNoteColor() + "'";
         cursor = noteDBHelper.query(NoteDBHelper.TABLE_NAME, null, where, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             noteDBHelper.delete(NoteDBHelper.TABLE_NAME, where, null);
@@ -107,6 +109,7 @@ public class NoteDatabaseUtil {
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_CREATE_TIME, noteInfo.getNoteCreateTime());
+            contentValues.put(NoteDBHelper.NoteTable.NOTE_COLOR, noteInfo.getNoteColor());
             noteDBHelper.update(NoteDBHelper.TABLE_NAME, contentValues, where, null);
             Log.i(TAG, "update");
         } else {
@@ -116,6 +119,7 @@ public class NoteDatabaseUtil {
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_CREATE_TIME, noteInfo.getNoteCreateTime());
+            contentValues.put(NoteDBHelper.NoteTable.NOTE_COLOR, noteInfo.getNoteColor());
             uri = noteDBHelper.insert(NoteDBHelper.TABLE_NAME, null, contentValues);
             Log.i(TAG, "insert");
         }
@@ -142,6 +146,7 @@ public class NoteDatabaseUtil {
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_CREATE_TIME, noteInfo.getNoteCreateTime());
+            contentValues.put(NoteDBHelper.NoteTable.NOTE_COLOR, noteInfo.getNoteColor());
             noteDBHelper.update(NoteDBHelper.TABLE_NAME, contentValues, where, null);
             Log.i(TAG, "update");
         } else {
@@ -151,6 +156,7 @@ public class NoteDatabaseUtil {
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_CREATE_TIME, noteInfo.getNoteCreateTime());
+            contentValues.put(NoteDBHelper.NoteTable.NOTE_COLOR, noteInfo.getNoteColor());
             uri = noteDBHelper.insert(NoteDBHelper.TABLE_NAME, null, contentValues);
             Log.i(TAG, "insert");
         }
@@ -176,6 +182,7 @@ public class NoteDatabaseUtil {
             noteInfo.setNoteTitle(cursor.getString(3));
             noteInfo.setNoteCompose(cursor.getString(4));
             noteInfo.setNoteCreateTime(cursor.getString(5));
+            noteInfo.setNoteColor(cursor.getInt(6));
             nookInfos.add(0, noteInfo);
         }
         if (cursor != null) {
@@ -215,6 +222,7 @@ public class NoteDatabaseUtil {
             noteInfo.setNoteTitle(cursor.getString(3));
             noteInfo.setNoteCompose(cursor.getString(4));
             noteInfo.setNoteCreateTime(cursor.getString(5));
+            noteInfo.setNoteColor(cursor.getInt(6));
             noteInfos.add(0, noteInfo);
         }
         if (cursor != null) {
