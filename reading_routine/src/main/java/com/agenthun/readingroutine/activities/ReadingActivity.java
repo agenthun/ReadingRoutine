@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -198,6 +199,7 @@ public class ReadingActivity extends TActivity {
                             } else {
                                 isFistOrLastPage = false;
                             }
+                            //SpannableString ss = filePageFactory.getSpannableString();
 
                             filePageFactory.onDraw(nextPageCanvas);
                             pageView.setBitmaps(curPageBitmap, nextPageBitmap);

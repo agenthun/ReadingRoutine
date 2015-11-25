@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 
 import java.io.File;
@@ -302,6 +304,19 @@ public class FilePageFactory {
         String strPercent = df.format(fPercent * 100) + "%";
         float nPercentWidth = mPaint.measureText("99.9%");
         canvas.drawText(strPercent, mVisibleWidth + marginWidth - nPercentWidth, mVisibleHeight + marginHeight / 2, mPaint);
+    }
+
+    public SpannableString getSpannableString() {
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        if (mLines.size() == 0) {
+            mLines = pageDown();
+        }
+        if (mLines.size() > 0) {
+            for (String strLine : mLines) {
+                ssb.append(strLine);
+            }
+        }
+        return new SpannableString(ssb.toString());
     }
 
 /*    public int getWidth() {

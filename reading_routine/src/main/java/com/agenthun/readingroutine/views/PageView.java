@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
+import android.widget.TextView;
 
 import com.agenthun.readingroutine.UiUtils;
 
@@ -24,7 +25,7 @@ import com.agenthun.readingroutine.UiUtils;
  * @authors agenthun
  * @date 15/11/6 上午12:43.
  */
-public class PageView extends View {
+public class PageView extends TextView {
     private static final String TAG = "PageView";
 
     private int mViewWidth;
@@ -114,7 +115,7 @@ public class PageView extends View {
     }
 
     private void initPaint() {
-        mPaint = new Paint();
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
     }
 

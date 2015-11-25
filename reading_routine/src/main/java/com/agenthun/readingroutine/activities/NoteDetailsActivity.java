@@ -1,6 +1,7 @@
 package com.agenthun.readingroutine.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -64,6 +65,10 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
         toolbar.setTitle(R.string.app_name);
         toolbar.setBackgroundColor(colorNote[getNoteColorIndex]);
         setSupportActionBar(toolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(colorNote[getNoteColorIndex]);
+        }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
