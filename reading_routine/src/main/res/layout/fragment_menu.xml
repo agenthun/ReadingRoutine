@@ -1,14 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerVertical="true"
-    android:background="@color/background_daytime_material_blue">
+    android:background="@color/background_daytime_material_blue"
+    android:fitsSystemWindows="true">
 
     <com.agenthun.readingroutine.views.SixangleViewGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/cardview_default_elevation"
-        android:layout_margin="12dp">
+        android:layout_margin="@dimen/margin_horizontal">
 
         <ImageButton
             android:id="@+id/ic_management"
@@ -63,5 +63,4 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_reading_routine_white" />
     </com.agenthun.readingroutine.views.SixangleViewGroup>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -5,10 +5,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
@@ -20,7 +19,6 @@ import com.agenthun.readingroutine.fragments.NotesFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
-import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.Random;
 
@@ -67,7 +65,9 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
         setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(colorNote[getNoteColorIndex]);
+/*            Palette.Swatch swatch = new Palette.Swatch(colorNote[getNoteColorIndex]);
+            Palette.from()*/
+            getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(colorNote[getNoteColorIndex], 0xaa));
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

@@ -1,132 +1,139 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_daytime_material_blue">
+    android:background="@color/background_daytime_material_blue"
+    android:fitsSystemWindows="true">
 
-    <ImageView
-        android:id="@+id/headerGraphics"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="186.0dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/view_header" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50.0dp"
-        android:layout_alignTop="@id/headerGraphics"
-        android:layout_marginTop="30.0dp"
-        android:gravity="center_horizontal"
-        android:paddingTop="10.0dp"
-        android:text="@string/text_global_settings"
-        android:textColor="@color/background_daytime_material_blue"
-        android:textSize="27.0sp" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/headerGraphics"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68.0dp"
-        android:src="@drawable/settings_badge" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/headerGraphics"
-        android:orientation="vertical"
-        android:padding="30.0dp">
+        <ImageView
+            android:id="@+id/headerGraphics"
+            android:layout_width="match_parent"
+            android:layout_height="186.0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/view_header" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50.0dp"
+            android:layout_alignTop="@id/headerGraphics"
+            android:layout_marginTop="30.0dp"
+            android:gravity="center_horizontal"
+            android:paddingTop="10.0dp"
+            android:text="@string/text_global_settings"
+            android:textColor="@color/background_daytime_material_blue"
+            android:textSize="27.0sp" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/text_font_size"
-            android:textColor="@android:color/white"
-            android:textSize="20.0sp" />
-
-        <SeekBar
-            android:id="@+id/seekBarSetFontSize"
-            android:layout_width="210.0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10.0dp"
-            android:thumb="@drawable/seekbar_thumb_sexangle_style" />
+            android:layout_alignTop="@id/headerGraphics"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="68.0dp"
+            android:src="@drawable/settings_badge" />
 
         <LinearLayout
-            android:layout_width="210.0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5.0dp"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/headerGraphics"
+            android:layout_margin="@dimen/margin_horizontal"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_small_font"
+                android:layout_marginTop="10dp"
+                android:text="@string/text_font_size"
                 android:textColor="@android:color/white"
-                android:textSize="16.0sp" />
+                android:textSize="20.0sp" />
+
+            <SeekBar
+                android:id="@+id/seekBarSetFontSize"
+                android:layout_width="210.0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10.0dp"
+                android:thumb="@drawable/seekbar_thumb_sexangle_style" />
+
+            <LinearLayout
+                android:layout_width="210.0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5.0dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_small_font"
+                    android:textColor="@android:color/white"
+                    android:textSize="16.0sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="175.0dp"
+                    android:text="@string/text_big_font"
+                    android:textColor="@android:color/white"
+                    android:textSize="16.0sp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="175.0dp"
-                android:text="@string/text_big_font"
+                android:layout_marginTop="15dp"
+                android:text="@string/text_brightness"
                 android:textColor="@android:color/white"
-                android:textSize="16.0sp" />
+                android:textSize="20.0sp" />
+
+            <SeekBar
+                android:id="@+id/seekBarBrightness"
+                android:layout_width="210.0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10.0dp"
+                android:thumb="@drawable/seekbar_thumb_sexangle_style" />
+
+            <LinearLayout
+                android:layout_width="210.0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5.0dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_brightness_dark"
+                    android:textColor="@android:color/white"
+                    android:textSize="16.0sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="175.0dp"
+                    android:text="@string/text_brightness_light"
+                    android:textColor="@android:color/white"
+                    android:textSize="16.0sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/text_reading_mode"
+                android:textColor="@android:color/white"
+                android:textSize="20.0sp" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchReadingMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50.0dp"
+                android:layout_marginTop="10.0dp" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/text_brightness"
-            android:textColor="@android:color/white"
-            android:textSize="20.0sp" />
-
-        <SeekBar
-            android:id="@+id/seekBarBrightness"
-            android:layout_width="210.0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10.0dp"
-            android:thumb="@drawable/seekbar_thumb_sexangle_style" />
-
-        <LinearLayout
-            android:layout_width="210.0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5.0dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_brightness_dark"
-                android:textColor="@android:color/white"
-                android:textSize="16.0sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="175.0dp"
-                android:text="@string/text_brightness_light"
-                android:textColor="@android:color/white"
-                android:textSize="16.0sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/text_reading_mode"
-            android:textColor="@android:color/white"
-            android:textSize="20.0sp" />
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switchReadingMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50.0dp"
-            android:layout_marginTop="10.0dp" />
-    </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
