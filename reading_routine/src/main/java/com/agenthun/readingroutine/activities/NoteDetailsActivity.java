@@ -65,8 +65,6 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
         setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-/*            Palette.Swatch swatch = new Palette.Swatch(colorNote[getNoteColorIndex]);
-            Palette.from()*/
             getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(colorNote[getNoteColorIndex], 0xaa));
         }
 

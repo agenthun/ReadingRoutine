@@ -31,14 +31,6 @@
             android:translationZ="12dp"
             app:borderWidth="0dp"
             app:pressedTranslationZ="12dp" />
-        <!--    <ImageButton
-                android:id="@+id/addBtn"
-                android:layout_width="@dimen/btn_fab_size"
-                android:layout_height="@dimen/btn_fab_size"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:background="@drawable/btn_fab_add"
-                android:elevation="@dimen/default_elevation"
-                android:translationZ="12dp" />-->
+
     </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>
