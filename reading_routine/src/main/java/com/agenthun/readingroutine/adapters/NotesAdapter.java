@@ -1,12 +1,9 @@
 package com.agenthun.readingroutine.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
-import com.agenthun.readingroutine.UiUtils;
-import com.agenthun.readingroutine.datastore.BookInfo;
 import com.agenthun.readingroutine.datastore.NoteInfo;
 import com.agenthun.readingroutine.views.TagView;
 import com.daimajia.androidanimations.library.Techniques;
@@ -96,7 +91,7 @@ public class NotesAdapter extends BaseTAdapter {
                 mItemManger.removeShownLayouts(((NotesViewHolder) viewHolder).swipeLayout);
                 mItemManger.closeAllItems();
 
-                int pos = ((NotesViewHolder) viewHolder).getLayoutPosition();
+                int pos = viewHolder.getLayoutPosition();
                 mOnItemClickListener.onItemDeleteClick(((NotesViewHolder) viewHolder).deleteButton, pos);
 //                Log.d(TAG, "onItemDeleteClick() returned: " + pos);
             }
@@ -106,7 +101,7 @@ public class NotesAdapter extends BaseTAdapter {
             ((NotesViewHolder) viewHolder).tag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = ((NotesViewHolder) viewHolder).getLayoutPosition();
+                    int pos = viewHolder.getLayoutPosition();
                     mOnItemClickListener.onItemClick(((NotesViewHolder) viewHolder).tag, pos);
 //                    Log.d(TAG, "onClick() returned: " + pos);
                 }
@@ -128,7 +123,7 @@ public class NotesAdapter extends BaseTAdapter {
 
         // set tag color
         int[] colorBook = mContext.getResources().getIntArray(R.array.style_tag_color);
-        int colorIndex = (int) item.getNoteColor();
+        int colorIndex = item.getNoteColor();
         ((NotesViewHolder) viewHolder).tag.setTagMaskColor(colorBook[colorIndex]);
 
         if (lastAnimatedItem < position) lastAnimatedItem = position;

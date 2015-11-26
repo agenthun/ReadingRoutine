@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="@dimen/margin_horizontal"
     android:elevation="@dimen/cardview_default_elevation"
     android:foreground="?android:attr/selectableItemBackground"
     android:padding="@dimen/margin_horizontal_small">

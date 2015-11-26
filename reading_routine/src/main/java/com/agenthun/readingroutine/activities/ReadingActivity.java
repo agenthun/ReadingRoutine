@@ -1,19 +1,17 @@
 package com.agenthun.readingroutine.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
-import android.text.SpannableString;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,6 +20,7 @@ import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.agenthun.readingroutine.views.FilePageFactory;
 import com.agenthun.readingroutine.views.PageView;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.io.IOException;
 
@@ -34,6 +33,8 @@ import butterknife.OnClick;
  */
 public class ReadingActivity extends TActivity {
     private static final String TAG = "ReadingActivity";
+
+    public static final int OPEN_FILE = 1;
 
     @InjectView(R.id.layout_shortcut)
     LinearLayout layoutShortcut;
@@ -55,6 +56,8 @@ public class ReadingActivity extends TActivity {
     private float moveLenght;// 手指滑动的距离
     private float moveLenghtThreshold = 5;// 手指滑动的距离阈值
     private int mEvents;// 判断触摸事件
+
+    private String fileName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +109,16 @@ public class ReadingActivity extends TActivity {
         filePageFactory = new FilePageFactory(width, height);
 
         // open file
-        try {
-            filePageFactory.openFile("/sdcard/Download/The Third Way of Love.txt");
-            filePageFactory.onDraw(curPageCanvas);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (fileName == null || fileName.length() == 0) {
+            Intent intent = new Intent(this, FilePickerActivity.class);
+            startActivityForResult(intent, OPEN_FILE);
+        } else {
+            try {
+                filePageFactory.openFile(fileName);
+                filePageFactory.onDraw(curPageCanvas);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         // PageView Listen
@@ -336,5 +344,29 @@ public class ReadingActivity extends TActivity {
     @OnClick(R.id.reading_open)
     public void onReadingOpenClick() {
         Log.d(TAG, "onReadingOpenClick() returned: ");
+        Intent intent = new Intent(this, FilePickerActivity.class);
+        startActivityForResult(intent, OPEN_FILE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == OPEN_FILE && resultCode == RESULT_OK) {
+            filePageFactory.closeFile(fileName);
+
+            fileName = String.valueOf(data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH));
+            Log.d(TAG, "onActivityResult() returned: " + fileName);
+
+            // open file
+            if (fileName.endsWith(".txt")) {
+                try {
+                    filePageFactory.openFile(fileName);
+                    filePageFactory.onDraw(curPageCanvas);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
-import com.agenthun.readingroutine.UiUtils;
 import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.utils.UiUtils;
 import com.agenthun.readingroutine.views.PaperView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -23,8 +23,6 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -117,7 +115,7 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
     private void bindRoutine(final RoutineViewHolder holder, final int position) {
 
         animateRoutine(holder);
-        String item = (String) mDataset.get(position - 1).getBookName();
+        String item = mDataset.get(position - 1).getBookName();
 
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
@@ -151,7 +149,7 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
 
         //设置随机颜色
         int[] colorBook = context.getResources().getIntArray(R.array.style_book_color);
-        int colorIndex = (int) mDataset.get(position - 1).getBookColor();
+        int colorIndex = mDataset.get(position - 1).getBookColor();
         holder.swipeLayout.setBackgroundColor(colorBook[colorIndex]);
 //        holder.paperView.setColor(colorBook[colorIndex]);
 

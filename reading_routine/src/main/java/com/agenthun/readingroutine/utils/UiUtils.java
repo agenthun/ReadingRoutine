@@ -1,4 +1,4 @@
-package com.agenthun.readingroutine;
+package com.agenthun.readingroutine.utils;
 
 import android.content.Context;
 import android.util.DisplayMetrics;

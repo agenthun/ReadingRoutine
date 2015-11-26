@@ -56,16 +56,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif"
                         android:singleLine="true"
                         android:text="Title"
                         android:textColor="#ff000000"
-                        android:textSize="@dimen/abc_text_size_subhead_material" />
+                        android:textSize="@dimen/abc_text_size_subhead_material"
+                        android:textStyle="normal|bold" />
 
                     <TextView
                         android:id="@+id/note_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif"
                         android:gravity="end"
                         android:singleLine="true"
                         android:text="Time"
@@ -80,6 +83,7 @@
                     android:layout_marginBottom="@dimen/margin_vertical"
                     android:layout_marginLeft="56dp"
                     android:layout_marginRight="56dp"
+                    android:fontFamily="sans-serif"
                     android:singleLine="true"
                     android:text="Content"
                     android:textColor="#b4000000"

@@ -12,13 +12,11 @@ import android.graphics.PointF;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.agenthun.readingroutine.UiUtils;
+import com.agenthun.readingroutine.utils.UiUtils;
 
 /**
  * @project ReadingRoutine
@@ -164,10 +162,7 @@ public class PageView extends TextView {
         if (y <= mViewHeight / 2) mCornerY = 0;
         else mCornerY = mViewHeight;
 
-        if ((mCornerX == 0 && mCornerY == mViewHeight) || (mCornerX == mViewWidth && mCornerY == 0))
-            mIsRTandLB = true;
-        else
-            mIsRTandLB = false;
+        mIsRTandLB = (mCornerX == 0 && mCornerY == mViewHeight) || (mCornerX == mViewWidth && mCornerY == 0);
     }
 
     public boolean doTouchEvent(MotionEvent event) {
@@ -199,14 +194,11 @@ public class PageView extends TextView {
     }
 
     public boolean canDragOver() {
-        if (mTouchToCornerDis > mViewWidth / 10)
-            return true;
-        return false;
+        return mTouchToCornerDis > mViewWidth / 10;
     }
 
     public boolean dragToRight() {
-        if (mCornerX > 0) return false;
-        return true;
+        return mCornerX <= 0;
     }
 
     public void abortAnimation() {

@@ -30,7 +30,22 @@
     <string name="time_setting_finish">完成</string>
     <string name="error_invalid_bookname">书名无效</string>
     <string name="text_refresh">同步</string>
-    
+
     <string name="title_activity_note_details">NoteDetailsActivity</string>
     <string name="error_invalid_notecompose">内容无效</string>
+
+    <string name="empty_directory_hint">空文件夹</string>
+    <string name="type_directory">文件夹</string>
+    <string name="type_document">文稿</string>
+    <string name="type_certificate">证书</string>
+    <string name="type_drawing">图画</string>
+    <string name="type_excel">Excel</string>
+    <string name="type_image">图片</string>
+    <string name="type_music">音乐</string>
+    <string name="type_pdf">Pdf</string>
+    <string name="type_power_point">PPT</string>
+    <string name="type_word">Word</string>
+    <string name="type_archive">压缩包</string>
+    <string name="start_path_name">sdcard0</string>
+
 </resources>

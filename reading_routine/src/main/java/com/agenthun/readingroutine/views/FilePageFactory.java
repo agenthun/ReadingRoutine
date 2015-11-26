@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,6 +81,16 @@ public class FilePageFactory {
         long len = file.length();
         mappedByteBufferLen = (int) len;
         mappedByteBuffer = new RandomAccessFile(file, "r").getChannel().map(FileChannel.MapMode.READ_ONLY, 0, len);
+    }
+
+    public void closeFile(String strFilePath) {
+        if (strFilePath != null && strFilePath.length() == 0) {
+            mappedByteBuffer.clear();
+/*            mappedByteBufferLen = 0;
+            mappedByteBufferBegin = 0;
+            mappedByteBufferEnd = 0;
+            mLines.clear();*/
+        }
     }
 
     private byte[] readParagraphBack(int position) {

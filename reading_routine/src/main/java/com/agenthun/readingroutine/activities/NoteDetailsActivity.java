@@ -60,7 +60,7 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
         materialMenuIconToolbar.setNeverDrawTouch(false);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_name);
+        toolbar.setTitle(R.string.text_reading_routine);
         toolbar.setBackgroundColor(colorNote[getNoteColorIndex]);
         setSupportActionBar(toolbar);
 
