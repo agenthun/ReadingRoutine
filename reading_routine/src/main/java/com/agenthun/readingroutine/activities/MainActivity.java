@@ -22,6 +22,7 @@ import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.bmob.v3.BmobUser;
 
 public class MainActivity extends TActivity implements MenuFragment.OnMenuInteractionListener {
 
@@ -149,7 +150,7 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
                         drawerLayout.closeDrawers();
                         break;
                     case "退出":
-                        LoginActivity.getUser().logOut(getApplicationContext());
+                        BmobUser.logOut(getApplicationContext());
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                         finish();
                         break;
@@ -221,9 +222,10 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     }
 
     private void openAboutFragment() {
-//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-/*        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
-        materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);*/
+//        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
+        materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);
+        toolbar.setTitle(R.string.text_about);
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.color_white));
     }
 
     private void openNotesFragment() {

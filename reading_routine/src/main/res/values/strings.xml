@@ -34,6 +34,9 @@
     <string name="title_activity_note_details">NoteDetailsActivity</string>
     <string name="error_invalid_notecompose">内容无效</string>
 
+    <string name="empty_reading_title">没有文章</string>
+    <string name="empty_reading_hint">请使用工具栏最右边的按钮选择文章</string>
+
     <string name="empty_directory_hint">空文件夹</string>
     <string name="type_directory">文件夹</string>
     <string name="type_document">文稿</string>
@@ -47,5 +50,11 @@
     <string name="type_word">Word</string>
     <string name="type_archive">压缩包</string>
     <string name="start_path_name">sdcard0</string>
+
+    <string name="text_about">关于</string>
+    <string name="text_version">版本 1.0</string>
+    <string name="text_copyright">\@2015 agenthun</string>
+    <string name="text_open_source_licenses">开源协议</string>
+    <string name="text_thanks">致谢</string>
 
 </resources>

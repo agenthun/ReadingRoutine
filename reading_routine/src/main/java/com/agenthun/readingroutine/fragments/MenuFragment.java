@@ -112,6 +112,7 @@ public class MenuFragment extends TFragment {
     public void onAboutClick() {
         if (mListener != null) {
             mListener.onFragmentInteraction(ABOUT_FRAGMENT);
+            getContext().pushFragmentToBackStack(ABoutFragment.class, null);
         }
     }
 
@@ -131,7 +132,7 @@ public class MenuFragment extends TFragment {
         }
     }
 
-    public static abstract interface OnMenuInteractionListener {
-        public abstract void onFragmentInteraction(int fragmentIndex);
+    public interface OnMenuInteractionListener {
+        void onFragmentInteraction(int fragmentIndex);
     }
 }

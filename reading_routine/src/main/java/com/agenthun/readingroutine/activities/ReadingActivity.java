@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
@@ -42,10 +41,10 @@ public class ReadingActivity extends TActivity {
     HorizontalScrollView scrollView;
     @InjectView(R.id.layout_inner_shortcut)
     LinearLayout layoutInnerShortcut;
-    @InjectView(R.id.page_container)
-    RelativeLayout pageContainerLayout;
     @InjectView(R.id.page_view)
     PageView pageView;
+    @InjectView(R.id.reading_empty_view)
+    View mEmptyView;
 
     Bitmap curPageBitmap, nextPageBitmap;
     Canvas curPageCanvas, nextPageCanvas;
@@ -62,69 +61,183 @@ public class ReadingActivity extends TActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_reading);
         ButterKnife.inject(this);
 
         //for Shortcut
         initShortcut(layoutShortcut);
-/*        pageContainerLayout.setOnClickListener(new View.OnClickListener() {
+
+        checkIfEmpty();
+
+        if (fileName == null || fileName.length() == 0) {
+            layoutShortcut.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (pendingIntro) {
+                        layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new LinearOutSlowInInterpolator()).start();
+                        pendingIntro = false;
+                    }
+                }
+            }, 100);
+        }
+    }
+
+    private void initShortcut(final LinearLayout layoutShortcut) {
+        layoutShortcut.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
-            public void onClick(View v) {
-                if (pendingIntro) {
-                    layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new OvershootInterpolator(0.72f)).start();
-                    pendingIntro = false;
-                    Log.d(TAG, "onClick() returned: on" + pendingIntro);
-                } else {
-                    layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
-                    pendingIntro = true;
-                    Log.d(TAG, "onClick() returned: off" + pendingIntro);
+            public boolean onPreDraw() {
+                layoutShortcut.getViewTreeObserver().removeOnPreDrawListener(this);
+                layoutShortcut.setTranslationY(-layoutShortcut.getHeight());
+                pendingIntro = true;
+                return true;
+            }
+        });
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    private void checkIfEmpty() {
+        if (mEmptyView != null) {
+            mEmptyView.setVisibility((fileName != null && fileName.length() > 0) ? View.GONE : View.VISIBLE);
+            pageView.setVisibility((fileName != null && fileName.length() > 0) ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @OnClick(R.id.quitReadingBtn)
+    public void onQuitReadingClick() {
+        Log.d(TAG, "onQuitReadingClick() returned: ");
+        finish();
+        super.onBackPressed();
+    }
+
+    int fontSize = 34;
+
+    @OnClick(R.id.decrease_font)
+    public void onDecreaseFontClick() {
+        Log.d(TAG, "onDecreaseFontClick() returned: ");
+        if (fileName != null && fileName.length() > 0) {
+            fontSize -= 4;
+            filePageFactory.setFontSize(fontSize);
+            filePageFactory.onDraw(curPageCanvas);
+            filePageFactory.onDraw(nextPageCanvas);
+            pageView.refresh();
+        }
+    }
+
+    @OnClick(R.id.increase_font)
+    public void onIncreaseFontClick() {
+        Log.d(TAG, "onIncreaseFontClick() returned: ");
+        if (fileName != null && fileName.length() > 0) {
+            fontSize += 4;
+            filePageFactory.setFontSize(fontSize);
+            filePageFactory.onDraw(curPageCanvas);
+            filePageFactory.onDraw(nextPageCanvas);
+            pageView.setBitmaps(curPageBitmap, nextPageBitmap);
+            pageView.refresh();
+        }
+    }
+
+    @OnClick(R.id.reading_background)
+    public void onReadingBackgroundClick() {
+        Log.d(TAG, "onReadingBackgroundClick() returned: ");
+        if (fileName != null && fileName.length() > 0) {
+        }
+    }
+
+    @OnClick(R.id.marking)
+    public void onMarkingClick() {
+        Log.d(TAG, "onMarkingClick() returned: ");
+        if (fileName != null && fileName.length() > 0) {
+        }
+    }
+
+/*    @OnClick(R.id.copy)
+    public void onCopyClick() {
+        Log.d(TAG, "onCopyClick() returned: ");
+        if (fileName != null && fileName.length() > 0) {
+        }
+    }
+
+    @OnClick(R.id.reading_list)
+    public void onReadingListClick() {
+        Log.d(TAG, "onReadingListClick() returned: ");
+        if (fileName != null && fileName.length() > 0) {
+        }
+    }*/
+
+    @OnClick(R.id.reading_open)
+    public void onReadingOpenClick() {
+        Log.d(TAG, "onReadingOpenClick() returned: ");
+        Intent intent = new Intent(this, FilePickerActivity.class);
+        startActivityForResult(intent, OPEN_FILE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == OPEN_FILE && resultCode == RESULT_OK) {
+            //filePageFactory.closeFile(fileName);
+
+            fileName = String.valueOf(data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH));
+            Log.d(TAG, "onActivityResult() returned: " + fileName);
+
+            // open file
+            if (fileName.endsWith(".txt")) {
+                checkIfEmpty();
+
+                try {
+                    layoutShortcut.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (pendingIntro) {
+                                layoutShortcut.animate().translationY(0).setDuration(400).setInterpolator(new LinearOutSlowInInterpolator()).start();
+                                pendingIntro = false;
+                            } else {
+                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setDuration(400).setInterpolator(new FastOutLinearInInterpolator()).start();
+                                pendingIntro = true;
+                            }
+                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                        }
+                    }, 100);
+
+                    int width = pageView.getViewWidth();
+                    int height = pageView.getViewHeight();
+
+                    curPageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    nextPageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    curPageCanvas = new Canvas(curPageBitmap);
+                    nextPageCanvas = new Canvas(nextPageBitmap);
+
+                    pageView.setBitmaps(curPageBitmap, curPageBitmap);
+
+                    filePageFactory = new FilePageFactory(width, height);
+
+                    // open file
+                    filePageFactory.openFile(fileName);
+                    filePageFactory.onDraw(curPageCanvas);
+
+                    pageView.setOnTouchListener(mOnTouchListener);
+                } catch (IOException e) {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    e.printStackTrace();
                 }
             }
-        });*/
-/*        pageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.d(TAG, "onLongClick()");
-                return false;
-            }
-        });*/
-
-        // for PageView
-        //pageView = new PageView(this);
-
-        int width = pageView.getViewWidth();
-        int height = pageView.getViewHeight();
-
-        //Log.d(TAG, "onCreate() returned: " + pageView.getViewWidth() + ", " + pageView.getViewHeight());
-
-        curPageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        nextPageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        curPageCanvas = new Canvas(curPageBitmap);
-        nextPageCanvas = new Canvas(nextPageBitmap);
-
-        pageView.setBitmaps(curPageBitmap, curPageBitmap);
-        //pageContainerLayout.addView(pageView);
-
-        filePageFactory = new FilePageFactory(width, height);
-
-        // open file
-        if (fileName == null || fileName.length() == 0) {
-            Intent intent = new Intent(this, FilePickerActivity.class);
-            startActivityForResult(intent, OPEN_FILE);
-        } else {
-            try {
-                filePageFactory.openFile(fileName);
-                filePageFactory.onDraw(curPageCanvas);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
+    }
 
-        // PageView Listen
-        pageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+    private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
 /*                //Version 1
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
@@ -169,204 +282,102 @@ public class ReadingActivity extends TActivity {
                 }
                 return true;*/
 
-                //Version 2
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        pageView.abortAnimation();
-                        pageView.calcCornerXY(event.getX(), event.getY());
+            //Version 2
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    pageView.abortAnimation();
+                    pageView.calcCornerXY(event.getX(), event.getY());
 
-                        lastX = event.getX();
-                        mEvents = 0;
-                        break;
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                    case MotionEvent.ACTION_POINTER_UP:
-                        mEvents = -1;
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        //Log.d(TAG, "onTouch() returned: mEvents=" + mEvents);
+                    lastX = event.getX();
+                    mEvents = 0;
+                    break;
+                case MotionEvent.ACTION_POINTER_DOWN:
+                case MotionEvent.ACTION_POINTER_UP:
+                    mEvents = -1;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    //Log.d(TAG, "onTouch() returned: mEvents=" + mEvents);
 
-                        moveLenght = event.getX() - lastX;
+                    moveLenght = event.getX() - lastX;
 
-                        if (moveLenght > moveLenghtThreshold && mEvents == 0) {
-                            mEvents = 1;
+                    if (moveLenght > moveLenghtThreshold && mEvents == 0) {
+                        mEvents = 1;
 //                            Log.d(TAG, "onTouch() returned: right");
-                            if (!pendingIntro) {
-                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
-                                pendingIntro = true;
-                            }
+                        if (!pendingIntro) {
+                            layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                            pendingIntro = true;
+                        }
 
-                            // 向前翻页
-                            try {
-                                filePageFactory.prePage();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            if (filePageFactory.isFirstPage()) {
-                                isFistOrLastPage = true;
-                                return false;
-                            } else {
-                                isFistOrLastPage = false;
-                            }
-                            //SpannableString ss = filePageFactory.getSpannableString();
+                        // 向前翻页
+                        try {
+                            filePageFactory.prePage();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (filePageFactory.isFirstPage()) {
+                            isFistOrLastPage = true;
+                            return false;
+                        } else {
+                            isFistOrLastPage = false;
+                        }
+                        //SpannableString ss = filePageFactory.getSpannableString();
 
-                            filePageFactory.onDraw(nextPageCanvas);
-                            pageView.setBitmaps(curPageBitmap, nextPageBitmap);
+                        filePageFactory.onDraw(nextPageCanvas);
+                        pageView.setBitmaps(curPageBitmap, nextPageBitmap);
 
-                            pageView.setTouch(event.getX(), event.getY());
-                        } else if (moveLenght < -moveLenghtThreshold && mEvents == 0) {
-                            mEvents = 1;
+                        pageView.setTouch(event.getX(), event.getY());
+                    } else if (moveLenght < -moveLenghtThreshold && mEvents == 0) {
+                        mEvents = 1;
 //                            Log.d(TAG, "onTouch() returned: left");
-                            if (!pendingIntro) {
-                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
-                                pendingIntro = true;
-                            }
-
-                            // 向后翻页
-                            try {
-                                filePageFactory.nextPage();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            if (filePageFactory.isLastPage()) {
-                                isFistOrLastPage = true;
-                                return false;
-                            } else {
-                                isFistOrLastPage = false;
-                            }
-                            filePageFactory.onDraw(nextPageCanvas);
-                            pageView.setBitmaps(curPageBitmap, nextPageBitmap);
-
-                            pageView.setTouch(event.getX(), event.getY());
+                        if (!pendingIntro) {
+                            layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                            pendingIntro = true;
                         }
-                        if (mEvents == 1 && isFistOrLastPage == false) {
-                            pageView.setTouch(event.getX(), event.getY());
+
+                        // 向后翻页
+                        try {
+                            filePageFactory.nextPage();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        lastX = event.getX();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if (mEvents == 1) {
-                            filePageFactory.onDraw(curPageCanvas);
+                        if (filePageFactory.isLastPage()) {
+                            isFistOrLastPage = true;
+                            return false;
+                        } else {
+                            isFistOrLastPage = false;
+                        }
+                        filePageFactory.onDraw(nextPageCanvas);
+                        pageView.setBitmaps(curPageBitmap, nextPageBitmap);
+
+                        pageView.setTouch(event.getX(), event.getY());
+                    }
+                    if (mEvents == 1 && isFistOrLastPage == false) {
+                        pageView.setTouch(event.getX(), event.getY());
+                    }
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (mEvents == 1) {
+                        filePageFactory.onDraw(curPageCanvas);
 //                            Log.d(TAG, "onTouch() returned: canDragOver()=" + pageView.canDragOver());
-                            if (pageView.canDragOver()) {
-                                pageView.startAnimation(1200);
-                                pageView.refresh();
-                            } else {
-                                pageView.setTouch(pageView.getCornerX() - 0.09f, pageView.getCornerY() - 0.09f);
-                            }
-                        } else if (mEvents == 0) {
-                            if (pendingIntro) {
-                                layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new LinearOutSlowInInterpolator()).start();
-                                pendingIntro = false;
-                            } else {
-                                layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new FastOutLinearInInterpolator()).start();
-                                pendingIntro = true;
-                            }
+                        if (pageView.canDragOver()) {
+                            pageView.startAnimation(1200);
+                            pageView.refresh();
+                        } else {
+                            pageView.setTouch(pageView.getCornerX() - 0.09f, pageView.getCornerY() - 0.09f);
                         }
-                        break;
-                }
-                return true;
+                    } else if (mEvents == 0) {
+                        if (pendingIntro) {
+                            layoutShortcut.animate().translationY(0).setStartDelay(300).setDuration(400).setInterpolator(new LinearOutSlowInInterpolator()).start();
+                            pendingIntro = false;
+                        } else {
+                            layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setStartDelay(300).setDuration(400).setInterpolator(new FastOutLinearInInterpolator()).start();
+                            pendingIntro = true;
+                        }
+                    }
+                    break;
             }
-        });
-    }
-
-    private void initShortcut(final LinearLayout layoutShortcut) {
-        layoutShortcut.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                layoutShortcut.getViewTreeObserver().removeOnPreDrawListener(this);
-                layoutShortcut.setTranslationY(-layoutShortcut.getHeight());
-                pendingIntro = true;
-                return true;
-            }
-        });
-    }
-
-    @Override
-    protected int getFragmentContainerId() {
-        return 0;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @OnClick(R.id.quitReadingBtn)
-    public void onQuitReadingClick() {
-        Log.d(TAG, "onQuitReadingClick() returned: ");
-        finish();
-        super.onBackPressed();
-    }
-
-    int fontSize = 34;
-
-    @OnClick(R.id.decrease_font)
-    public void onDecreaseFontClick() {
-        Log.d(TAG, "onDecreaseFontClick() returned: ");
-        fontSize -= 4;
-        filePageFactory.setFontSize(fontSize);
-        filePageFactory.onDraw(curPageCanvas);
-        filePageFactory.onDraw(nextPageCanvas);
-        pageView.refresh();
-    }
-
-    @OnClick(R.id.increase_font)
-    public void onIncreaseFontClick() {
-        Log.d(TAG, "onIncreaseFontClick() returned: ");
-        fontSize += 4;
-        filePageFactory.setFontSize(fontSize);
-        filePageFactory.onDraw(curPageCanvas);
-        filePageFactory.onDraw(nextPageCanvas);
-        pageView.setBitmaps(curPageBitmap, nextPageBitmap);
-        pageView.refresh();
-    }
-
-    @OnClick(R.id.reading_background)
-    public void onReadingBackgroundClick() {
-        Log.d(TAG, "onReadingBackgroundClick() returned: ");
-    }
-
-    @OnClick(R.id.marking)
-    public void onMarkingClick() {
-        Log.d(TAG, "onMarkingClick() returned: ");
-    }
-
-    @OnClick(R.id.copy)
-    public void onCopyClick() {
-        Log.d(TAG, "onCopyClick() returned: ");
-    }
-
-    @OnClick(R.id.reading_list)
-    public void onReadingListClick() {
-        Log.d(TAG, "onReadingListClick() returned: ");
-    }
-
-    @OnClick(R.id.reading_open)
-    public void onReadingOpenClick() {
-        Log.d(TAG, "onReadingOpenClick() returned: ");
-        Intent intent = new Intent(this, FilePickerActivity.class);
-        startActivityForResult(intent, OPEN_FILE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == OPEN_FILE && resultCode == RESULT_OK) {
-            filePageFactory.closeFile(fileName);
-
-            fileName = String.valueOf(data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH));
-            Log.d(TAG, "onActivityResult() returned: " + fileName);
-
-            // open file
-            if (fileName.endsWith(".txt")) {
-                try {
-                    filePageFactory.openFile(fileName);
-                    filePageFactory.onDraw(curPageCanvas);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            return true;
         }
-    }
+    };
 }

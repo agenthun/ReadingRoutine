@@ -83,4 +83,9 @@
         <item name="android:paddingBottom">@dimen/single_or_multiline_fields_bottom_padding</item>
     </style>
 
+    <style name="about_item_style">
+        <item name="android:textSize">@dimen/abc_text_size_subhead_material</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

@@ -59,21 +59,21 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_marking" />
 
-            <ImageButton
-                android:id="@+id/copy"
-                style="@style/SelectableDarkBackgroundBorderless"
-                android:layout_width="?actionBarSize"
-                android:layout_height="?actionBarSize"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_copy" />
+            <!--            <ImageButton
+                            android:id="@+id/copy"
+                            style="@style/SelectableDarkBackgroundBorderless"
+                            android:layout_width="?actionBarSize"
+                            android:layout_height="?actionBarSize"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_copy" />
 
-            <ImageButton
-                android:id="@+id/reading_list"
-                style="@style/SelectableDarkBackgroundBorderless"
-                android:layout_width="?actionBarSize"
-                android:layout_height="?actionBarSize"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_reading_list" />
+                        <ImageButton
+                            android:id="@+id/reading_list"
+                            style="@style/SelectableDarkBackgroundBorderless"
+                            android:layout_width="?actionBarSize"
+                            android:layout_height="?actionBarSize"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_reading_list" />-->
 
             <ImageButton
                 android:id="@+id/reading_open"
