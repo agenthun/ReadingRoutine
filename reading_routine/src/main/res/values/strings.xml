@@ -52,9 +52,11 @@
     <string name="start_path_name">sdcard0</string>
 
     <string name="text_about">关于</string>
-    <string name="text_version">版本 1.0</string>
-    <string name="text_copyright">\@2015 agenthun</string>
-    <string name="text_open_source_licenses">开源协议</string>
+    <string name="text_version">V1.0 Beta</string>
+    <string name="text_app_new_version_update">版本更新</string>
+    <string name="text_new_app_version">新版本</string>
+    <string name="text_app_introduction">功能介绍</string>
     <string name="text_thanks">致谢</string>
+    <string name="text_copyright">Copyright \@2015 agenthun</string>
 
 </resources>

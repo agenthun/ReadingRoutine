@@ -45,4 +45,11 @@
 
     <!-- Note Details colors. -->
     <color name="theme_divider">#ffb6b6b6</color>
+
+    <color name="theme_ripple_dark">#40ffffff</color>
+    <color name="theme_ripple_light">#40000000</color>
+    <color name="theme_ripple_mask_dark">#ff000000</color>
+    <color name="theme_ripple_mask_light">#ffffffff</color>
+    <color name="listItemPressedColor">#19000000</color>
+
 </resources>

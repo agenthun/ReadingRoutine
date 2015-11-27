@@ -12,6 +12,7 @@
     <dimen name="margin_vertical">16dp</dimen>
     <dimen name="margin_vertical_medium">8dp</dimen>
     <dimen name="margin_vertical_small">2dp</dimen>
+    <dimen name="listLinePaddingWithContent">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Note Details dimens. -->
@@ -19,6 +20,6 @@
     <dimen name="divider_height">1dp</dimen>
     <dimen name="single_or_multiline_fields_top_padding">20.0dp</dimen>
     <dimen name="single_or_multiline_fields_bottom_padding">20.0dp</dimen>
-    <dimen name="editor_line_space_extra">5.0dip</dimen>
+    <dimen name="editor_line_space_extra">5.0dp</dimen>
 
 </resources>
