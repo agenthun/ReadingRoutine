@@ -112,7 +112,7 @@ public class MenuFragment extends TFragment {
     public void onAboutClick() {
         if (mListener != null) {
             mListener.onFragmentInteraction(ABOUT_FRAGMENT);
-            getContext().pushFragmentToBackStack(AboutFragment.class, null);
+            //getContext().pushFragmentToBackStack(AboutFragment.class, null);
         }
     }
 
