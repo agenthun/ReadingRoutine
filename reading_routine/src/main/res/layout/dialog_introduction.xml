@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.读书计划安排" />
+
+        <ImageView
+            android:layout_width="123dp"
+            android:layout_height="216dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/introduction_routine" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="2.阅读本地电子书" />
+
+        <ImageView
+            android:layout_width="123dp"
+            android:layout_height="216dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/introduction_reading" />
+
+        <!--        <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="3.读书笔记" />
+
+                <ImageView
+                    android:layout_width="123dp"
+                    android:layout_height="216dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/introduction_notes" />-->
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
