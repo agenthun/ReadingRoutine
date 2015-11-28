@@ -8,7 +8,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -141,7 +140,7 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 String menuItemTitle = menuItem.getTitle() + "";
-                Log.i(TAG, menuItemTitle);
+                //Log.i(TAG, menuItemTitle);
                 switch (menuItemTitle) {
                     case "首页":
                         drawerLayout.closeDrawers();

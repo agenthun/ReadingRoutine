@@ -1,18 +1,15 @@
 package com.agenthun.readingroutine.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.util.Log;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.agenthun.readingroutine.R;
-import com.agenthun.readingroutine.transitionmanagers.ITFragment;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.ButterKnife;
@@ -22,13 +19,17 @@ import butterknife.OnClick;
 /**
  * Created by Henry on 2015/7/17.
  */
-public class CalendarDialogFragment extends DialogFragment {
+public class CalendarDialogFragment extends AppCompatDialogFragment {
     @InjectView(R.id.calendarView)
     MaterialCalendarView calendarView;
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private Date mDate;
 
     private CalendarCallback mCalendarCallback;
+
+    public CalendarDialogFragment() {
+
+    }
 
     public CalendarDialogFragment(Date mDate) {
         this.mDate = mDate;
