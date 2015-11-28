@@ -19,7 +19,7 @@
         android:background="@drawable/btn_default"
         android:gravity="center"
         android:text="@string/time_setting_finish"
-        android:textColor="@color/background_daytime_material_blue"
+        android:textColor="@color/text_color_green"
         android:textStyle="bold" />
 
 </LinearLayout>

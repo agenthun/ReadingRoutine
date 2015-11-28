@@ -59,5 +59,11 @@
     <string name="text_thanks">致谢</string>
     <string name="text_ok">确认</string>
     <string name="text_copyright">Copyright \@2015 agenthun</string>
+    <string name="text_introduction_title_routines">1.读书计划安排</string>
+    <string name="text_introduction_content_routines">在生活中，人们对于购买的书籍，往往在刚购买几日时会有极高的兴趣阅读，后来因为种种原因，就丢弃在一边，以至于最后自己都忘了买过这本书。针对这种情况，我们决定开发一款移动端应用，来帮助人们管理购买的书籍，做到物尽其用，让书籍不再只是摆设。</string>
+    <string name="text_introduction_title_reading">2.阅读本地电子书</string>
+    <string name="text_introduction_content_reading">加入电子书阅读器的功能，可与读书计划安排进行关联。</string>
+    <string name="text_introduction_title_notes">3.读书笔记</string>
+    <string name="text_introduction_content_notes">你可以添加读书笔记，进行好句记录，书评，读后感等。</string>
 
 </resources>

@@ -14,44 +14,91 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1.读书计划安排" />
+            android:fontFamily="sans-serif"
+            android:text="@string/text_introduction_title_routines"
+            android:textColor="@color/text_dialog_color_subhead" />
 
-        <ImageView
-            android:layout_width="123dp"
-            android:layout_height="216dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:src="@drawable/introduction_routine" />
-        <!--        <com.facebook.drawee.view.SimpleDraweeView
-                    android:layout_width="123dp"
-                    android:layout_height="216dp"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/introduction_routine" />-->
+            android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="144dp"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/introduction_routine" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_horizontal"
+                android:fontFamily="sans-serif"
+                android:text="@string/text_introduction_content_routines"
+                android:textColor="@color/text_dialog_color_subhead" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="2.阅读本地电子书" />
+            android:fontFamily="sans-serif"
+            android:text="@string/text_introduction_title_reading"
+            android:textColor="@color/text_dialog_color_subhead" />
 
-        <ImageView
-            android:layout_width="123dp"
-            android:layout_height="216dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:src="@drawable/introduction_reading" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="144dp"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/introduction_reading" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_horizontal"
+                android:fontFamily="sans-serif"
+                android:text="@string/text_introduction_content_reading"
+                android:textColor="@color/text_dialog_color_subhead" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="3.读书笔记" />
+            android:fontFamily="sans-serif"
+            android:text="@string/text_introduction_title_notes"
+            android:textColor="@color/text_dialog_color_subhead" />
 
-        <ImageView
-            android:layout_width="123dp"
-            android:layout_height="216dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:src="@drawable/introduction_notes" />
+            android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="144dp"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/introduction_notes" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_horizontal"
+                android:fontFamily="sans-serif"
+                android:text="@string/text_introduction_content_notes"
+                android:textColor="@color/text_dialog_color_subhead" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
