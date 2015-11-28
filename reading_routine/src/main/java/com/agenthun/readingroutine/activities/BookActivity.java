@@ -178,9 +178,20 @@ public class BookActivity extends TActivity {
             Calendar calendar = Calendar.getInstance();
             mDate = calendar.getTime();
         }
+
         CalendarDialogFragment calendarDialogFragment = new CalendarDialogFragment(mDate);
         calendarDialogFragment.show(getSupportFragmentManager(), TAG);
         calendarDialogFragment.setCalendarCallback(mCalendarFragmentCallback);
+
+/*        DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.d(TAG, "onDateSet() returned: " + year);
+                Log.d(TAG, "onDateSet() returned: " + monthOfYear);
+                Log.d(TAG, "onDateSet() returned: " + dayOfMonth);
+            }
+        };
+        new DatePickerDialog(BookActivity.this, mDateSetListener, 2015, 11, 29).show();*/
     }
 
     @OnClick(R.id.delete)

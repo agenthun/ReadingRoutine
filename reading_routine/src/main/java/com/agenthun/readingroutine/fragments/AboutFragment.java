@@ -57,7 +57,7 @@ public class AboutFragment extends TFragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_introduction, null);
                 builder.setView(view);
-                builder.setTitle(R.string.text_app_introduction).show();
+                builder.setTitle(R.string.text_app_introduction).setPositiveButton(R.string.text_ok, null).show();
             }
         });
 

@@ -19,7 +19,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -33,7 +33,7 @@
             <EditText
                 android:id="@+id/edit_note_title"
                 style="@style/single_line_text_field"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:hint="title"
                 android:singleLine="true" />
 
@@ -42,8 +42,8 @@
             <EditText
                 android:id="@+id/edit_note_content"
                 style="@style/multiline_text_field"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@color/color_white"
                 android:gravity="top"
                 android:hint="compose"

@@ -57,10 +57,6 @@
     <string name="text_new_app_version">新版本</string>
     <string name="text_app_introduction">功能介绍</string>
     <string name="text_thanks">致谢</string>
-    <string name="text_app_introduction_content">1.读书计划安排/n
-        2.阅读本地电子书/n
-        3.读书笔记/n
-        4.好书推荐</string>
     <string name="text_ok">确认</string>
     <string name="text_copyright">Copyright \@2015 agenthun</string>
 
