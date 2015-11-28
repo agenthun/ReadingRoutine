@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_fab_default"
             android:elevation="@dimen/default_elevation"
-            android:src="@drawable/management_badge" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/reading_badge" />
 
         <ImageButton
             android:id="@+id/ic_routines"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_fab_default"
             android:elevation="@dimen/default_elevation"
+            android:scaleType="fitCenter"
             android:src="@drawable/routines_badge" />
 
         <ImageButton
@@ -32,6 +34,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_fab_default"
             android:elevation="@dimen/default_elevation"
+            android:scaleType="fitCenter"
             android:src="@drawable/shopping_badge" />
 
         <ImageButton
@@ -40,6 +43,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_fab_default"
             android:elevation="@dimen/default_elevation"
+            android:scaleType="fitCenter"
             android:src="@drawable/about_badge" />
 
         <ImageButton
@@ -48,6 +52,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_fab_default"
             android:elevation="@dimen/default_elevation"
+            android:scaleType="fitCenter"
             android:src="@drawable/notes_badge" />
 
         <ImageButton
@@ -56,11 +61,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_fab_default"
             android:elevation="@dimen/default_elevation"
+            android:scaleType="fitCenter"
             android:src="@drawable/settings_badge" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_reading_routine_white" />
     </com.agenthun.readingroutine.views.SixangleViewGroup>
 </android.support.design.widget.CoordinatorLayout>
