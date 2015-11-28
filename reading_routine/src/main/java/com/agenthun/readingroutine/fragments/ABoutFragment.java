@@ -17,7 +17,7 @@ import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ABoutFragment extends TFragment {
+public class AboutFragment extends TFragment {
 
     private static final String TAG = "AboutFragment";
 
@@ -29,9 +29,7 @@ public class ABoutFragment extends TFragment {
     private TextView appNewVersionNumHint;
     private TextView appNewVersionNum;
 
-    private boolean isAboutItemDetail = false;
-
-    public ABoutFragment() {
+    public AboutFragment() {
         // Required empty public constructor
     }
 
