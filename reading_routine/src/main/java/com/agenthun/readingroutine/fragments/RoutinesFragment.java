@@ -16,7 +16,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageButton;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.activities.BookActivity;
@@ -65,7 +64,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     private boolean pendingIntro;
     private ArrayList<BookInfo> mDataSet;
     private int itemPosition = 1;
-    BookDatabaseUtil databaseUtil;
+    private BookDatabaseUtil databaseUtil;
 
     public RoutinesFragment() {
         // Required empty public constructor
@@ -172,8 +171,8 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 routinesAdapter.setLockedAnimations(true);
             }
         });
-		/*        RecyclerViewScrollManager scrollManager = new RecyclerViewScrollManager();
-		        scrollManager.attach(routinesRecyclerView);
+        /*        RecyclerViewScrollManager scrollManager = new RecyclerViewScrollManager();
+                scrollManager.attach(routinesRecyclerView);
 		        scrollManager.addView(addRoutinesItemBtn, RecyclerViewScrollManager.Direction.DOWN); //下滑动画*/
     }
 
@@ -226,9 +225,9 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                     BookInfo getData = routinesAdapter.getItemData(position - 1);
                     Intent intent = new Intent(getContext(), BookActivity.class);
 //                    intent.putExtra(RoutinesAdapter.BOOK_INFO, getData);
-                    intent.putExtra(RoutinesAdapter.BOOK_NAME, (String) getData.getBookName());
+                    intent.putExtra(RoutinesAdapter.BOOK_NAME, getData.getBookName());
                     intent.putExtra(RoutinesAdapter.BOOK_COLOR_INDEX, (int) getData.getBookColor());
-                    intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, (String) getData.getBookAlarmTime());
+                    intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, getData.getBookAlarmTime());
                     startActivityForResult(intent, UPDATE_BOOK);
                 }
 

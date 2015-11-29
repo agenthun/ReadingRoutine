@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.Log;
@@ -13,19 +14,26 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.agenthun.readingroutine.R;
+import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.agenthun.readingroutine.views.FilePageFactory;
 import com.agenthun.readingroutine.views.PageView;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by Agent Henry on 2015/7/25.
@@ -45,6 +53,9 @@ public class ReadingActivity extends TActivity {
     PageView pageView;
     @InjectView(R.id.reading_empty_view)
     View mEmptyView;
+
+    @InjectView(R.id.reading_list)
+    ImageButton readingListImageButton;
 
     Bitmap curPageBitmap, nextPageBitmap;
     Canvas curPageCanvas, nextPageCanvas;
@@ -114,7 +125,6 @@ public class ReadingActivity extends TActivity {
 
     @OnClick(R.id.quitReadingBtn)
     public void onQuitReadingClick() {
-        Log.d(TAG, "onQuitReadingClick() returned: ");
         finish();
         super.onBackPressed();
     }
@@ -123,7 +133,7 @@ public class ReadingActivity extends TActivity {
 
     @OnClick(R.id.decrease_font)
     public void onDecreaseFontClick() {
-        Log.d(TAG, "onDecreaseFontClick() returned: ");
+        //Log.d(TAG, "onDecreaseFontClick() returned: ");
         if (fileName != null && fileName.length() > 0) {
             fontSize -= 4;
             filePageFactory.setFontSize(fontSize);
@@ -135,7 +145,7 @@ public class ReadingActivity extends TActivity {
 
     @OnClick(R.id.increase_font)
     public void onIncreaseFontClick() {
-        Log.d(TAG, "onIncreaseFontClick() returned: ");
+        //Log.d(TAG, "onIncreaseFontClick() returned: ");
         if (fileName != null && fileName.length() > 0) {
             fontSize += 4;
             filePageFactory.setFontSize(fontSize);
@@ -165,18 +175,49 @@ public class ReadingActivity extends TActivity {
         Log.d(TAG, "onCopyClick() returned: ");
         if (fileName != null && fileName.length() > 0) {
         }
-    }
+    }*/
 
     @OnClick(R.id.reading_list)
     public void onReadingListClick() {
-        Log.d(TAG, "onReadingListClick() returned: ");
         if (fileName != null && fileName.length() > 0) {
+            String bookName = fileName.substring(fileName.lastIndexOf('/') + 1, fileName.lastIndexOf('.'));
+            Log.d(TAG, "queryHasBookInfo() returned: " + BookDatabaseUtil.getInstance(ReadingActivity.this).queryHasBookInfo(bookName));
+            if (BookDatabaseUtil.getInstance(ReadingActivity.this).queryHasBookInfo(bookName)) {
+                Snackbar.make(readingListImageButton, R.string.add_routine_already_exists, Snackbar.LENGTH_SHORT).setAction("Done", null).show();
+            } else {
+                final BookInfo bookInfo = new BookInfo();
+                bookInfo.setUserData(LoginActivity.userData);
+                bookInfo.setBookName(bookName);
+                bookInfo.setBookColor(new Random().nextInt(4));
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                bookInfo.setBookAlarmTime(DATE_FORMAT.format(calendar.getTime()));
+
+                //服务器
+                bookInfo.save(ReadingActivity.this, new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        //Log.i(TAG, "上传服务器成功");
+                        //Log.i(TAG, bookInfo.getObjectId());
+                        BookDatabaseUtil.getInstance(ReadingActivity.this).insertBookInfo(bookInfo);
+                        BookDatabaseUtil.getInstance(ReadingActivity.this).queryBookInfos().add(0, bookInfo);
+                        Snackbar.make(readingListImageButton, R.string.add_routine_success, Snackbar.LENGTH_SHORT).setAction("Success", null).show();
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                        //Log.i(TAG, "上传服务器失败: " + s);
+                        BookDatabaseUtil.getInstance(ReadingActivity.this).insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
+                        BookDatabaseUtil.getInstance(ReadingActivity.this).queryBookInfos().add(0, bookInfo);
+                        Snackbar.make(readingListImageButton, R.string.add_routine_error, Snackbar.LENGTH_SHORT).setAction("Error", null).show();
+                    }
+                });
+            }
         }
-    }*/
+    }
 
     @OnClick(R.id.reading_open)
     public void onReadingOpenClick() {
-        Log.d(TAG, "onReadingOpenClick() returned: ");
         Intent intent = new Intent(this, FilePickerActivity.class);
         startActivityForResult(intent, OPEN_FILE);
     }

@@ -36,6 +36,9 @@
 
     <string name="empty_reading_title">没有文章</string>
     <string name="empty_reading_hint">请使用工具栏最右边的按钮选择文章</string>
+    <string name="add_routine_already_exists">已存在该阅读计划</string>
+    <string name="add_routine_success">添加阅读计划成功</string>
+    <string name="add_routine_error">添加阅读计划失败</string>
 
     <string name="empty_directory_hint">空文件夹</string>
     <string name="type_directory">文件夹</string>

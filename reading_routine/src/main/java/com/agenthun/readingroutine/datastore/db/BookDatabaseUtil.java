@@ -3,7 +3,6 @@ package com.agenthun.readingroutine.datastore.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.datastore.BookInfo;
@@ -158,6 +157,22 @@ public class BookDatabaseUtil {
             bookDBHelper.close();
         }
         return uri;
+    }
+
+    public boolean queryHasBookInfo(String bookName) {
+        boolean hasTheBook = false;
+        Cursor cursor = null;
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+                + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookName + "'";
+        cursor = bookDBHelper.query(BookDBHelper.TABLE_NAME, null, where, null, null, null, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            hasTheBook = true;
+            cursor.close();
+        } else {
+            hasTheBook = false;
+        }
+        return hasTheBook;
     }
 
     public ArrayList<BookInfo> queryBookInfos() {
