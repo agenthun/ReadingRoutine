@@ -40,6 +40,7 @@ public class ShoppingActivity extends AppCompatActivity {
         // for test
         mDataSet = new ArrayList<>();
         Book book = new Book();
+        book.setBitmap("http://i.imgur.com/DvpvklR.png");
         book.setTitle("Notebook");
         book.setAuthor("Nigolas Sparks");
         book.setPrice("21");
@@ -48,6 +49,7 @@ public class ShoppingActivity extends AppCompatActivity {
         mDataSet.add(book);
 
         book = new Book();
+        book.setBitmap("http://img1.douban.com/spic/s1747553.jpg");
         book.setTitle("Notebook");
         book.setAuthor("Nigolas Sparks");
         book.setPrice("21");
@@ -56,6 +58,7 @@ public class ShoppingActivity extends AppCompatActivity {
         mDataSet.add(book);
 
         book = new Book();
+        book.setBitmap("http://img3.douban.com/lpic/s28316760.jpg");
         book.setTitle("Notebook");
         book.setAuthor("Nigolas Sparks");
         book.setPrice("21");
@@ -64,6 +67,7 @@ public class ShoppingActivity extends AppCompatActivity {
         mDataSet.add(book);
 
         book = new Book();
+        book.setBitmap("http://img3.douban.com/lpic/s28315660.jpg");
         book.setTitle("Notebook");
         book.setAuthor("Nigolas Sparks");
         book.setPrice("21");

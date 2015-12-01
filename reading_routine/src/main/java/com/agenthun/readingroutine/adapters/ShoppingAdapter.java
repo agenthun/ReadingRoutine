@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.Book;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.Shoppi
 
     @Override
     public void onBindViewHolder(ShoppingViewHolder holder, int position) {
-        //com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(mDataset.get(position).getBitmap(), holder.pic);
+        Picasso.with(mContext).load(mDataset.get(position).getBitmap()).into(holder.pic);
         holder.title.setText(mDataset.get(position).getTitle());
         holder.author.setText("作者:" + mDataset.get(position).getAuthor() + " / " + mDataset.get(position).getPrice() + "元");
         holder.rate.setText(mDataset.get(position).getRate() + "分");

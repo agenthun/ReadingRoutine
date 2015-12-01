@@ -6,12 +6,19 @@
     android:clickable="true"
     android:orientation="horizontal">
 
+    <!--    <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/pic"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_horizontal"
+            android:layout_weight="1"
+            fresco:actualImageScaleType="fitCenter" />-->
+
     <ImageView
         android:id="@+id/pic"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="@dimen/margin_horizontal"
-        android:src="@drawable/ic_folder_gray_48dp" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/margin_horizontal" />
 
     <LinearLayout
         android:layout_width="match_parent"
