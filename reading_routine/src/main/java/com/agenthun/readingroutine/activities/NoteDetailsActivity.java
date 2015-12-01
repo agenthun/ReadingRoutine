@@ -59,7 +59,7 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
         materialMenuIconToolbar.setState(MaterialMenuDrawable.IconState.X);
         materialMenuIconToolbar.setNeverDrawTouch(false);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.text_reading_routine);
         toolbar.setBackgroundColor(colorNote[getNoteColorIndex]);
         setSupportActionBar(toolbar);
@@ -72,7 +72,12 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
             @Override
             public void onClick(View v) {
                 materialMenuIconToolbar.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
-                finish();
+                toolbar.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 200);
             }
         });
 

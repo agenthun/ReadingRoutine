@@ -3,8 +3,12 @@ package com.agenthun.readingroutine.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -16,15 +20,14 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 
+import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.activities.NoteDetailsActivity;
 import com.agenthun.readingroutine.adapters.NotesAdapter;
-import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.NoteInfo;
 import com.agenthun.readingroutine.datastore.db.NoteDatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
-import com.agenthun.readingroutine.views.TagView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -173,18 +176,22 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
             //item点击
             notesAdapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(View view, int position) {
+                public void onItemClick(View view, final int position) {
 //                    Log.d(TAG, "onItemClick() returned: " + view.getClass().getName());
-
-                    if (position == 0) return;
-                    itemPosition = position;
-                    NoteInfo getData = notesAdapter.getItemData(position - 1);
-                    Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
-                    intent.putExtra(NotesAdapter.NOTE_TITLE, (String) getData.getNoteTitle());
-                    intent.putExtra(NotesAdapter.NOTE_COMPOSE, (String) getData.getNoteCompose());
-                    intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, (String) getData.getNoteCreateTime());
-                    intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, (int) getData.getNoteColor());
-                    startActivityForResult(intent, UPDATE_NOTE);
+                    removeAddFab(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (position == 0) return;
+                            itemPosition = position;
+                            NoteInfo getData = notesAdapter.getItemData(position - 1);
+                            Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
+                            intent.putExtra(NotesAdapter.NOTE_TITLE, getData.getNoteTitle());
+                            intent.putExtra(NotesAdapter.NOTE_COMPOSE, getData.getNoteCompose());
+                            intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, getData.getNoteCreateTime());
+                            intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, (int) getData.getNoteColor());
+                            startActivityForResult(intent, UPDATE_NOTE);
+                        }
+                    });
                 }
 
                 @Override
@@ -207,17 +214,35 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
 
     @OnClick(R.id.addBtn)
     public void onAddClick() {
-        itemPosition = Integer.MAX_VALUE;
-        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Calendar calendar = Calendar.getInstance();
-        Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
-        intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, DATE_FORMAT.format(calendar.getTime()));
-        intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, new Random().nextInt(4));
-        startActivityForResult(intent, NEW_NOTE);
+        removeAddFab(new Runnable() {
+            @Override
+            public void run() {
+                itemPosition = Integer.MAX_VALUE;
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Calendar calendar = Calendar.getInstance();
+                Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
+                intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, DATE_FORMAT.format(calendar.getTime()));
+                intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, new Random().nextInt(4));
+                startActivityForResult(intent, NEW_NOTE);
+            }
+        });
+    }
+
+    private void removeAddFab(@Nullable Runnable endAction) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            addNotesItemBtn.animate().scaleX(0).scaleY(0)
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .withEndAction(endAction)
+                    .start();
+        } else {
+            addNotesItemBtn.animate().scaleX(0).scaleY(0)
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .start();
+        }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         String title;
         String compose;
         String time;
@@ -245,6 +270,10 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
             default:
                 break;
         }
+
+        addNotesItemBtn.animate().scaleX(1).scaleY(1)
+                .setInterpolator(new LinearOutSlowInInterpolator())
+                .start();
     }
 
     //addItem,deleteItem,updateItem 的position从0开始

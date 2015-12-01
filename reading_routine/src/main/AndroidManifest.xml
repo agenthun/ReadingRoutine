@@ -84,7 +84,12 @@
         <activity
             android:name=".activities.NoteDetailsActivity"
             android:label="@string/title_activity_note_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.ShoppingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

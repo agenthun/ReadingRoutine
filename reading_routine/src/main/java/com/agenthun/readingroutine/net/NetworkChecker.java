@@ -1,4 +1,4 @@
-package com.agenthun.readingroutine.connectivity;
+package com.agenthun.readingroutine.net;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

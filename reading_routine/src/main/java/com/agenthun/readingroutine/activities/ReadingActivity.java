@@ -72,7 +72,6 @@ public class ReadingActivity extends TActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_reading);
         ButterKnife.inject(this);
 

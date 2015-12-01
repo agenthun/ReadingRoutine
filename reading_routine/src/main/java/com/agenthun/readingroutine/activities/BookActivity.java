@@ -98,7 +98,12 @@ public class BookActivity extends TActivity {
             @Override
             public void onClick(View v) {
                 materialMenuIconToolbar.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
-                finish();
+                toolbar.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 200);
             }
         });
 

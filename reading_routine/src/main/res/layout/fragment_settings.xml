@@ -39,8 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/headerGraphics"
-            android:layout_margin="@dimen/margin_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/margin_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"

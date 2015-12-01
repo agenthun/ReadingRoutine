@@ -1,5 +1,7 @@
 package com.nbsp.materialfilepicker.utils;
 
+import android.os.Environment;
+
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -39,5 +41,25 @@ public class FileUtils {
         final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    //获取APP路径
+    public static String getAppPath() {
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            return "";
+        }
+        File root = Environment.getExternalStorageDirectory();
+        File file = new File(root.getAbsolutePath() + "/ReadingRoutine");
+        if (!file.exists()) file.mkdir();
+        return file.getAbsolutePath();
+    }
+
+    public static String getCachePath() {
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            return "";
+        }
+        File file = new File(getAppPath() + "/cache");
+        if (!file.exists()) file.mkdir();
+        return file.getAbsolutePath();
     }
 }

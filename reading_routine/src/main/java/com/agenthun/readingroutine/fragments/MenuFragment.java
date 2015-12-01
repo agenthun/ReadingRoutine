@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.activities.ReadingActivity;
+import com.agenthun.readingroutine.activities.ShoppingActivity;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 
 import butterknife.ButterKnife;
@@ -105,6 +106,7 @@ public class MenuFragment extends TFragment {
     public void onShoppingClick() {
         if (mListener != null) {
             mListener.onFragmentInteraction(SHOPPING_FRAGMENT);
+            startActivity(new Intent(getContext(), ShoppingActivity.class));
         }
     }
 
