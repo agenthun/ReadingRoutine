@@ -61,7 +61,7 @@ public class NotesAdapter extends BaseTAdapter {
 
     @Override
     protected RecyclerView.ViewHolder createBodyViewHolder(Context context, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_notes, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_note, parent, false);
         StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
         /*        layoutParams.height = cellHeight;
                 layoutParams.width = cellWidth;*/

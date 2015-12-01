@@ -80,7 +80,7 @@ public class RoutinesAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolde
             view.setLayoutParams(layoutParams);
             return new RoutinesHeaderViewHolder(view);
         } else if (viewType == TYPE_ROUTINE) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_routines, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_routine, parent, false);
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
             layoutParams.height = cellHeight;
             layoutParams.width = cellWidth;
