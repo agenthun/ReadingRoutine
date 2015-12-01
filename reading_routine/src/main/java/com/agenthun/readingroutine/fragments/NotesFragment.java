@@ -176,19 +176,19 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
             //item点击
             notesAdapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(View view, final int position) {
+                public void onItemClick(View view, int position) {
 //                    Log.d(TAG, "onItemClick() returned: " + view.getClass().getName());
+                    if (position == 0) return;
+                    itemPosition = position;
+                    NoteInfo getData = notesAdapter.getItemData(position - 1);
+                    final Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
+                    intent.putExtra(NotesAdapter.NOTE_TITLE, getData.getNoteTitle());
+                    intent.putExtra(NotesAdapter.NOTE_COMPOSE, getData.getNoteCompose());
+                    intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, getData.getNoteCreateTime());
+                    intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, (int) getData.getNoteColor());
                     removeAddFab(new Runnable() {
                         @Override
                         public void run() {
-                            if (position == 0) return;
-                            itemPosition = position;
-                            NoteInfo getData = notesAdapter.getItemData(position - 1);
-                            Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
-                            intent.putExtra(NotesAdapter.NOTE_TITLE, getData.getNoteTitle());
-                            intent.putExtra(NotesAdapter.NOTE_COMPOSE, getData.getNoteCompose());
-                            intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, getData.getNoteCreateTime());
-                            intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, (int) getData.getNoteColor());
                             startActivityForResult(intent, UPDATE_NOTE);
                         }
                     });
@@ -214,15 +214,15 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
 
     @OnClick(R.id.addBtn)
     public void onAddClick() {
+        itemPosition = Integer.MAX_VALUE;
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Calendar calendar = Calendar.getInstance();
+        final Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
+        intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, DATE_FORMAT.format(calendar.getTime()));
+        intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, new Random().nextInt(4));
         removeAddFab(new Runnable() {
             @Override
             public void run() {
-                itemPosition = Integer.MAX_VALUE;
-                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Calendar calendar = Calendar.getInstance();
-                Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
-                intent.putExtra(NotesAdapter.NOTE_CREATE_TIME, DATE_FORMAT.format(calendar.getTime()));
-                intent.putExtra(NotesAdapter.NOTE_COLOR_INDEX, new Random().nextInt(4));
                 startActivityForResult(intent, NEW_NOTE);
             }
         });

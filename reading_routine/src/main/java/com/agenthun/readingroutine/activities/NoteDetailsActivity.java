@@ -6,28 +6,26 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.adapters.NotesAdapter;
 import com.agenthun.readingroutine.fragments.NotesFragment;
-import com.agenthun.readingroutine.views.RevealBackgroundView;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 
 import java.util.Random;
 
 
-public class NoteDetailsActivity extends AppCompatActivity implements RevealBackgroundView.OnStateChangeListener {
+public class NoteDetailsActivity extends AppCompatActivity {
 
     private static final String TAG = "NoteDetailsActivity";
 
-    private RevealBackgroundView revealBackgroundView;
     private MaterialMenuIconToolbar materialMenuIconToolbar;
     private EditText noteTitle;
     private EditText noteContent;
@@ -81,9 +79,6 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
             }
         });
 
-        revealBackgroundView = (RevealBackgroundView) findViewById(R.id.revealBackgroundView);
-        setupRevealBackground(savedInstanceState);
-
         noteTitle = (EditText) findViewById(R.id.edit_note_title);
         String title = intent.getStringExtra(NotesAdapter.NOTE_TITLE);
         if (title != null) {
@@ -104,6 +99,19 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
 
         saveNotesItemBtn = (FloatingActionButton) findViewById(R.id.fab);
         initSaveItemBtn(saveNotesItemBtn);
+        saveNotesItemBtn.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (pendingIntro) {
+                    saveNotesItemBtn.animate().scaleX(1).scaleY(1)
+                            .setDuration(300).setStartDelay(300)
+                            .setInterpolator(new LinearOutSlowInInterpolator())
+                            .start();
+                    pendingIntro = false;
+                }
+            }
+        }, 100);
+
         saveNotesItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,23 +132,6 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
         });
     }
 
-    private void setupRevealBackground(Bundle savedInstanceState) {
-        revealBackgroundView.setFillPaintColor(getResources().getColor(R.color.background_daytime_material_blue));
-        revealBackgroundView.setOnStateChangeListener(this);
-        if (savedInstanceState == null) {
-            revealBackgroundView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    revealBackgroundView.getViewTreeObserver().removeOnPreDrawListener(this);
-                    revealBackgroundView.startFromLocation(new int[]{0, 0});
-                    return true;
-                }
-            });
-        } else {
-            revealBackgroundView.setToFinishedFrame();
-        }
-    }
-
     private void initSaveItemBtn(final FloatingActionButton imageButton) {
         //初始化缩小Button
         imageButton.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -153,19 +144,6 @@ public class NoteDetailsActivity extends AppCompatActivity implements RevealBack
                 return true;
             }
         });
-    }
-
-    @Override
-    public void onStateChange(int state) {
-        if (RevealBackgroundView.STATE_FINISHED == state) {
-            if (pendingIntro) {
-                startIntroAnimation();
-            }
-        }
-    }
-
-    private void startIntroAnimation() {
-        saveNotesItemBtn.animate().scaleX(1).scaleY(1).setStartDelay(50).setDuration(400).setInterpolator(new OvershootInterpolator(1.0f)).start();
     }
 
     @Override
