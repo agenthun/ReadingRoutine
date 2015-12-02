@@ -48,6 +48,10 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.Shoppi
         return mDataset.size();
     }
 
+    public void setItems(List<Book> dataset) {
+        mDataset = dataset;
+    }
+
     public class ShoppingViewHolder extends RecyclerView.ViewHolder {
         private ImageView pic;
         private TextView title;

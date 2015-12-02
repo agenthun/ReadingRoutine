@@ -7,10 +7,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.adapters.ShoppingAdapter;
 import com.agenthun.readingroutine.datastore.Book;
+import com.agenthun.readingroutine.net.BaseAsyncHttp;
+import com.agenthun.readingroutine.net.HttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -34,8 +41,8 @@ public class ShoppingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shopping);
 //        ButterKnife.inject(this);
 
-/*        progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
-        progressBar.onDetachedFromWindow();*/
+        /*        progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
+                progressBar.onDetachedFromWindow();*/
 
         // for test
         mDataSet = new ArrayList<>();
@@ -199,6 +206,62 @@ public class ShoppingActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
         shoppingRecyclerView.setLayoutManager(layoutManager);
         shoppingRecyclerView.setAdapter(shoppingAdapter);
+    }
+
+    public void getRequestData(String str) {
+        RequestParams params = new RequestParams();
+        params.put("q", str.trim());
+        BaseAsyncHttp.getReq("/v2/book/search", params, new HttpResponseHandler() {
+            @Override
+            public void onJsonHttpSuccess(JSONObject response) {
+                mDataSet.clear();
+                JSONArray jsonArrays = response.optJSONArray("books");
+                for (int i = 0; i < jsonArrays.length(); i++) {
+                    Book book = new Book();
+                    book.setId(jsonArrays.optJSONObject(i).optString("id"));
+                    book.setTitle(jsonArrays.optJSONObject(i).optString("title"));
+
+                    String authors = "";
+                    for (int j = 0; j < jsonArrays.optJSONObject(i).optJSONArray("author").length(); j++) {
+                        authors = authors + ", " + jsonArrays.optJSONObject(i).optJSONArray("author").optString(j);
+                    }
+                    book.setAuthor(authors);
+
+                    book.setAuthorInfo(jsonArrays.optJSONObject(i).optString("author_intro"));
+                    book.setPublisher(jsonArrays.optJSONObject(i).optString("publisher"));
+                    book.setPublishDate(jsonArrays.optJSONObject(i).optString("pubdate"));
+                    book.setPrice(jsonArrays.optJSONObject(i).optString("price"));
+                    book.setPage(jsonArrays.optJSONObject(i).optString("pages"));
+                    book.setRate(jsonArrays.optJSONObject(i).optJSONObject("rating").optDouble("average"));
+
+                    String tags = "";
+                    for (int j = 0; j < jsonArrays.optJSONObject(i).optJSONArray("tags").length(); j++) {
+                        tags = tags + " " + jsonArrays.optJSONObject(i).optJSONArray("tags").optJSONObject(j).optString("name");
+                    }
+                    book.setTag(tags);
+
+                    book.setContent(jsonArrays.optJSONObject(i).optString("catalog"));
+                    book.setSummary(jsonArrays.optJSONObject(i).optString("summary"));
+                    book.setBitmap(jsonArrays.optJSONObject(i).optString("image"));
+                    book.setReviewCount(jsonArrays.optJSONObject(i).optJSONObject("rating").optInt("numRaters"));
+                    book.setUrl(jsonArrays.optJSONObject(i).optString("ebook_url"));
+
+                    mDataSet.add(book);
+                }
+                updateItem();
+            }
+
+            @Override
+            public void onJsonHttpFailure(JSONObject response) {
+                //Snackbar.make(saveNotesItemBtn, R.string.error_invalid_network, Snackbar.LENGTH_SHORT).setAction("Error", null).show();
+                Toast.makeText(ShoppingActivity.this, R.string.error_invalid_network, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void updateItem() {
+        shoppingAdapter.setItems(mDataSet);
+        shoppingAdapter.notifyDataSetChanged();
     }
 
     //itemClick interface
