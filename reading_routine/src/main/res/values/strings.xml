@@ -70,4 +70,6 @@
     <string name="text_introduction_content_notes">你可以添加读书笔记，进行好句记录，书评，读后感等。</string>
     <string name="error_invalid_network">网络出错</string>
 
+    <string name="text_shopping">好书推荐</string>
+
 </resources>

@@ -200,4 +200,25 @@ public class Book implements Parcelable {
         dest.writeInt(reviewCount);
         dest.writeString(url);
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", authorInfo='" + authorInfo + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", publishDate='" + publishDate + '\'' +
+                ", price='" + price + '\'' +
+                ", page='" + page + '\'' +
+                ", rate=" + rate +
+                ", tag='" + tag + '\'' +
+                ", content='" + content + '\'' +
+                ", summary='" + summary + '\'' +
+                ", bitmap='" + bitmap + '\'' +
+                ", reviewCount=" + reviewCount +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

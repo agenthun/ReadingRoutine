@@ -38,9 +38,10 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.Shoppi
     public void onBindViewHolder(ShoppingViewHolder holder, int position) {
         Picasso.with(mContext).load(mDataset.get(position).getBitmap()).into(holder.pic);
         holder.title.setText(mDataset.get(position).getTitle());
-        holder.author.setText("作者:" + mDataset.get(position).getAuthor() + " / " + mDataset.get(position).getPrice() + "元");
+        holder.author.setText("作者: " + mDataset.get(position).getAuthor());
         holder.rate.setText(mDataset.get(position).getRate() + "分");
         holder.reviewCount.setText("(" + mDataset.get(position).getReviewCount() + "人评论)");
+        holder.price.setText(mDataset.get(position).getPrice());
     }
 
     @Override
@@ -58,6 +59,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.Shoppi
         private TextView author;
         private TextView rate;
         private TextView reviewCount;
+        private TextView price;
 
         public ShoppingViewHolder(View itemView, final OnItemClickListener clickListener) {
             super(itemView);
@@ -73,6 +75,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.Shoppi
             author = (TextView) itemView.findViewById(R.id.author);
             rate = (TextView) itemView.findViewById(R.id.rate);
             reviewCount = (TextView) itemView.findViewById(R.id.reviewCount);
+            price = (TextView) itemView.findViewById(R.id.price);
         }
     }
 
