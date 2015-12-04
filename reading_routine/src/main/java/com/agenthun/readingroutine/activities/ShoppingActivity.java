@@ -1,6 +1,8 @@
 package com.agenthun.readingroutine.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v4.widget.ContentLoadingProgressBar;
@@ -18,6 +20,7 @@ import com.agenthun.readingroutine.adapters.ShoppingAdapter;
 import com.agenthun.readingroutine.datastore.Book;
 import com.agenthun.readingroutine.net.BaseAsyncHttp;
 import com.agenthun.readingroutine.net.HttpResponseHandler;
+import com.agenthun.readingroutine.views.CircularProgressView;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.loopj.android.http.RequestParams;
@@ -39,11 +42,13 @@ public class ShoppingActivity extends AppCompatActivity {
     private MaterialMenuIconToolbar materialMenuIconToolbar;
     private Toolbar toolbar;
     private ContentLoadingProgressBar progressBar;
+    private CircularProgressView progressView;
     private RecyclerView shoppingRecyclerView;
     private ShoppingAdapter shoppingAdapter;
     private FloatingActionButton fab;
     private ArrayList<Book> mDataSet;
     private boolean pendingIntro;
+    private Thread updateThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +79,20 @@ public class ShoppingActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                materialMenuIconToolbar.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
+/*                materialMenuIconToolbar.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
                 toolbar.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         finish();
                     }
-                }, 200);
+                }, 200);*/
+                finish();
             }
         });
 
         // for test
         mDataSet = new ArrayList<>();
+/*
         Book book = new Book();
         book.setBitmap("http://i.imgur.com/DvpvklR.png");
         book.setTitle("Notebook");
@@ -225,6 +232,7 @@ public class ShoppingActivity extends AppCompatActivity {
         book.setRate(5.0);
         book.setReviewCount(100);
         mDataSet.add(book);
+*/
 
 
         shoppingRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -249,9 +257,12 @@ public class ShoppingActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRequestData("s");
+                startSearchAnimation(100);
+                getRequestData("第三种爱情");
             }
         });
+
+        progressView = (CircularProgressView) findViewById(R.id.progressBar);
     }
 
     private void setupGridLayout() {
@@ -296,6 +307,7 @@ public class ShoppingActivity extends AppCompatActivity {
             @Override
             public void onJsonHttpSuccess(JSONObject response) {
                 mDataSet.clear();
+                progressView.setVisibility(View.GONE);
                 JSONArray jsonArrays = response.optJSONArray("books");
                 for (int i = 0; i < jsonArrays.length(); i++) {
                     Book book = new Book();
@@ -344,6 +356,35 @@ public class ShoppingActivity extends AppCompatActivity {
     public void updateItem() {
         shoppingAdapter.setItems(mDataSet);
         shoppingAdapter.notifyDataSetChanged();
+    }
+
+    private void startSearchAnimation(long delayTime) {
+        if (updateThread != null && updateThread.isAlive())
+            updateThread.interrupt();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressView.setVisibility(View.VISIBLE);
+                progressView.setProgress(0f);
+                progressView.startAnimation();
+                updateThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (progressView.getProgress() < progressView.getMaxProgress() && !Thread.interrupted()) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressView.setProgress(progressView.getProgress() + 10);
+                                }
+                            });
+                            SystemClock.sleep(200);
+                        }
+                    }
+                });
+                updateThread.start();
+            }
+        }, delayTime);
     }
 
     //itemClick interface

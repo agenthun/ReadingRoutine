@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Reading Routine</string>
+    <string name="app_name">阅读路线</string>
     <string name="action_settings">设置</string>
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>

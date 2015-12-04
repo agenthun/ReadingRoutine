@@ -126,6 +126,7 @@ public class NotesAdapter extends BaseTAdapter {
         int colorIndex = item.getNoteColor();
         ((NotesViewHolder) viewHolder).tag.setTagMaskColor(colorBook[colorIndex]);
 
+        mItemManger.bindView(viewHolder.itemView, position);
         if (lastAnimatedItem < position) lastAnimatedItem = position;
     }
 

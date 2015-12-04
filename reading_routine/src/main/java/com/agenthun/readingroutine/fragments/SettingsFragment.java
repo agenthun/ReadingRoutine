@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Switch;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
@@ -23,7 +22,7 @@ import butterknife.InjectView;
  */
 public class SettingsFragment extends TFragment {
 
-    private static final String GLOBAL_SETTINGS = "MR_GLOBAL_SETTINGS";
+    public static final String GLOBAL_SETTINGS = "MR_GLOBAL_SETTINGS";
     private static final String FONT_SIZE = "FONT_SIZE";
     private static final String BRIGHTNESS = "BRIGHTNESS";
     private static final String DAYTIME_MODE_ON = "DAYTIME_MODE_ON";

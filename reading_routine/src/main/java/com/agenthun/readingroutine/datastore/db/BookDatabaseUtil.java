@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class BookDatabaseUtil {
     private static final String TAG = "BookDatabaseUtil";
-    public static final String DATABASE_NAME = "readingroutine.db";
+    public static final String DATABASE_NAME = "readingroutine_book.db";
     public static final int DATABASE_VERSION = 1;
 
     private static BookDatabaseUtil instance;

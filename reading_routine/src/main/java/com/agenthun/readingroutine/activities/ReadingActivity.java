@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -246,7 +245,7 @@ public class ReadingActivity extends TActivity {
                                 layoutShortcut.animate().translationY(-layoutShortcut.getHeight()).setDuration(400).setInterpolator(new FastOutLinearInInterpolator()).start();
                                 pendingIntro = true;
                             }
-                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                            //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                         }
                     }, 100);
 
@@ -268,7 +267,7 @@ public class ReadingActivity extends TActivity {
 
                     pageView.setOnTouchListener(mOnTouchListener);
                 } catch (IOException e) {
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     e.printStackTrace();
                 }
             }

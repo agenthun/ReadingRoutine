@@ -1,8 +1,8 @@
 package com.agenthun.readingroutine.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,10 +20,12 @@ import cn.bmob.v3.listener.SaveListener;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
 
-    public static final String USER_NAME = "USER_NAME";
-    public static final String EMAIL = "EMAIL";
+    private static final String TAG = "LoginActivity";
+
+    /*    public static final String USER_NAME = "USER_NAME";
+        public static final String EMAIL = "EMAIL";*/
     public static String BMOB_APP_ID = "cc4a89ea058246d6693bcc479b1951e2";
 
     @InjectView(R.id.login_name)
@@ -45,8 +47,8 @@ public class LoginActivity extends Activity {
         userData = UserData.getCurrentUser(this, UserData.class);
         if (userData != null) {
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(USER_NAME, userData.getUsername());
-            intent.putExtra(EMAIL, userData.getEmail());
+/*            intent.putExtra(USER_NAME, userData.getUsername());
+            intent.putExtra(EMAIL, userData.getEmail());*/
             startActivity(intent);
             finish();
         } else {
@@ -60,6 +62,10 @@ public class LoginActivity extends Activity {
 
     @OnClick(R.id.sign_in_button)
     public void onSignInBtnClick() {
+        attemptLogin();
+    }
+
+    private void attemptLogin() {
         String name = loginName.getText().toString();
         String password = loginPassword.getText().toString();
 
@@ -75,13 +81,14 @@ public class LoginActivity extends Activity {
 
         userData.setUsername(name);
         userData.setPassword(password);
-        userData.login(this, new SaveListener() {
+        userData.setEmail("hun@126.com");
+        userData.login(LoginActivity.this, new SaveListener() {
             @Override
             public void onSuccess() {
                 Toast.makeText(LoginActivity.this, R.string.msg_success, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra(USER_NAME, userData.getUsername());
-                intent.putExtra(EMAIL, userData.getEmail());
+/*                intent.putExtra(USER_NAME, userData.getUsername());
+                intent.putExtra(EMAIL, userData.getEmail());*/
                 startActivity(intent);
                 finish();
             }

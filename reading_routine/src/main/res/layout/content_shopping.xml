@@ -23,15 +23,16 @@
             android:layout_gravity="center"
             android:visibility="visible" />-->
 
-    <!--    <com.scanbook.view.CircularProgressView
-            android:id="@+id/progressBar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:padding="0dp"
-            app:cpv_animAutostart="false"
-            app:cpv_indeterminate="true"
-            app:cpv_thickness="4dp" />-->
+    <com.agenthun.readingroutine.views.CircularProgressView
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:padding="0dp"
+        android:visibility="gone"
+        app:cpv_animAutostart="false"
+        app:cpv_indeterminate="true"
+        app:cpv_thickness="4dp" />
 </RelativeLayout>

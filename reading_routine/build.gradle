@@ -21,8 +21,11 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/BmobSDK_V3.4.1_0710.jar')
-    compile files('libs/Bmob_Push_V0.6beta_20150408.jar')
+    //bmob-sdk ：Bmob的android sdk包
+    compile 'cn.bmob.android:bmob-sdk:3.4.5'
+    //bmob-push：Bmob的推送包
+    compile 'cn.bmob.android:bmob-push:0.6'
+
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.1'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
@@ -37,6 +40,6 @@ dependencies {
     compile 'com.android.support:palette-v7:23.0.1'
     /*    compile 'com.facebook.fresco:fresco:0.8.1'*/
     compile 'com.squareup.picasso:picasso:2.5.2'
-/*    compile 'com.google.code.gson:gson:2.2.4'*/
+    /*    compile 'com.google.code.gson:gson:2.2.4'*/
     compile 'com.loopj.android:android-async-http:1.4.9'
 }
