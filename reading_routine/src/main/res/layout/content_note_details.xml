@@ -49,7 +49,7 @@
                 android:hint="compose"
                 android:lineSpacingExtra="@dimen/editor_line_space_extra"
                 android:minLines="10"
-                android:textColor="@color/grey_800" />
+                android:textColor="@color/gray_800" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

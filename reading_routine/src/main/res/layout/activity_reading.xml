@@ -19,7 +19,7 @@
             android:layout_marginBottom="@dimen/margin_horizontal"
             android:fontFamily="sans-serif-medium"
             android:text="@string/empty_reading_title"
-            android:textColor="@color/grey_400"
+            android:textColor="@color/gray_400"
             android:textSize="@dimen/abc_text_size_subhead_material"
             android:textStyle="normal|bold" />
 
@@ -36,7 +36,7 @@
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="@string/empty_reading_hint"
-            android:textColor="@color/grey_400"
+            android:textColor="@color/gray_400"
             android:textSize="@dimen/abc_text_size_small_material" />
     </LinearLayout>
 

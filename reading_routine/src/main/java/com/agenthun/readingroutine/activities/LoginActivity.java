@@ -3,6 +3,7 @@ package com.agenthun.readingroutine.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,8 +25,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-    /*    public static final String USER_NAME = "USER_NAME";
-        public static final String EMAIL = "EMAIL";*/
     public static String BMOB_APP_ID = "cc4a89ea058246d6693bcc479b1951e2";
 
     @InjectView(R.id.login_name)
@@ -47,13 +46,16 @@ public class LoginActivity extends AppCompatActivity {
         userData = UserData.getCurrentUser(this, UserData.class);
         if (userData != null) {
             Intent intent = new Intent(this, MainActivity.class);
-/*            intent.putExtra(USER_NAME, userData.getUsername());
-            intent.putExtra(EMAIL, userData.getEmail());*/
             startActivity(intent);
             finish();
         } else {
             userData = new UserData();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     public static UserData getUser() {
@@ -63,6 +65,21 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.sign_in_button)
     public void onSignInBtnClick() {
         attemptLogin();
+    }
+
+    @OnClick(R.id.trial_button)
+    public void onTrialBtnClick() {
+        Log.d(TAG, "onTrialBtnClick() returned: ");
+    }
+
+    @OnClick(R.id.forget_password_button)
+    public void onForgetPasswordBtnClick() {
+        Log.d(TAG, "onForgetPasswordBtnClick() returned: ");
+    }
+
+    @OnClick(R.id.sign_up_button)
+    public void onSignUpBtnClick() {
+        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
     }
 
     private void attemptLogin() {
@@ -81,14 +98,11 @@ public class LoginActivity extends AppCompatActivity {
 
         userData.setUsername(name);
         userData.setPassword(password);
-        userData.setEmail("hun@126.com");
         userData.login(LoginActivity.this, new SaveListener() {
             @Override
             public void onSuccess() {
                 Toast.makeText(LoginActivity.this, R.string.msg_success, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-/*                intent.putExtra(USER_NAME, userData.getUsername());
-                intent.putExtra(EMAIL, userData.getEmail());*/
                 startActivity(intent);
                 finish();
             }
@@ -96,7 +110,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(int i, String s) {
                 Toast.makeText(LoginActivity.this, R.string.msg_fail, Toast.LENGTH_SHORT).show();
-                YoYo.with(Techniques.Shake).duration(500).delay(100).playOn(loginPassword);
             }
         });
     }

@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        handler.sendEmptyMessageDelayed(0, 2000);
+        handler.sendEmptyMessageDelayed(0, 1500);
     }
 
     public void setIsFirst(boolean isFirst) {

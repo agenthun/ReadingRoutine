@@ -29,7 +29,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/empty_directory_hint"
-            android:textColor="@color/grey_400"
+            android:textColor="@color/gray_400"
             android:textSize="24sp" />
 
     </LinearLayout>

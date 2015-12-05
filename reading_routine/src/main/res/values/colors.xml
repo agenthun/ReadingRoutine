@@ -13,11 +13,11 @@
     <color name="text_dialog_color_subhead">#1a1a1a</color>
 
     <color name="color_white">@color/bright_foreground_material_dark</color>
-    <color name="grey_100">#f5f5f5</color>
-    <color name="grey_200">#eeeeee</color>
-    <color name="grey_300">#e0e0e0</color>
-    <color name="grey_400">#bdbdbd</color>
-    <color name="grey_800">#424242</color>
+    <color name="gray_100">#f5f5f5</color>
+    <color name="gray_200">#eeeeee</color>
+    <color name="gray_300">#e0e0e0</color>
+    <color name="gray_400">#bdbdbd</color>
+    <color name="gray_800">#424242</color>
     <color name="teal_200">#80cbc4</color>
     <color name="teal_300">#4db6ac</color>
     <color name="teal_400">#26a69a</color>
@@ -32,17 +32,17 @@
     <color name="style_book_color_amber">#ffc170</color>
     <color name="style_book_color_green">#73c778</color>
     <color name="style_book_color_blue">#5677fc</color>
-    <color name="style_book_color_grey">#757575</color>
+    <color name="style_book_color_gray">#757575</color>
 
     <color name="style_book_fab_color_amber">#03A9F4</color>
     <color name="style_book_fab_color_green">#795548</color>
     <color name="style_book_fab_color_blue">#FF4081</color>
-    <color name="style_book_fab_color_grey">#536DFE</color>
+    <color name="style_book_fab_color_gray">#536DFE</color>
 
     <color name="style_tag_color_amber">#F0E093</color>
     <color name="style_tag_color_green">#96BBB3</color>
     <color name="style_tag_color_blue">#DFD576</color>
-    <color name="style_tag_color_grey">#A08880</color>
+    <color name="style_tag_color_gray">#A08880</color>
 
     <!-- Note Details colors. -->
     <color name="theme_divider">#ffb6b6b6</color>
