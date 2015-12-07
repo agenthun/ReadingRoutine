@@ -11,14 +11,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.UserData;
 import com.agenthun.readingroutine.fragments.MenuFragment;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
+import com.agenthun.readingroutine.utils.Avatar;
+import com.agenthun.readingroutine.utils.CircleTransformation;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
+import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,6 +35,8 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private boolean direction;
 
+    @InjectView(R.id.avatar)
+    ImageView avator;
     @InjectView(R.id.name)
     TextView name;
     @InjectView(R.id.email)
@@ -50,6 +56,43 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
 
         ButterKnife.inject(this);
 
+        Intent intent = getIntent();
+        String fileName = intent.getStringExtra(SignUpActivity.AVATAR_URL);
+/*        if (fileName != null && fileName.length() != 0) {
+            BTPFileResponse response = BmobProFile.getInstance(this).upload(fileName, new UploadListener() {
+                @Override
+                public void onSuccess(String s, String s1, BmobFile bmobFile) {
+                    UserData user = (UserData) UserData.getCurrentUser(MainActivity.this);
+                    user.setPic(bmobFile);
+                    user.save(MainActivity.this, new SaveListener() {
+                        @Override
+                        public void onSuccess() {
+                            Picasso.with(MainActivity.this).load((File) UserData.getObjectByKey(MainActivity.this, "pic"))
+                                    .transform(new CircleTransformation()).into(avator);
+                            Log.d(TAG, "onSuccess() returned: save ok");
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                            Log.d(TAG, "onFailure() returned: " + s);
+                        }
+                    });
+                }
+
+                @Override
+                public void onProgress(int i) {
+
+                }
+
+                @Override
+                public void onError(int i, String s) {
+
+                }
+            });
+        } else {
+            Picasso.with(this).load((File) UserData.getObjectByKey(this, "pic")).transform(new CircleTransformation()).into(avator);
+        }*/
+        Picasso.with(this).load(Avatar.values()[((int) UserData.getObjectByKey(this, "avatarId"))].getDrawableId()).transform(new CircleTransformation()).into(avator);
         name.setText((String) UserData.getObjectByKey(this, "username"));
         email.setText((String) UserData.getObjectByKey(this, "email"));
 

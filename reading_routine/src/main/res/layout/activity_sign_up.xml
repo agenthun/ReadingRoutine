@@ -21,6 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_sign_up" />
+    <!--<include layout="@layout/content_sign_up" />-->
+    <include layout="@layout/content_sign_up_grid" />
 
 </android.support.design.widget.CoordinatorLayout>

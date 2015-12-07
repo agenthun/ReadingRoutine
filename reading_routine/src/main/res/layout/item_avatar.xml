@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.agenthun.readingroutine.views.AvatarView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/avatars"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:layout_gravity="center"
+    android:scaleType="fitCenter" />

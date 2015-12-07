@@ -20,8 +20,8 @@ public class UiUtils {
         return dm.heightPixels;
     }
 
-    public static int dipToPx(Context context, int dip) {
-        return (int) (dip * getScreenDensity(context) + 0.5f);
+    public static float dipToPx(Context context, int dip) {
+        return dip * getScreenDensity(context) + 0.5f;
     }
 
     public static float getScreenDensity(Context context) {

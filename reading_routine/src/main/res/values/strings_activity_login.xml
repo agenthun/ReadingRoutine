@@ -3,6 +3,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_avatar">添加头像</string>
+    <string name="prompt_choose_an_avatar">选择一个头像</string>
     <string name="prompt_account">用户名</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">密码</string>
@@ -12,7 +13,7 @@
 
     <string name="text_sign_up">注册</string>
     <string name="action_trial">试用</string>
-    <string name="action_forget_password">忘记密码</string>
+    <string name="action_forget_password">找回密码</string>
     <string name="action_done">完成</string>
     <string name="success_sign_up">注册成功</string>
 

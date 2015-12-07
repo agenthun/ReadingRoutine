@@ -27,8 +27,8 @@
 
                 <ImageView
                     android:id="@+id/avatar"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="@dimen/user_profile_avatar_size"
+                    android:layout_height="@dimen/user_profile_avatar_size"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_photo_camera_gray_24dp" />

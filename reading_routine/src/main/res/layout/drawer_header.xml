@@ -12,6 +12,7 @@
         android:layout_height="@dimen/user_profile_avatar_size"
         android:layout_margin="@dimen/margin_horizontal"
         android:elevation="4dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/icon_avatar" />
 
     <TextView

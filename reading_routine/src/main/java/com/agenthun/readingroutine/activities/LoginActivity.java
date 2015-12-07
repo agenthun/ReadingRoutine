@@ -79,7 +79,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.sign_up_button)
     public void onSignUpBtnClick() {
-        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+//        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+        startActivity(new Intent(LoginActivity.this, SignUpGridActivity.class));
     }
 
     private void attemptLogin() {
