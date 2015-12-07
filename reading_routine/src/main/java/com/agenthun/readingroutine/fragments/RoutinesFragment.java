@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,9 +76,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         View view = inflater.inflate(R.layout.fragment_base_item, container, false);
         ButterKnife.inject(this, view);
 
-        Toolbar toolbar = (Toolbar) getContext().findViewById(R.id.toolbar);
-
-
         setupDatabase();
         setupGridLayout();
         setupRevealBackground(savedInstanceState);
@@ -91,12 +87,11 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
 
     private void setupDatabase() {
         databaseUtil = BookDatabaseUtil.getInstance(getContext());
-//        UserData userData = UserData.getCurrentUser(getContext(), UserData.class);
         mDataSet = databaseUtil.queryBookInfos();
-        if (mDataSet == null) {
+        if (mDataSet == null && getIsTrial() != true) {
             BmobQuery<BookInfo> bmobQuery = new BmobQuery<>();
             bmobQuery.setLimit(10);
-//        bmobQuery.order("createdAt");
+
             boolean isCache = bmobQuery.hasCachedResult(getContext(), BookInfo.class);
             if (isCache) {
                 bmobQuery.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
@@ -116,49 +111,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 }
             });
         }
-
-		/*        for (int i = 0; i < mDataSet.size(); i++) {
-                    Log.i("mDataSet[" + i + "] = ", mDataSet.get(i).getObjectId() + " ");
-		        }*/
-
-        //测试数据
-        /*        HashMap<String, Object> hashMap;
-
-		        hashMap = new HashMap<String, Object>();
-		        hashMap.put(RoutinesAdapter.BOOK_NAME, "The Best of Me");
-		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 0);
-		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
-		        mDataSet.add(hashMap);
-
-		        hashMap = new HashMap<String, Object>();
-		        hashMap.put(RoutinesAdapter.BOOK_NAME, "Dear John");
-		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 2);
-		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
-		        mDataSet.add(hashMap);
-
-		        hashMap = new HashMap<String, Object>();
-		        hashMap.put(RoutinesAdapter.BOOK_NAME, "The Lucky One");
-		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 1);
-		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
-		        mDataSet.add(hashMap);
-
-		        hashMap = new HashMap<String, Object>();
-		        hashMap.put(RoutinesAdapter.BOOK_NAME, "Safe Haven");
-		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 3);
-		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
-		        mDataSet.add(hashMap);
-
-		        hashMap = new HashMap<String, Object>();
-		        hashMap.put(RoutinesAdapter.BOOK_NAME, "A Walk to Remember");
-		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 2);
-		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-09-10");
-		        mDataSet.add(hashMap);
-
-		        hashMap = new HashMap<String, Object>();
-		        hashMap.put(RoutinesAdapter.BOOK_NAME, "Message in a Bottle");
-		        hashMap.put(RoutinesAdapter.BOOK_COLOR_INDEX, 1);
-		        hashMap.put(RoutinesAdapter.BOOK_ALARM_TIME, "2015-01-12");
-		        mDataSet.add(hashMap);*/
     }
 
     private void setupGridLayout() {
@@ -224,7 +176,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                     itemPosition = position;
                     BookInfo getData = routinesAdapter.getItemData(position - 1);
                     Intent intent = new Intent(getContext(), BookActivity.class);
-//                    intent.putExtra(RoutinesAdapter.BOOK_INFO, getData);
                     intent.putExtra(RoutinesAdapter.BOOK_NAME, getData.getBookName());
                     intent.putExtra(RoutinesAdapter.BOOK_COLOR_INDEX, (int) getData.getBookColor());
                     intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, getData.getBookAlarmTime());
@@ -299,22 +250,25 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         bookInfo.setBookName(name);
         bookInfo.setBookColor(colorIndex);
         bookInfo.setBookAlarmTime(time);
+        if (!getIsTrial()) {
+            //服务器
+            bookInfo.save(getContext(), new SaveListener() {
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "上传服务器成功");
+                    Log.i(TAG, bookInfo.getObjectId());
+                    databaseUtil.insertBookInfo(bookInfo);
+                }
 
-        //服务器
-        bookInfo.save(getContext(), new SaveListener() {
-            @Override
-            public void onSuccess() {
-                Log.i(TAG, "上传服务器成功");
-                Log.i(TAG, bookInfo.getObjectId());
-                databaseUtil.insertBookInfo(bookInfo);
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Log.i(TAG, "上传服务器失败: " + s);
-                databaseUtil.insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
-            }
-        });
+                @Override
+                public void onFailure(int i, String s) {
+                    Log.i(TAG, "上传服务器失败: " + s);
+                    databaseUtil.insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
+                }
+            });
+        } else {
+            databaseUtil.insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
+        }
 
         mDataSet.add(0, bookInfo);
         routinesAdapter.notifyDataSetChanged();
@@ -323,20 +277,24 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     //删除
     private void deleteItem(int position, boolean setAnimator) {
         final BookInfo bookInfo = mDataSet.get(position);
-        //服务器
-        bookInfo.delete(getContext(), bookInfo.getObjectId(), new DeleteListener() {
-            @Override
-            public void onSuccess() {
-                Log.i(TAG, "删除成功");
-                databaseUtil.deleteBookInfo(bookInfo);
-            }
+        if (!getIsTrial()) {
+            //服务器
+            bookInfo.delete(getContext(), bookInfo.getObjectId(), new DeleteListener() {
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "删除成功");
+                    databaseUtil.deleteBookInfo(bookInfo);
+                }
 
-            @Override
-            public void onFailure(int i, String s) {
-                Log.i(TAG, "删除失败: " + s);
-                databaseUtil.deleteBookInfo(bookInfo, true);
-            }
-        });
+                @Override
+                public void onFailure(int i, String s) {
+                    Log.i(TAG, "删除失败: " + s);
+                    databaseUtil.deleteBookInfo(bookInfo, true);
+                }
+            });
+        } else {
+            databaseUtil.deleteBookInfo(bookInfo, true);
+        }
 
         int size = mDataSet.size();
         if (size > 0 && position < size) {
@@ -361,20 +319,24 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         Log.i(TAG, "test id = " + bookInfo.getObjectId());
         if (bookInfo.getObjectId() == null) {
             Log.i(TAG, "into : test id = null");
-            bookInfo.save(getContext(), new SaveListener() {
-                @Override
-                public void onSuccess() {
-                    Log.i(TAG, "上传服务器成功");
-                    Log.i(TAG, bookInfo.getObjectId());
-                    databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true);
-                }
+            if (!getIsTrial()) {
+                bookInfo.save(getContext(), new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.i(TAG, "上传服务器成功");
+                        Log.i(TAG, bookInfo.getObjectId());
+                        databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true);
+                    }
 
-                @Override
-                public void onFailure(int i, String s) {
-                    Log.i(TAG, "上传服务器失败: " + s);
-                    databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
-                }
-            });
+                    @Override
+                    public void onFailure(int i, String s) {
+                        Log.i(TAG, "上传服务器失败: " + s);
+                        databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
+                    }
+                });
+            } else {
+                databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
+            }
         } else {
             //服务器
             bookInfo.update(getContext(), bookInfo.getObjectId(), new UpdateListener() {

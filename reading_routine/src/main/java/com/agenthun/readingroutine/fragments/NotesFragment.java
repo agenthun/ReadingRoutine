@@ -177,7 +177,6 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
             notesAdapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-//                    Log.d(TAG, "onItemClick() returned: " + view.getClass().getName());
                     if (position == 0) return;
                     itemPosition = position;
                     NoteInfo getData = notesAdapter.getItemData(position - 1);
@@ -285,23 +284,25 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
         noteInfo.setNoteCompose(compose);
         noteInfo.setNoteCreateTime(time);
         noteInfo.setNoteColor(colorIndex);
+        if (!getIsTrial()) {
+            //服务器
+            noteInfo.save(getContext(), new SaveListener() {
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "上传服务器成功");
+                    Log.i(TAG, noteInfo.getObjectId());
+                    databaseUtil.insertNote(noteInfo);
+                }
 
-        //服务器
-        noteInfo.save(getContext(), new SaveListener() {
-            @Override
-            public void onSuccess() {
-                Log.i(TAG, "上传服务器成功");
-                Log.i(TAG, noteInfo.getObjectId());
-                databaseUtil.insertNote(noteInfo);
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Log.i(TAG, "上传服务器失败: " + s);
-                databaseUtil.insertNote(noteInfo, noteInfo, true); //无效invalid ObjectId
-            }
-        });
-
+                @Override
+                public void onFailure(int i, String s) {
+                    Log.i(TAG, "上传服务器失败: " + s);
+                    databaseUtil.insertNote(noteInfo, noteInfo, true); //无效invalid ObjectId
+                }
+            });
+        } else {
+            databaseUtil.insertNote(noteInfo, noteInfo, true); //无效invalid ObjectId
+        }
         mDataSet.add(0, noteInfo);
         notesAdapter.notifyDataSetChanged();
     }
@@ -309,21 +310,22 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     //删除
     private void deleteItem(int position, boolean setAnimator) {
         final NoteInfo noteInfo = mDataSet.get(position);
-        //服务器
-        noteInfo.delete(getContext(), noteInfo.getObjectId(), new DeleteListener() {
-            @Override
-            public void onSuccess() {
-                Log.i(TAG, "删除成功");
-                databaseUtil.deleteNote(noteInfo);
-            }
+        if (!getIsTrial()) {
+            //服务器
+            noteInfo.delete(getContext(), noteInfo.getObjectId(), new DeleteListener() {
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "删除成功");
+                    databaseUtil.deleteNote(noteInfo);
+                }
 
-            @Override
-            public void onFailure(int i, String s) {
-                Log.i(TAG, "删除失败: " + s);
-                databaseUtil.deleteNote(noteInfo, true);
-            }
-        });
-        if (getIsTrial()) {
+                @Override
+                public void onFailure(int i, String s) {
+                    Log.i(TAG, "删除失败: " + s);
+                    databaseUtil.deleteNote(noteInfo, true);
+                }
+            });
+        } else {
             databaseUtil.deleteNote(noteInfo, true);
         }
 
@@ -352,20 +354,24 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
 
         if (noteInfo.getObjectId() == null) {
             Log.i(TAG, "into : test id = null");
-            noteInfo.save(getContext(), new SaveListener() {
-                @Override
-                public void onSuccess() {
-                    Log.i(TAG, "上传服务器成功");
-                    Log.i(TAG, noteInfo.getObjectId());
-                    databaseUtil.insertNote(noteInfo, noteInfoOld, true);
-                }
+            if (!getIsTrial()) {
+                noteInfo.save(getContext(), new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.i(TAG, "上传服务器成功");
+                        Log.i(TAG, noteInfo.getObjectId());
+                        databaseUtil.insertNote(noteInfo, noteInfoOld, true);
+                    }
 
-                @Override
-                public void onFailure(int i, String s) {
-                    Log.i(TAG, "上传服务器失败: " + s);
-                    databaseUtil.insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
-                }
-            });
+                    @Override
+                    public void onFailure(int i, String s) {
+                        Log.i(TAG, "上传服务器失败: " + s);
+                        databaseUtil.insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
+                    }
+                });
+            } else {
+                databaseUtil.insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
+            }
         } else {
             //服务器
             noteInfo.update(getContext(), noteInfo.getObjectId(), new UpdateListener() {

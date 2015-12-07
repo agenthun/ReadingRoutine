@@ -135,7 +135,7 @@ public class BookDatabaseUtil {
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, LoginActivity.userData.getObjectId());
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, "null");
             contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
@@ -144,7 +144,7 @@ public class BookDatabaseUtil {
             //Log.i(TAG, "update");
         } else {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, LoginActivity.userData.getObjectId());
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, "null");
             contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
