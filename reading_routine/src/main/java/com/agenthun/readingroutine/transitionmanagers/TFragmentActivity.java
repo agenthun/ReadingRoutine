@@ -14,6 +14,10 @@ import android.widget.Toast;
  * Created by Agent Henry on 2015/5/16.
  */
 public abstract class TFragmentActivity extends AppCompatActivity {
+
+    protected static final String GLOBAL_SETTINGS = "MR_GLOBAL_SETTINGS";
+    protected static final String IS_TRIAL = "IS_TRIAL";
+
     protected TFragment mCurrentTFragment;
     private boolean mCloseWarned;
 
@@ -182,5 +186,15 @@ public abstract class TFragmentActivity extends AppCompatActivity {
     protected void exitFullScreen() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    }
+
+    public void setIsTrial(boolean isTrial) {
+        getApplicationContext().getSharedPreferences(GLOBAL_SETTINGS, 0)
+                .edit().putBoolean(IS_TRIAL, isTrial).commit();
+    }
+
+    public boolean getIsTrial() {
+        return getApplicationContext().getSharedPreferences(GLOBAL_SETTINGS, 0)
+                .getBoolean(IS_TRIAL, true);
     }
 }

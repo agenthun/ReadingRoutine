@@ -2,13 +2,13 @@ package com.agenthun.readingroutine.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.UserData;
+import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
@@ -22,7 +22,7 @@ import cn.bmob.v3.listener.SaveListener;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends TActivity {
 
     private static final String TAG = "LoginActivity";
 
@@ -51,7 +51,13 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         } else {
             userData = new UserData();
+            setIsTrial(true);
         }
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
     }
 
     @Override
@@ -70,7 +76,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.trial_button)
     public void onTrialBtnClick() {
-        Log.d(TAG, "onTrialBtnClick() returned: ");
+        setIsTrial(true);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.forget_password_button)
@@ -115,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         userData.login(LoginActivity.this, new SaveListener() {
             @Override
             public void onSuccess() {
+                setIsTrial(false);
                 Toast.makeText(LoginActivity.this, R.string.msg_success, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);

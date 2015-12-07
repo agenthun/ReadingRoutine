@@ -93,7 +93,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     private void setupDatabase() {
         databaseUtil = NoteDatabaseUtil.getInstance(getContext());
         mDataSet = databaseUtil.queryNoteInfos();
-        if (mDataSet == null) {
+        if (mDataSet == null && getIsTrial() != true) {
             BmobQuery<NoteInfo> bmobQuery = new BmobQuery<>();
             bmobQuery.setLimit(10);
 
@@ -323,6 +323,9 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                 databaseUtil.deleteNote(noteInfo, true);
             }
         });
+        if (getIsTrial()) {
+            databaseUtil.deleteNote(noteInfo, true);
+        }
 
         int size = mDataSet.size();
         if (size > 0 && position < size) {
@@ -346,6 +349,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
         noteInfo.setNoteColor(colorIndex);
 
         Log.i(TAG, "test id = " + noteInfo.getObjectId());
+
         if (noteInfo.getObjectId() == null) {
             Log.i(TAG, "into : test id = null");
             noteInfo.save(getContext(), new SaveListener() {

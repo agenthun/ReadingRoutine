@@ -92,19 +92,16 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         } else {
             Picasso.with(this).load((File) UserData.getObjectByKey(this, "pic")).transform(new CircleTransformation()).into(avator);
         }*/
-        final CircleTransformation transformation = new CircleTransformation(this, 2);
-        transformation.setBorderColor(getResources().getColor(R.color.gray_200));
-/*        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Avatar.values()[((int) UserData.getObjectByKey(this, "avatarId"))].getDrawableId());
-        Palette palette = Palette.from(bitmap).generate();
-        Palette.Swatch swatch = palette.getVibrantSwatch();
-        transformation.setBorderColor(palette.getMutedColor(Color.WHITE));*/
+        if (!getIsTrial()) {
+            final CircleTransformation transformation = new CircleTransformation(this, 2);
+//        transformation.setBorderColor(getResources().getColor(R.color.gray_200));
 
-        Picasso.with(this).load(Avatar.values()[((int) UserData.getObjectByKey(this, "avatarId"))].getDrawableId())
-                .transform(transformation).into(avator);
+            Picasso.with(this).load(Avatar.values()[((int) UserData.getObjectByKey(this, "avatarId"))].getDrawableId())
+                    .transform(transformation).into(avator);
 
-        name.setText((String) UserData.getObjectByKey(this, "username"));
-        email.setText((String) UserData.getObjectByKey(this, "email"));
-
+            name.setText((String) UserData.getObjectByKey(this, "username"));
+            email.setText((String) UserData.getObjectByKey(this, "email"));
+        }
         materialMenuIconToolbar = new MaterialMenuIconToolbar(this, getResources().getColor(R.color.color_white), MaterialMenuDrawable.Stroke.REGULAR) {
             @Override
             public int getToolbarViewId() {

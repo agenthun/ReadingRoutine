@@ -59,8 +59,8 @@ public class BookDatabaseUtil {
         }
         if (cursor == null) {
             where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
-                    + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfo.getBookName() + "'"
-                    + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfo.getBookColor() + "'"
+                    + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfo.getBookName()
+                    + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfo.getBookColor()
                     + "' AND " + BookDBHelper.BookinfoTable.BOOK_ALARM_TIME + " = '" + bookInfo.getBookAlarmTime() + "'";
             cursor = bookDBHelper.query(BookDBHelper.TABLE_NAME, null, where, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {

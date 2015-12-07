@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.agenthun.readingroutine.activities.LoginActivity;
-import com.agenthun.readingroutine.datastore.BookInfo;
 import com.agenthun.readingroutine.datastore.NoteInfo;
 
 import java.util.ArrayList;
@@ -61,9 +60,9 @@ public class NoteDatabaseUtil {
         }
         if (cursor == null) {
             where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
-                    + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle() + "'"
-                    + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose() + "'"
-                    + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime() + "'"
+                    + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle()
+                    + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose()
+                    + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime()
                     + "' AND " + NoteDBHelper.NoteTable.NOTE_COLOR + " = '" + noteInfo.getNoteColor() + "'";
             cursor = noteDBHelper.query(NoteDBHelper.TABLE_NAME, null, where, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
@@ -81,9 +80,9 @@ public class NoteDatabaseUtil {
     public void deleteNote(NoteInfo noteInfo, boolean isOffline) {
         Cursor cursor = null;
         String where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
-                + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle() + "'"
-                + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose() + "'"
-                + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime() + "'"
+                + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle()
+                + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose()
+                + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_COLOR + " = '" + noteInfo.getNoteColor() + "'";
         cursor = noteDBHelper.query(NoteDBHelper.TABLE_NAME, null, where, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
@@ -141,7 +140,7 @@ public class NoteDatabaseUtil {
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(NoteDBHelper.NoteTable.USER_ID, LoginActivity.userData.getObjectId());
+            contentValues.put(NoteDBHelper.NoteTable.USER_ID, "null");
             contentValues.put(NoteDBHelper.NoteTable.OBJECT_ID, noteInfo.getObjectId());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());
@@ -151,7 +150,7 @@ public class NoteDatabaseUtil {
             Log.i(TAG, "update");
         } else {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(NoteDBHelper.NoteTable.USER_ID, LoginActivity.userData.getObjectId());
+            contentValues.put(NoteDBHelper.NoteTable.USER_ID, "null");
             contentValues.put(NoteDBHelper.NoteTable.OBJECT_ID, noteInfo.getObjectId());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());

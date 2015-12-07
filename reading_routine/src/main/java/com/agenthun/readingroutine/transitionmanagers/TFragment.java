@@ -119,4 +119,14 @@ public class TFragment extends Fragment implements ITFragment, IComponentContain
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+    public void setIsTrial(boolean isTrial) {
+        getContext().getSharedPreferences(TFragmentActivity.GLOBAL_SETTINGS, 0)
+                .edit().putBoolean(TFragmentActivity.IS_TRIAL, isTrial).commit();
+    }
+
+    public boolean getIsTrial() {
+        return getContext().getSharedPreferences(TFragmentActivity.GLOBAL_SETTINGS, 0)
+                .getBoolean(TFragmentActivity.IS_TRIAL, true);
+    }
 }

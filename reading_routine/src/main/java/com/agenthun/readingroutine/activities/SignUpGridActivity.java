@@ -2,7 +2,7 @@ package com.agenthun.readingroutine.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,10 +15,13 @@ import android.widget.Toast;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.adapters.AvatarAdapter;
 import com.agenthun.readingroutine.datastore.UserData;
+import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.agenthun.readingroutine.utils.Avatar;
 import com.agenthun.readingroutine.utils.UiUtils;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.EmailVerifyListener;
@@ -29,7 +32,7 @@ import cn.bmob.v3.listener.SaveListener;
  * @authors agenthun
  * @date 15/12/6 上午12:41.
  */
-public class SignUpGridActivity extends AppCompatActivity {
+public class SignUpGridActivity extends TActivity {
 
     private static final String TAG = "SignUpGridActivity";
 
@@ -136,6 +139,11 @@ public class SignUpGridActivity extends AppCompatActivity {
         String signUpPassword = passwpord.getText().toString();
         String signUpPasswordAgain = passwpordAgain.getText().toString();
 
+        if (!signUpPassword.equals(signUpPasswordAgain)) {
+            Snackbar.make(avatarGrid, R.string.error_difference_password, Snackbar.LENGTH_SHORT).show();
+            YoYo.with(Techniques.Shake).duration(500).delay(100).playOn(passwpordAgain);
+            return;
+        }
         final UserData newUser = new UserData();
         newUser.setUsername(signUpName);
         newUser.setPassword(signUpPassword);
@@ -145,6 +153,7 @@ public class SignUpGridActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 //Toast.makeText(SignUpActivity.this, R.string.success_sign_up, Toast.LENGTH_SHORT).show();
+                setIsTrial(false);
                 Intent intent = new Intent(SignUpGridActivity.this, MainActivity.class);
                 startActivity(intent);
 
@@ -168,6 +177,11 @@ public class SignUpGridActivity extends AppCompatActivity {
                 Toast.makeText(SignUpGridActivity.this, "注册失败: " + s, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
     }
 
     @Override

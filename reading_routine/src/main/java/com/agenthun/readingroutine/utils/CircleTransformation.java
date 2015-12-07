@@ -51,13 +51,13 @@ public class CircleTransformation implements Transformation {
         float r = size / 2f;
         canvas.drawCircle(r, r, r, paint);
 
-        if (borderWidth > 0) {
+/*        if (borderWidth > 0) {
             Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mBorderPaint.setStyle(Paint.Style.STROKE);
             mBorderPaint.setColor(borderColor);
             mBorderPaint.setStrokeWidth(UiUtils.dipToPx(mContext, borderWidth));
             canvas.drawCircle(r, r, r - UiUtils.dipToPx(mContext, borderWidth / 2), mBorderPaint);
-        }
+        }*/
         squaredBitmap.recycle();
         return bitmap;
     }
