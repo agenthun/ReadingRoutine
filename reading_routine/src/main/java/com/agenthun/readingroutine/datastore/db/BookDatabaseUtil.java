@@ -102,6 +102,8 @@ public class BookDatabaseUtil {
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, LoginActivity.userData.getObjectId());
+            contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_ALARM_TIME, bookInfo.getBookAlarmTime());
@@ -152,6 +154,34 @@ public class BookDatabaseUtil {
             uri = bookDBHelper.insert(BookDBHelper.TABLE_NAME, null, contentValues);
             //Log.i(TAG, "insert");
         }
+
+/*        //version1 for trial user and sign in user with online
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+                + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfoOld.getBookName()
+                + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfoOld.getBookColor()
+                + "' AND " + BookDBHelper.BookinfoTable.BOOK_ALARM_TIME + " = '" + bookInfoOld.getBookAlarmTime() + "'";
+        cursor = bookDBHelper.query(BookDBHelper.TABLE_NAME, null, where, null, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, "null");
+            contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
+            contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
+            contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
+            contentValues.put(BookDBHelper.BookinfoTable.BOOK_ALARM_TIME, bookInfo.getBookAlarmTime());
+            bookDBHelper.update(BookDBHelper.TABLE_NAME, contentValues, where, null);
+            //Log.i(TAG, "update");
+        } else {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, "null");
+            contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
+            contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
+            contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
+            contentValues.put(BookDBHelper.BookinfoTable.BOOK_ALARM_TIME, bookInfo.getBookAlarmTime());
+            uri = bookDBHelper.insert(BookDBHelper.TABLE_NAME, null, contentValues);
+            //Log.i(TAG, "insert");
+        }*/
+
         if (cursor != null) {
             cursor.close();
             bookDBHelper.close();
