@@ -92,7 +92,16 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         } else {
             Picasso.with(this).load((File) UserData.getObjectByKey(this, "pic")).transform(new CircleTransformation()).into(avator);
         }*/
-        Picasso.with(this).load(Avatar.values()[((int) UserData.getObjectByKey(this, "avatarId"))].getDrawableId()).transform(new CircleTransformation()).into(avator);
+        final CircleTransformation transformation = new CircleTransformation(this, 2);
+        transformation.setBorderColor(getResources().getColor(R.color.gray_200));
+/*        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Avatar.values()[((int) UserData.getObjectByKey(this, "avatarId"))].getDrawableId());
+        Palette palette = Palette.from(bitmap).generate();
+        Palette.Swatch swatch = palette.getVibrantSwatch();
+        transformation.setBorderColor(palette.getMutedColor(Color.WHITE));*/
+
+        Picasso.with(this).load(Avatar.values()[((int) UserData.getObjectByKey(this, "avatarId"))].getDrawableId())
+                .transform(transformation).into(avator);
+
         name.setText((String) UserData.getObjectByKey(this, "username"));
         email.setText((String) UserData.getObjectByKey(this, "email"));
 

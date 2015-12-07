@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.listener.ResetPasswordByEmailListener;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -75,6 +76,18 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.forget_password_button)
     public void onForgetPasswordBtnClick() {
         Log.d(TAG, "onForgetPasswordBtnClick() returned: ");
+        final String email = "agenthun@126.com";
+        UserData.resetPasswordByEmail(LoginActivity.this, email, new ResetPasswordByEmailListener() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(LoginActivity.this, "重置密码请求成功, 请到" + email + "邮箱进行密码重置操作", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Toast.makeText(LoginActivity.this, "重置密码失败: " + s, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @OnClick(R.id.sign_up_button)

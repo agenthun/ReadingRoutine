@@ -73,7 +73,7 @@
             android:name=".activities.SignUpGridActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize|stateVisible" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <activity
             android:name=".activities.MainActivity"
