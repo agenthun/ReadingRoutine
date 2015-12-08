@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.UserData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,10 +21,12 @@ public class BookDatabaseUtil {
 
     private static BookDatabaseUtil instance;
     private BookDBHelper bookDBHelper;
+    private Context mContext;
 
     //单例模型
     private BookDatabaseUtil(Context context) {
         bookDBHelper = new BookDBHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     public synchronized static BookDatabaseUtil getInstance(Context context) {
@@ -50,7 +52,8 @@ public class BookDatabaseUtil {
 
     public void deleteBookInfo(BookInfo bookInfo) {
         Cursor cursor = null;
-        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + userId
                 + "' AND " + BookDBHelper.BookinfoTable.OBJECT_ID + " = '" + bookInfo.getObjectId() + "'";
         cursor = bookDBHelper.query(BookDBHelper.TABLE_NAME, null, where, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
@@ -58,7 +61,7 @@ public class BookDatabaseUtil {
             //Log.i(TAG, "delete success");
         }
         if (cursor == null) {
-            where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+            where = BookDBHelper.BookinfoTable.USER_ID + " = '" + userId
                     + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfo.getBookName()
                     + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfo.getBookColor()
                     + "' AND " + BookDBHelper.BookinfoTable.BOOK_ALARM_TIME + " = '" + bookInfo.getBookAlarmTime() + "'";
@@ -77,7 +80,7 @@ public class BookDatabaseUtil {
 
     public void deleteBookInfo(BookInfo bookInfo, boolean isOffline) {
         Cursor cursor = null;
-        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + UserData.getObjectByKey(mContext, "objectId")
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfo.getBookName()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfo.getBookColor()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_ALARM_TIME + " = '" + bookInfo.getBookAlarmTime() + "'";
@@ -96,13 +99,14 @@ public class BookDatabaseUtil {
     public long insertBookInfo(BookInfo bookInfo) {
         long uri = 0;
         Cursor cursor = null;
-        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + userId
                 + "' AND " + BookDBHelper.BookinfoTable.OBJECT_ID + " = '" + bookInfo.getObjectId() + "'";
         cursor = bookDBHelper.query(BookDBHelper.TABLE_NAME, null, where, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, LoginActivity.userData.getObjectId());
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, userId);
             contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
@@ -111,7 +115,7 @@ public class BookDatabaseUtil {
             //Log.i(TAG, "update");
         } else {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, LoginActivity.userData.getObjectId());
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, userId);
             contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
@@ -129,7 +133,8 @@ public class BookDatabaseUtil {
     public long insertBookInfo(BookInfo bookInfo, BookInfo bookInfoOld, boolean isOffline) {
         long uri = 0;
         Cursor cursor = null;
-        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + userId
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfoOld.getBookName()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfoOld.getBookColor()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_ALARM_TIME + " = '" + bookInfoOld.getBookAlarmTime() + "'";
@@ -137,7 +142,7 @@ public class BookDatabaseUtil {
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, "null");
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, userId);
             contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
@@ -146,7 +151,7 @@ public class BookDatabaseUtil {
             //Log.i(TAG, "update");
         } else {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, "null");
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, userId);
             contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
@@ -156,7 +161,8 @@ public class BookDatabaseUtil {
         }
 
 /*        //version1 for trial user and sign in user with online
-        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + userId
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfoOld.getBookName()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfoOld.getBookColor()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_ALARM_TIME + " = '" + bookInfoOld.getBookAlarmTime() + "'";
@@ -164,7 +170,7 @@ public class BookDatabaseUtil {
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, "null");
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, userId);
             contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
@@ -173,7 +179,7 @@ public class BookDatabaseUtil {
             //Log.i(TAG, "update");
         } else {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, "null");
+            contentValues.put(BookDBHelper.BookinfoTable.USER_ID, userId);
             contentValues.put(BookDBHelper.BookinfoTable.OBJECT_ID, bookInfo.getObjectId());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_NAME, bookInfo.getBookName());
             contentValues.put(BookDBHelper.BookinfoTable.BOOK_COLOR, bookInfo.getBookColor());
@@ -192,7 +198,7 @@ public class BookDatabaseUtil {
     public boolean queryHasBookInfo(String bookName) {
         boolean hasTheBook = false;
         Cursor cursor = null;
-        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + UserData.getObjectByKey(mContext, "objectId")
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookName + "'";
         cursor = bookDBHelper.query(BookDBHelper.TABLE_NAME, null, where, null, null, null, null);
 
@@ -245,7 +251,7 @@ public class BookDatabaseUtil {
 
     public ArrayList<BookInfo> queryInsertBatchBookInfos() {
         ArrayList<BookInfo> bookInfos = null;
-        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + UserData.getObjectByKey(mContext, "objectId")
                 + "' AND " + BookDBHelper.BookinfoTable.OBJECT_ID + " is null";
         Cursor cursor = bookDBHelper.query(BookDBHelper.TABLE_NAME, null, where, null, null, null, null);
         //Log.i(TAG, cursor.getCount() + "");

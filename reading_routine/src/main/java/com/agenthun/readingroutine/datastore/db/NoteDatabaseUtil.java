@@ -5,8 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.datastore.NoteInfo;
+import com.agenthun.readingroutine.datastore.UserData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,10 +22,12 @@ public class NoteDatabaseUtil {
 
     private static NoteDatabaseUtil instance;
     private NoteDBHelper noteDBHelper;
+    private Context mContext;
 
     //单例模型
     private NoteDatabaseUtil(Context context) {
         noteDBHelper = new NoteDBHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     public synchronized static NoteDatabaseUtil getInstance(Context context) {
@@ -51,7 +53,8 @@ public class NoteDatabaseUtil {
 
     public void deleteNote(NoteInfo noteInfo) {
         Cursor cursor = null;
-        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + userId
                 + "' AND " + NoteDBHelper.NoteTable.OBJECT_ID + " = '" + noteInfo.getObjectId() + "'";
         cursor = noteDBHelper.query(NoteDBHelper.TABLE_NAME, null, where, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
@@ -59,7 +62,7 @@ public class NoteDatabaseUtil {
             Log.i(TAG, "delete success");
         }
         if (cursor == null) {
-            where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+            where = NoteDBHelper.NoteTable.USER_ID + " = '" + userId
                     + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle()
                     + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose()
                     + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime()
@@ -79,7 +82,7 @@ public class NoteDatabaseUtil {
 
     public void deleteNote(NoteInfo noteInfo, boolean isOffline) {
         Cursor cursor = null;
-        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + UserData.getObjectByKey(mContext, "objectId")
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime()
@@ -99,7 +102,8 @@ public class NoteDatabaseUtil {
     public long insertNote(NoteInfo noteInfo) {
         long uri = 0;
         Cursor cursor = null;
-        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + userId
                 + "' AND " + NoteDBHelper.NoteTable.OBJECT_ID + " = '" + noteInfo.getObjectId() + "'";
         cursor = noteDBHelper.query(NoteDBHelper.TABLE_NAME, null, where, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
@@ -113,7 +117,7 @@ public class NoteDatabaseUtil {
             Log.i(TAG, "update");
         } else {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(NoteDBHelper.NoteTable.USER_ID, LoginActivity.userData.getObjectId());
+            contentValues.put(NoteDBHelper.NoteTable.USER_ID, userId);
             contentValues.put(NoteDBHelper.NoteTable.OBJECT_ID, noteInfo.getObjectId());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());
@@ -132,7 +136,8 @@ public class NoteDatabaseUtil {
     public long insertNote(NoteInfo noteInfo, NoteInfo noteInfoOld, boolean isOffline) {
         long uri = 0;
         Cursor cursor = null;
-        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + userId
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfoOld.getNoteTitle()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfoOld.getNoteCompose()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfoOld.getNoteCreateTime() + "'";
@@ -140,7 +145,7 @@ public class NoteDatabaseUtil {
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(NoteDBHelper.NoteTable.USER_ID, "null");
+            contentValues.put(NoteDBHelper.NoteTable.USER_ID, userId);
             contentValues.put(NoteDBHelper.NoteTable.OBJECT_ID, noteInfo.getObjectId());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());
@@ -150,7 +155,7 @@ public class NoteDatabaseUtil {
             Log.i(TAG, "update");
         } else {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(NoteDBHelper.NoteTable.USER_ID, "null");
+            contentValues.put(NoteDBHelper.NoteTable.USER_ID, userId);
             contentValues.put(NoteDBHelper.NoteTable.OBJECT_ID, noteInfo.getObjectId());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_TITLE, noteInfo.getNoteTitle());
             contentValues.put(NoteDBHelper.NoteTable.NOTE_COMPOSE, noteInfo.getNoteCompose());
@@ -207,7 +212,7 @@ public class NoteDatabaseUtil {
 
     public ArrayList<NoteInfo> queryInsertBatchNoteInfos() {
         ArrayList<NoteInfo> noteInfos = null;
-        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + LoginActivity.userData.getObjectId()
+        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + UserData.getObjectByKey(mContext, "objectId")
                 + "' AND " + NoteDBHelper.NoteTable.OBJECT_ID + " is null";
         Cursor cursor = noteDBHelper.query(NoteDBHelper.TABLE_NAME, null, where, null, null, null, null);
         Log.i(TAG, cursor.getCount() + "");

@@ -21,10 +21,10 @@ import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 
 import com.agenthun.readingroutine.R;
-import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.activities.NoteDetailsActivity;
 import com.agenthun.readingroutine.adapters.NotesAdapter;
 import com.agenthun.readingroutine.datastore.NoteInfo;
+import com.agenthun.readingroutine.datastore.UserData;
 import com.agenthun.readingroutine.datastore.db.NoteDatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
@@ -279,7 +279,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     //添加
     private void addItem(String title, String compose, String time, int colorIndex) {
         final NoteInfo noteInfo = new NoteInfo();
-        noteInfo.setUserData(LoginActivity.userData);
+        noteInfo.setUserData(UserData.getCurrentUser(getContext(), UserData.class));
         noteInfo.setNoteTitle(title);
         noteInfo.setNoteCompose(compose);
         noteInfo.setNoteCreateTime(time);
@@ -345,6 +345,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     private void updateItem(final int position, String title, String compose, String time, int colorIndex) {
         final NoteInfo noteInfo = mDataSet.get(position);
         final NoteInfo noteInfoOld = new NoteInfo(noteInfo.getUserData(), noteInfo.getNoteTitle(), noteInfo.getNoteCompose(), noteInfo.getNoteCreateTime(), noteInfo.getNoteColor());
+        noteInfo.setUserData(UserData.getCurrentUser(getContext(), UserData.class));
         noteInfo.setNoteTitle(title);
         noteInfo.setNoteCompose(compose);
         noteInfo.setNoteCreateTime(time);

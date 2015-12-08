@@ -14,6 +14,8 @@
     <string name="text_sign_up">注册</string>
     <string name="action_trial">试用</string>
     <string name="action_forget_password">找回密码</string>
+    <string name="text_reset_password">重置密码</string>
+    <string name="action_send">发送</string>
     <string name="action_done">完成</string>
     <string name="success_sign_up">注册成功</string>
 

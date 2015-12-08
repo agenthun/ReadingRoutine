@@ -18,9 +18,9 @@ import android.view.animation.OvershootInterpolator;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.activities.BookActivity;
-import com.agenthun.readingroutine.activities.LoginActivity;
 import com.agenthun.readingroutine.adapters.RoutinesAdapter;
 import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.UserData;
 import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.agenthun.readingroutine.views.RevealBackgroundView;
@@ -81,7 +81,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         setupRevealBackground(savedInstanceState);
 
         initAddItemBtn(addRoutinesItemBtn);
-
         return view;
     }
 
@@ -125,7 +124,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         });
         /*        RecyclerViewScrollManager scrollManager = new RecyclerViewScrollManager();
                 scrollManager.attach(routinesRecyclerView);
-		        scrollManager.addView(addRoutinesItemBtn, RecyclerViewScrollManager.Direction.DOWN); //下滑动画*/
+                scrollManager.addView(addRoutinesItemBtn, RecyclerViewScrollManager.Direction.DOWN); //下滑动画*/
     }
 
     private void setupRevealBackground(Bundle savedInstanceState) {
@@ -246,7 +245,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     //添加
     private void addItem(String name, int colorIndex, String time) {
         final BookInfo bookInfo = new BookInfo();
-        bookInfo.setUserData(LoginActivity.userData);
+        bookInfo.setUserData(UserData.getCurrentUser(getContext(), UserData.class));
         bookInfo.setBookName(name);
         bookInfo.setBookColor(colorIndex);
         bookInfo.setBookAlarmTime(time);
@@ -312,6 +311,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     private void updateItem(final int position, String name, int colorIndex, String time) {
         final BookInfo bookInfo = mDataSet.get(position);
         final BookInfo bookInfoOld = new BookInfo(bookInfo.getUserData(), bookInfo.getBookName(), bookInfo.getBookColor(), bookInfo.getBookAlarmTime());
+        bookInfo.setUserData(UserData.getCurrentUser(getContext(), UserData.class));
         bookInfo.setBookName(name);
         bookInfo.setBookColor(colorIndex);
         bookInfo.setBookAlarmTime(time);

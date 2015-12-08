@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.UserData;
 import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.agenthun.readingroutine.views.FilePageFactory;
@@ -168,12 +169,12 @@ public class ReadingActivity extends TActivity {
         }
     }
 
-/*    @OnClick(R.id.copy)
-    public void onCopyClick() {
-        Log.d(TAG, "onCopyClick() returned: ");
-        if (fileName != null && fileName.length() > 0) {
-        }
-    }*/
+    /*    @OnClick(R.id.copy)
+        public void onCopyClick() {
+            Log.d(TAG, "onCopyClick() returned: ");
+            if (fileName != null && fileName.length() > 0) {
+            }
+        }*/
 
     @OnClick(R.id.reading_list)
     public void onReadingListClick() {
@@ -184,32 +185,38 @@ public class ReadingActivity extends TActivity {
                 Snackbar.make(readingListImageButton, R.string.add_routine_already_exists, Snackbar.LENGTH_SHORT).setAction("Done", null).show();
             } else {
                 final BookInfo bookInfo = new BookInfo();
-                bookInfo.setUserData(LoginActivity.userData);
+                bookInfo.setUserData(UserData.getCurrentUser(ReadingActivity.this, UserData.class));
                 bookInfo.setBookName(bookName);
                 bookInfo.setBookColor(new Random().nextInt(4));
                 SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
                 Calendar calendar = Calendar.getInstance();
                 bookInfo.setBookAlarmTime(DATE_FORMAT.format(calendar.getTime()));
 
-                //服务器
-                bookInfo.save(ReadingActivity.this, new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        //Log.i(TAG, "上传服务器成功");
-                        //Log.i(TAG, bookInfo.getObjectId());
-                        BookDatabaseUtil.getInstance(ReadingActivity.this).insertBookInfo(bookInfo);
-                        BookDatabaseUtil.getInstance(ReadingActivity.this).queryBookInfos().add(0, bookInfo);
-                        Snackbar.make(readingListImageButton, R.string.add_routine_success, Snackbar.LENGTH_SHORT).setAction("Success", null).show();
-                    }
+                if (!getIsTrial()) {
+                    //服务器
+                    bookInfo.save(ReadingActivity.this, new SaveListener() {
+                        @Override
+                        public void onSuccess() {
+                            //Log.i(TAG, "上传服务器成功");
+                            //Log.i(TAG, bookInfo.getObjectId());
+                            BookDatabaseUtil.getInstance(ReadingActivity.this).insertBookInfo(bookInfo);
+                            BookDatabaseUtil.getInstance(ReadingActivity.this).queryBookInfos().add(0, bookInfo);
+                            Snackbar.make(readingListImageButton, R.string.add_routine_success, Snackbar.LENGTH_SHORT).setAction("Success", null).show();
+                        }
 
-                    @Override
-                    public void onFailure(int i, String s) {
-                        //Log.i(TAG, "上传服务器失败: " + s);
-                        BookDatabaseUtil.getInstance(ReadingActivity.this).insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
-                        BookDatabaseUtil.getInstance(ReadingActivity.this).queryBookInfos().add(0, bookInfo);
-                        Snackbar.make(readingListImageButton, R.string.add_routine_error, Snackbar.LENGTH_SHORT).setAction("Error", null).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(int i, String s) {
+                            //Log.i(TAG, "上传服务器失败: " + s);
+                            BookDatabaseUtil.getInstance(ReadingActivity.this).insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
+                            BookDatabaseUtil.getInstance(ReadingActivity.this).queryBookInfos().add(0, bookInfo);
+                            Snackbar.make(readingListImageButton, R.string.add_routine_error, Snackbar.LENGTH_SHORT).setAction("Error", null).show();
+                        }
+                    });
+                } else {
+                    BookDatabaseUtil.getInstance(ReadingActivity.this).insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
+                    BookDatabaseUtil.getInstance(ReadingActivity.this).queryBookInfos().add(0, bookInfo);
+                    Snackbar.make(readingListImageButton, R.string.add_routine_success, Snackbar.LENGTH_SHORT).setAction("Success", null).show();
+                }
             }
         }
     }
@@ -277,49 +284,49 @@ public class ReadingActivity extends TActivity {
     private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-/*                //Version 1
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        pageView.abortAnimation();
-                        pageView.calcCornerXY(event.getX(), event.getY());
+            /*                //Version 1
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_DOWN:
+                                    pageView.abortAnimation();
+                                    pageView.calcCornerXY(event.getX(), event.getY());
 
-                        if (pageView.dragToRight()) {
-                            // 向前翻页
-                            try {
-                                filePageFactory.prePage();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            if (filePageFactory.isFirstPage()) return false;
-                        } else {
-                            // 向后翻页
-                            try {
-                                filePageFactory.nextPage();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            if (filePageFactory.isLastPage()) return false;
-                        }
-                        filePageFactory.onDraw(nextPageCanvas);
-                        pageView.setBitmaps(curPageBitmap, nextPageBitmap);
+                                    if (pageView.dragToRight()) {
+                                        // 向前翻页
+                                        try {
+                                            filePageFactory.prePage();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        if (filePageFactory.isFirstPage()) return false;
+                                    } else {
+                                        // 向后翻页
+                                        try {
+                                            filePageFactory.nextPage();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        if (filePageFactory.isLastPage()) return false;
+                                    }
+                                    filePageFactory.onDraw(nextPageCanvas);
+                                    pageView.setBitmaps(curPageBitmap, nextPageBitmap);
 
-                        pageView.setTouch(event.getX(), event.getY());
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        pageView.setTouch(event.getX(), event.getY());
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        filePageFactory.onDraw(curPageCanvas);
-                        Log.d(TAG, "onTouch() returned: canDragOver()=" + pageView.canDragOver());
-                        if (pageView.canDragOver()) {
-                            pageView.startAnimation(1200);
-                            pageView.refresh();
-                        } else {
-                            pageView.setTouch(pageView.getCornerX() - 0.09f, pageView.getCornerY() - 0.09f);
-                        }
-                        break;
-                }
-                return true;*/
+                                    pageView.setTouch(event.getX(), event.getY());
+                                    break;
+                                case MotionEvent.ACTION_MOVE:
+                                    pageView.setTouch(event.getX(), event.getY());
+                                    break;
+                                case MotionEvent.ACTION_UP:
+                                    filePageFactory.onDraw(curPageCanvas);
+                                    Log.d(TAG, "onTouch() returned: canDragOver()=" + pageView.canDragOver());
+                                    if (pageView.canDragOver()) {
+                                        pageView.startAnimation(1200);
+                                        pageView.refresh();
+                                    } else {
+                                        pageView.setTouch(pageView.getCornerX() - 0.09f, pageView.getCornerY() - 0.09f);
+                                    }
+                                    break;
+                            }
+                            return true;*/
 
             //Version 2
             switch (event.getActionMasked()) {

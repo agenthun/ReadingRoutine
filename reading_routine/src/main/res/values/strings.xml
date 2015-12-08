@@ -32,6 +32,8 @@
     <string name="text_refresh">同步</string>
 
     <string name="title_activity_note_details">NoteDetailsActivity</string>
+    <string name="text_note_title">标题</string>
+    <string name="text_note_compose">内容</string>
     <string name="error_invalid_notecompose">内容无效</string>
 
     <string name="empty_reading_title">没有文章</string>

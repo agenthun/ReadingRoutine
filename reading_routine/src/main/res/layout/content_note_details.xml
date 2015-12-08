@@ -34,7 +34,7 @@
                 android:id="@+id/edit_note_title"
                 style="@style/single_line_text_field"
                 android:layout_width="match_parent"
-                android:hint="title"
+                android:hint="@string/text_note_title"
                 android:singleLine="true" />
 
             <View style="@style/divider" />
@@ -46,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/color_white"
                 android:gravity="top"
-                android:hint="compose"
+                android:hint="@string/text_note_compose"
                 android:lineSpacingExtra="@dimen/editor_line_space_extra"
                 android:minLines="10"
                 android:textColor="@color/gray_800" />

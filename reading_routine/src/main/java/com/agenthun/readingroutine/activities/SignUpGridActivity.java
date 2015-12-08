@@ -154,13 +154,29 @@ public class SignUpGridActivity extends TActivity {
             public void onSuccess() {
                 //Toast.makeText(SignUpActivity.this, R.string.success_sign_up, Toast.LENGTH_SHORT).show();
                 setIsTrial(false);
-                Intent intent = new Intent(SignUpGridActivity.this, MainActivity.class);
-                startActivity(intent);
-
                 BmobUser.requestEmailVerify(SignUpGridActivity.this, signUpEmailAddress, new EmailVerifyListener() {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(SignUpGridActivity.this, "请求验证邮件成功，请到" + signUpEmailAddress + "邮箱中进行激活。", Toast.LENGTH_LONG).show();
+
+                        toolbar.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                newUser.login(SignUpGridActivity.this, new SaveListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Intent intent = new Intent(SignUpGridActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onFailure(int i, String s) {
+                                        Toast.makeText(SignUpGridActivity.this, getResources().getString(R.string.msg_fail) + ": " + s, Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                                finish();
+                            }
+                        }, 200);
                     }
 
                     @Override
@@ -168,8 +184,6 @@ public class SignUpGridActivity extends TActivity {
                         Toast.makeText(SignUpGridActivity.this, "请求验证邮件失败: " + s, Toast.LENGTH_LONG).show();
                     }
                 });
-
-                finish();
             }
 
             @Override

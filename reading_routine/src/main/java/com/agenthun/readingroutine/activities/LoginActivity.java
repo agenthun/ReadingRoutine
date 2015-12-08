@@ -2,7 +2,6 @@ package com.agenthun.readingroutine.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,7 +15,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.listener.ResetPasswordByEmailListener;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -33,7 +31,7 @@ public class LoginActivity extends TActivity {
     @InjectView(R.id.login_password)
     EditText loginPassword;
 
-    public static UserData userData;
+    private UserData userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +63,6 @@ public class LoginActivity extends TActivity {
         finish();
     }
 
-    public static UserData getUser() {
-        return userData;
-    }
-
     @OnClick(R.id.sign_in_button)
     public void onSignInBtnClick() {
         attemptLogin();
@@ -84,19 +78,7 @@ public class LoginActivity extends TActivity {
 
     @OnClick(R.id.forget_password_button)
     public void onForgetPasswordBtnClick() {
-        Log.d(TAG, "onForgetPasswordBtnClick() returned: ");
-        final String email = "agenthun@126.com";
-        UserData.resetPasswordByEmail(LoginActivity.this, email, new ResetPasswordByEmailListener() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(LoginActivity.this, "重置密码请求成功, 请到" + email + "邮箱进行密码重置操作", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Toast.makeText(LoginActivity.this, "重置密码失败: " + s, Toast.LENGTH_SHORT).show();
-            }
-        });
+        startActivity(new Intent(this, ForgetPasswordActivity.class));
     }
 
     @OnClick(R.id.sign_up_button)
@@ -133,7 +115,7 @@ public class LoginActivity extends TActivity {
 
             @Override
             public void onFailure(int i, String s) {
-                Toast.makeText(LoginActivity.this, R.string.msg_fail, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, getResources().getString(R.string.msg_fail) + ": " + s, Toast.LENGTH_SHORT).show();
             }
         });
     }
