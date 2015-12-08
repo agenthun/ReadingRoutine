@@ -71,6 +71,7 @@ public class LoginActivity extends TActivity {
     @OnClick(R.id.trial_button)
     public void onTrialBtnClick() {
         setIsTrial(true);
+        userData = new UserData();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

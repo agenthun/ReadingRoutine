@@ -81,6 +81,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         setupRevealBackground(savedInstanceState);
 
         initAddItemBtn(addRoutinesItemBtn);
+
         return view;
     }
 

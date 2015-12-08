@@ -82,7 +82,9 @@ public class NoteDatabaseUtil {
 
     public void deleteNote(NoteInfo noteInfo, boolean isOffline) {
         Cursor cursor = null;
-        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + UserData.getObjectByKey(mContext, "objectId")
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        if (userId == null) userId = BookDatabaseUtil.TRIAL_USER;
+        String where = NoteDBHelper.NoteTable.USER_ID + " = '" + userId
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfo.getNoteTitle()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfo.getNoteCompose()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_CREATE_TIME + " = '" + noteInfo.getNoteCreateTime()
@@ -137,6 +139,7 @@ public class NoteDatabaseUtil {
         long uri = 0;
         Cursor cursor = null;
         String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        if (userId == null) userId = BookDatabaseUtil.TRIAL_USER;
         String where = NoteDBHelper.NoteTable.USER_ID + " = '" + userId
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_TITLE + " = '" + noteInfoOld.getNoteTitle()
                 + "' AND " + NoteDBHelper.NoteTable.NOTE_COMPOSE + " = '" + noteInfoOld.getNoteCompose()

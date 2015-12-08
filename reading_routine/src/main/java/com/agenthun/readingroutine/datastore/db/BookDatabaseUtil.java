@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class BookDatabaseUtil {
     private static final String TAG = "BookDatabaseUtil";
+    protected static final String TRIAL_USER = "trial_user";
     public static final String DATABASE_NAME = "readingroutine_book.db";
     public static final int DATABASE_VERSION = 1;
 
@@ -80,7 +81,9 @@ public class BookDatabaseUtil {
 
     public void deleteBookInfo(BookInfo bookInfo, boolean isOffline) {
         Cursor cursor = null;
-        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + UserData.getObjectByKey(mContext, "objectId")
+        String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        if (userId == null) userId = TRIAL_USER;
+        String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + userId
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfo.getBookName()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfo.getBookColor()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_ALARM_TIME + " = '" + bookInfo.getBookAlarmTime() + "'";
@@ -134,6 +137,7 @@ public class BookDatabaseUtil {
         long uri = 0;
         Cursor cursor = null;
         String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        if (userId == null) userId = TRIAL_USER;
         String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + userId
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfoOld.getBookName()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfoOld.getBookColor()
@@ -162,6 +166,7 @@ public class BookDatabaseUtil {
 
 /*        //version1 for trial user and sign in user with online
         String userId = (String) UserData.getObjectByKey(mContext, "objectId");
+        if (userId == null) userId = TRIAL_USER;
         String where = BookDBHelper.BookinfoTable.USER_ID + " = '" + userId
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_NAME + " = '" + bookInfoOld.getBookName()
                 + "' AND " + BookDBHelper.BookinfoTable.BOOK_COLOR + " = '" + bookInfoOld.getBookColor()
