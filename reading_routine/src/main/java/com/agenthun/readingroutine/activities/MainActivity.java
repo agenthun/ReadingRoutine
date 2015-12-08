@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.UserData;
 import com.agenthun.readingroutine.fragments.MenuFragment;
+import com.agenthun.readingroutine.fragments.SettingsFragment;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.agenthun.readingroutine.utils.Avatar;
 import com.agenthun.readingroutine.utils.CircleTransformation;
@@ -34,6 +35,7 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     private MaterialMenuIconToolbar materialMenuIconToolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private boolean direction;
+    private boolean navigationItemSelected = false;
 
     @InjectView(R.id.avatar)
     ImageView avator;
@@ -147,8 +149,10 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
-                    materialMenuIconToolbar.setTransformationOffset(MaterialMenuDrawable.AnimationState.BURGER_ARROW, direction ? 2 - slideOffset : slideOffset);
+                if (!navigationItemSelected) {
+                    if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
+                        materialMenuIconToolbar.setTransformationOffset(MaterialMenuDrawable.AnimationState.BURGER_ARROW, direction ? 2 - slideOffset : slideOffset);
+                    }
                 }
             }
 
@@ -166,6 +170,7 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
             @Override
             public void onDrawerClosed(View drawerView) {
                 direction = false;
+                navigationItemSelected = false;
                 if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
                     toolbar.setTitleTextColor(getResources().getColor(R.color.color_white));
                     toolbar.setTitle(R.string.text_main);
@@ -195,7 +200,13 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
                         drawerLayout.closeDrawers();
                         break;
                     case "设置":
+                        navigationItemSelected = true;
                         drawerLayout.closeDrawers();
+                        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
+                        materialMenuIconToolbar.setState(MaterialMenuDrawable.IconState.ARROW);
+                        toolbar.setTitle(R.string.text_null);
+                        toolbar.setBackgroundColor(getResources().getColor(R.color.color_white));
+                        pushFragmentToBackStack(SettingsFragment.class, null);
                         break;
                     case "退出":
                         BmobUser.logOut(getApplicationContext());
