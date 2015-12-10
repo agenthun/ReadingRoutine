@@ -13,7 +13,7 @@
         android:layout_margin="@dimen/margin_horizontal"
         android:elevation="4dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/icon_avatar" />
+        android:src="@drawable/ic_account_circle_green_48dp" />
 
     <TextView
         android:id="@+id/name"
