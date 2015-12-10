@@ -122,8 +122,6 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
             @Override
             public void onClick(View v) {
                 int cnt = getCountBackStackEntryAt();
-//                System.out.println("test1: " + cnt + "\r\n" + isTaskRoot());
-
                 if (cnt <= 1) {
                     if (!direction) {
                         drawerLayout.openDrawer(Gravity.LEFT);
@@ -131,6 +129,10 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
                         drawerLayout.closeDrawer(Gravity.LEFT);
                     }
                 } else {
+                    if (mFragmentIndex == MenuFragment.SETTINGS_FRAGMENT) {
+                        navigationItemSelected = false;
+                    }
+                    mFragmentIndex = 0;
                     toolbar.setTitleTextColor(getResources().getColor(R.color.color_white));
                     toolbar.setTitle(R.string.text_main);
                     toolbar.setBackgroundColor(getResources().getColor(R.color.background_daytime_material_blue));
@@ -194,15 +196,16 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(false);
                 String menuItemTitle = menuItem.getTitle() + "";
                 //Log.i(TAG, menuItemTitle);
                 switch (menuItemTitle) {
                     case "首页":
                         drawerLayout.closeDrawers();
                         if (mFragmentIndex > 0) {
+                            mFragmentIndex = 0;
                             getCountBackStackEntryAt();
                             materialMenuIconToolbar.setColor(getResources().getColor(R.color.color_white));
-                            materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.BURGER);
                             toolbar.setTitleTextColor(getResources().getColor(R.color.color_white));
                             toolbar.setTitle(R.string.text_main);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.background_daytime_material_blue));
@@ -210,12 +213,16 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
                         break;
                     case "设置":
                         navigationItemSelected = true;
+                        if (mFragmentIndex != MenuFragment.SETTINGS_FRAGMENT) {
+                            if (mFragmentIndex > 0) getCountBackStackEntryAt();
+                            mFragmentIndex = MenuFragment.SETTINGS_FRAGMENT;
+                            materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
+                            materialMenuIconToolbar.setState(MaterialMenuDrawable.IconState.ARROW);
+                            toolbar.setTitle(R.string.text_null);
+                            toolbar.setBackgroundColor(getResources().getColor(R.color.color_white));
+                            pushFragmentToBackStack(SettingsFragment.class, null);
+                        }
                         drawerLayout.closeDrawers();
-                        materialMenuIconToolbar.setColor(getResources().getColor(R.color.background_daytime_material_blue));
-                        materialMenuIconToolbar.setState(MaterialMenuDrawable.IconState.ARROW);
-                        toolbar.setTitle(R.string.text_null);
-                        toolbar.setBackgroundColor(getResources().getColor(R.color.color_white));
-                        pushFragmentToBackStack(SettingsFragment.class, null);
                         break;
                     case "退出":
                         BmobUser.logOut(getApplicationContext());
@@ -319,7 +326,9 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
 
     @Override
     public void onBackPressed() {
-        navigationItemSelected = false;
+        if (mFragmentIndex == MenuFragment.SETTINGS_FRAGMENT) {
+            navigationItemSelected = false;
+        }
         mFragmentIndex = 0;
         materialMenuIconToolbar.setColor(getResources().getColor(R.color.color_white));
         materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.BURGER);
