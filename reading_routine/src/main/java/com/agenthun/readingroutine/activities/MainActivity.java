@@ -36,6 +36,7 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private boolean direction;
     private boolean navigationItemSelected = false;
+    private int mFragmentIndex = 0;
 
     @InjectView(R.id.avatar)
     ImageView avator;
@@ -198,6 +199,14 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
                 switch (menuItemTitle) {
                     case "首页":
                         drawerLayout.closeDrawers();
+                        if (mFragmentIndex > 0) {
+                            getCountBackStackEntryAt();
+                            materialMenuIconToolbar.setColor(getResources().getColor(R.color.color_white));
+                            materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.BURGER);
+                            toolbar.setTitleTextColor(getResources().getColor(R.color.color_white));
+                            toolbar.setTitle(R.string.text_main);
+                            toolbar.setBackgroundColor(getResources().getColor(R.color.background_daytime_material_blue));
+                        }
                         break;
                     case "设置":
                         navigationItemSelected = true;
@@ -238,6 +247,7 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
 
     @Override
     public void onFragmentInteraction(int fragmentIndex) {
+        mFragmentIndex = fragmentIndex;
         switch (fragmentIndex) {
             case MenuFragment.READING_FRAGMENT:
                 openReadingFragment();
@@ -309,6 +319,8 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
 
     @Override
     public void onBackPressed() {
+        navigationItemSelected = false;
+        mFragmentIndex = 0;
         materialMenuIconToolbar.setColor(getResources().getColor(R.color.color_white));
         materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.BURGER);
         toolbar.setTitleTextColor(getResources().getColor(R.color.color_white));
