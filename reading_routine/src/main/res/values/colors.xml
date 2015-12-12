@@ -8,6 +8,8 @@
     <!--80CBC4--><!--7ecec9  81dad2-->
     <color name="background_night_material_blue">#05212d</color>
 
+    <color name="touch_effect">#9ccc</color>
+
     <color name="text_color_green">#009688</color>
     <color name="text_color_hint">#42000000</color>
     <color name="text_dialog_color_subhead">#1a1a1a</color>

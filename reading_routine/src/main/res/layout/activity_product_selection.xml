@@ -1,0 +1,85 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/quiz_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:windowBackground"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/category_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorPrimary"
+                android:gravity="center_vertical"
+                android:minHeight="?actionBarSize"
+                android:paddingBottom="@dimen/margin_vertical"
+                android:paddingLeft="@dimen/margin_horizontal"
+                android:paddingStart="@dimen/margin_horizontal"
+                android:paddingTop="@dimen/margin_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:transitionName="@string/transition_toolbar"
+                tools:ignore="UnusedAttribute,NewApi,RtlSymmetry,PrivateResource" />
+
+            <ImageButton
+                android:id="@+id/back"
+                style="@style/SelectableDarkBackgroundBorderless"
+                android:layout_width="?actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|center_vertical"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_arrow_back_white_36dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_horizontal"
+                android:alpha="0"
+                android:contentDescription="@null"
+                android:padding="@dimen/margin_horizontal"
+                android:scaleType="centerInside"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                tools:ignore="PrivateResource" />
+
+            <FrameLayout
+                android:id="@+id/quiz_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:elevation="6dp"
+        android:src="@drawable/ic_search_white_48dp"
+        android:translationZ="12dp"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:pressedTranslationZ="12dp"
+        tools:ignore="UnusedAttribute" />
+</merge>

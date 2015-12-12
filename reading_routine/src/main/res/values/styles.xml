@@ -49,7 +49,7 @@
     </style>
 
     <style name="SelectableDarkBackgroundBorderless">
-        <item name="android:background">@drawable/ripple_dark_effect_feedback</item>
+        <item name="android:background">@drawable/selector_subtle</item>
     </style>
 
     <!-- Note Details theme. -->

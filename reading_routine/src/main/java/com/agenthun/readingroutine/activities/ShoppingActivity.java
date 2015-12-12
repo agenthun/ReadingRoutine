@@ -1,16 +1,24 @@
 package com.agenthun.readingroutine.activities;
 
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
@@ -20,6 +28,7 @@ import com.agenthun.readingroutine.adapters.ShoppingAdapter;
 import com.agenthun.readingroutine.datastore.Book;
 import com.agenthun.readingroutine.net.BaseAsyncHttp;
 import com.agenthun.readingroutine.net.HttpResponseHandler;
+import com.agenthun.readingroutine.utils.TransitionHelper;
 import com.agenthun.readingroutine.views.CircularProgressView;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
@@ -38,6 +47,7 @@ import java.util.ArrayList;
 public class ShoppingActivity extends AppCompatActivity {
 
     private static final String TAG = "ShoppingActivity";
+    private static final int REQUEST_PRODUCT = 1;
 
     private MaterialMenuIconToolbar materialMenuIconToolbar;
     private Toolbar toolbar;
@@ -67,12 +77,6 @@ public class ShoppingActivity extends AppCompatActivity {
             }
         };
         materialMenuIconToolbar.setState(MaterialMenuDrawable.IconState.ARROW);
-/*        toolbar.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                materialMenuIconToolbar.animateState(MaterialMenuDrawable.IconState.ARROW);
-            }
-        }, 300);*/
         toolbar.setTitle(R.string.text_shopping);
         setSupportActionBar(toolbar);
 
@@ -90,156 +94,14 @@ public class ShoppingActivity extends AppCompatActivity {
             }
         });
 
-        // for test
+        // for dataset
         mDataSet = new ArrayList<>();
-/*
-        Book book = new Book();
-        book.setBitmap("http://i.imgur.com/DvpvklR.png");
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setBitmap("http://img1.douban.com/spic/s1747553.jpg");
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setBitmap("http://img3.douban.com/lpic/s28316760.jpg");
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setBitmap("http://img3.douban.com/lpic/s28315660.jpg");
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-
-        book = new Book();
-        book.setTitle("Notebook");
-        book.setAuthor("Nigolas Sparks");
-        book.setPrice("21");
-        book.setRate(5.0);
-        book.setReviewCount(100);
-        mDataSet.add(book);
-*/
-
 
         shoppingRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         setupGridLayout();
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+/*        fab = (FloatingActionButton) findViewById(R.id.fab);
         initSearchItemBtn(fab);
         fab.postDelayed(new Runnable() {
             @Override
@@ -260,9 +122,43 @@ public class ShoppingActivity extends AppCompatActivity {
                 startSearchAnimation(100);
                 getRequestData("第三种爱情");
             }
-        });
+        });*/
 
         progressView = (CircularProgressView) findViewById(R.id.progressBar);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_shopping, menu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+            final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    startSearchAnimation(100);
+                    getRequestData(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+            searchView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startSearchAnimation(100);
+                    getRequestData(String.valueOf(searchView.getQuery()));
+                }
+            });
+        }
+
+        return true;
     }
 
     private void setupGridLayout() {
@@ -270,10 +166,8 @@ public class ShoppingActivity extends AppCompatActivity {
         shoppingAdapter.setOnItemClickListener(new ShoppingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(view, position);
-                }
                 Log.d(TAG, "onItemClick() returned: " + position);
+                startProductActivityWithTransition(ShoppingActivity.this, view.findViewById(R.id.title), shoppingAdapter.getItem(position));
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(ShoppingActivity.this);
@@ -298,6 +192,7 @@ public class ShoppingActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     public void getRequestData(String str) {
@@ -347,7 +242,8 @@ public class ShoppingActivity extends AppCompatActivity {
 
             @Override
             public void onJsonHttpFailure(JSONObject response) {
-                //Snackbar.make(saveNotesItemBtn, R.string.error_invalid_network, Snackbar.LENGTH_SHORT).setAction("Error", null).show();
+                progressView.setVisibility(View.GONE);
+//                Snackbar.make(toolbar, R.string.error_invalid_network, Snackbar.LENGTH_SHORT).show();
                 Toast.makeText(ShoppingActivity.this, R.string.error_invalid_network, Toast.LENGTH_SHORT).show();
             }
         });
@@ -387,14 +283,28 @@ public class ShoppingActivity extends AppCompatActivity {
         }, delayTime);
     }
 
-    //itemClick interface
+    private void startProductActivityWithTransition(Activity activity, View view, Book book) {
+        final Pair[] pairs = TransitionHelper.createSafeTransitionParticipants(activity,
+                false,
+                new Pair<>(view, activity.getString(R.string.transition_toolbar)));
+
+        @SuppressWarnings("unchecked")
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pairs);
+
+        Bundle transitionBundle = optionsCompat.toBundle();
+        Intent intent = ProductActivity.getStartIntent(activity, book);
+        ActivityCompat.startActivityForResult(activity, intent, REQUEST_PRODUCT, transitionBundle);
+    }
+
+/*    //itemClick interface
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
+
     }
 
     private OnItemClickListener mOnItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
-    }
+    }*/
 }

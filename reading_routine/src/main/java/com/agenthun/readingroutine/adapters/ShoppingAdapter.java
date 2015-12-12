@@ -49,6 +49,10 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.Shoppi
         return mDataset.size();
     }
 
+    public Book getItem(int position) {
+        return mDataset.get(position);
+    }
+
     public void setItems(List<Book> dataset) {
         mDataset = dataset;
     }

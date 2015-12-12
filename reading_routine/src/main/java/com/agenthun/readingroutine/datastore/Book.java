@@ -9,6 +9,8 @@ import android.os.Parcelable;
  * @date 15/11/30 上午8:19.
  */
 public class Book implements Parcelable {
+    public static final String TAG = "BOOK";
+
     private String id;
     private String title;
     private String author;

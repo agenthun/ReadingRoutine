@@ -11,6 +11,8 @@
         style="@style/SelectableDarkBackgroundBorderless"
         android:layout_width="?actionBarSize"
         android:layout_height="match_parent"
+        android:layout_gravity="start|center_vertical"
+        android:contentDescription="@string/back"
         android:src="@drawable/ic_arrow_back_white_36dp" />
 
     <HorizontalScrollView
