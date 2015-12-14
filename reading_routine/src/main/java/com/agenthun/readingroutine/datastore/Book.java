@@ -10,7 +10,6 @@ import android.os.Parcelable;
  */
 public class Book implements Parcelable {
     public static final String TAG = "BOOK";
-    public static final String ID = "BOOK_ID";
 
     private String id;
     private String title;

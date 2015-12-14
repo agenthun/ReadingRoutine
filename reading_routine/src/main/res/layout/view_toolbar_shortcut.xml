@@ -9,11 +9,12 @@
     <ImageButton
         android:id="@+id/quitReadingBtn"
         style="@style/SelectableDarkBackgroundBorderless"
-        android:layout_width="?actionBarSize"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
         android:contentDescription="@string/back"
-        android:src="@drawable/ic_arrow_back_white_36dp" />
+        android:padding="@dimen/margin_horizontal"
+        android:src="@drawable/ic_arrow_back_white_24dp" />
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"

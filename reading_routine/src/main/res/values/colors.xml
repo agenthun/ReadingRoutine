@@ -54,5 +54,4 @@
     <color name="theme_ripple_mask_dark">#ff000000</color>
     <color name="theme_ripple_mask_light">#ffffffff</color>
     <color name="listItemPressedColor">#19000000</color>
-
 </resources>

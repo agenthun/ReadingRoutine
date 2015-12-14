@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="transition_toolbar">ToolbarTransition</string>
+    <string name="transition_imageview">ImageViewTransition</string>
 </resources>

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
@@ -118,6 +119,9 @@ public class ShoppingActivity extends AppCompatActivity {
             }
         });*/
 
+        startSearchAnimation(100);
+        getRequestData("第三种爱情");
+
         progressView = (CircularProgressView) findViewById(R.id.progressBar);
 
     }
@@ -135,6 +139,7 @@ public class ShoppingActivity extends AppCompatActivity {
                 public boolean onQueryTextSubmit(String query) {
                     startSearchAnimation(100);
                     getRequestData(query);
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                     return true;
                 }
 
@@ -160,8 +165,8 @@ public class ShoppingActivity extends AppCompatActivity {
         shoppingAdapter.setOnItemClickListener(new ShoppingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.d(TAG, "onItemClick() returned: " + position);
-                startProductActivityWithTransition(ShoppingActivity.this, view.findViewById(R.id.title), shoppingAdapter.getItem(position));
+//                Log.d(TAG, "onItemClick() returned: " + position);
+                startProductActivityWithTransition(ShoppingActivity.this, view.findViewById(R.id.pic), shoppingAdapter.getItem(position));
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(ShoppingActivity.this);
@@ -280,13 +285,13 @@ public class ShoppingActivity extends AppCompatActivity {
     private void startProductActivityWithTransition(Activity activity, View view, Book book) {
         final Pair[] pairs = TransitionHelper.createSafeTransitionParticipants(activity,
                 false,
-                new Pair<>(view, activity.getString(R.string.transition_toolbar)));
+                new Pair<>(view, activity.getString(R.string.transition_imageview)));
 
         @SuppressWarnings("unchecked")
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pairs);
 
-        Bundle transitionBundle = optionsCompat.toBundle();
         Intent intent = ProductActivity.getStartIntent(activity, book);
+        Bundle transitionBundle = optionsCompat.toBundle();
         ActivityCompat.startActivity(activity, intent, transitionBundle);
     }
 }
