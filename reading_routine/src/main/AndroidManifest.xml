@@ -125,6 +125,9 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activities.ProductActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

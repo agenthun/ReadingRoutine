@@ -48,6 +48,7 @@ public class ShoppingActivity extends AppCompatActivity {
 
     private static final String TAG = "ShoppingActivity";
     private static final int REQUEST_PRODUCT = 1;
+    public static final int RESULT_PRODUCT = 2;
 
     private MaterialMenuIconToolbar materialMenuIconToolbar;
     private Toolbar toolbar;
@@ -83,14 +84,7 @@ public class ShoppingActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*                materialMenuIconToolbar.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-                toolbar.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                }, 200);*/
-                finish();
+                onBackPressed();
             }
         });
 
@@ -293,18 +287,6 @@ public class ShoppingActivity extends AppCompatActivity {
 
         Bundle transitionBundle = optionsCompat.toBundle();
         Intent intent = ProductActivity.getStartIntent(activity, book);
-        ActivityCompat.startActivityForResult(activity, intent, REQUEST_PRODUCT, transitionBundle);
+        ActivityCompat.startActivity(activity, intent, transitionBundle);
     }
-
-/*    //itemClick interface
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-
-    }
-
-    private OnItemClickListener mOnItemClickListener;
-
-    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
-        this.mOnItemClickListener = mOnItemClickListener;
-    }*/
 }

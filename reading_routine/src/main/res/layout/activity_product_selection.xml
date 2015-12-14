@@ -1,10 +1,9 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/quiz_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +16,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/category_title"
+                android:id="@+id/product_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?colorPrimary"
@@ -58,6 +57,7 @@
                 android:scaleType="centerInside"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
+                android:src="@drawable/material_l1"
                 tools:ignore="PrivateResource" />
 
             <FrameLayout
@@ -82,4 +82,4 @@
         app:fabSize="normal"
         app:pressedTranslationZ="12dp"
         tools:ignore="UnusedAttribute" />
-</merge>
+</android.support.design.widget.CoordinatorLayout>
