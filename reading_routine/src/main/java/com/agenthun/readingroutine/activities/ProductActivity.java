@@ -2,6 +2,7 @@ package com.agenthun.readingroutine.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
@@ -42,7 +44,6 @@ public class ProductActivity extends AppCompatActivity {
     private FloatingActionButton mFab;
     private Interpolator mInterpolator;
     private Palette palette;
-    private List<Palette.Swatch> swatches;
 
     public static Intent getStartIntent(Context context, Book book) {
         Intent intent = new Intent(context, ProductActivity.class);
@@ -92,9 +93,20 @@ public class ProductActivity extends AppCompatActivity {
         Picasso.with(this).load(book.getBitmap()).into(mPic);
 
         palette = Palette.from(((BitmapDrawable) (mPic.getDrawable())).getBitmap()).generate();
-        swatches = palette.getSwatches();
+
+        ((TextView) findViewById(R.id.title)).setText(book.getTitle());
+        ((TextView) findViewById(R.id.author)).setText("作者: " + (TextUtils.isEmpty(book.getAuthor()) ? getString(R.string.text_author_null) : book.getAuthor()));
+        ((TextView) findViewById(R.id.publisher)).setText(TextUtils.isEmpty(book.getPublisher()) ? getString(R.string.text_publisher_null) : book.getPublisher());
+        ((TextView) findViewById(R.id.publishDate)).setText(book.getPublishDate());
+        ((TextView) findViewById(R.id.rate)).setText(book.getRate() + "分");
+        ((TextView) findViewById(R.id.reviewCount)).setText(book.getReviewCount() + "人评论");
+        ((TextView) findViewById(R.id.price)).setText(book.getPrice());
+        ((TextView) findViewById(R.id.content)).setText(TextUtils.isEmpty(book.getContent()) ? getString(R.string.text_content_null) : book.getContent());
+        ((TextView) findViewById(R.id.summary)).setText(TextUtils.isEmpty(book.getSummary()) ? getString(R.string.text_content_null) : book.getSummary());
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setBackgroundTintList(ColorStateList.valueOf(
+                palette.getVibrantColor(getResources().getColor(R.color.colorAccent))));
         mFab.show();
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,15 +117,11 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void initToolbar(Book book) {
-        Palette.Swatch swatch = palette.getDarkVibrantSwatch();
+        Palette.Swatch swatch;
         int color;
         if (ApiLevelHelper.isAtLeast(Build.VERSION_CODES.LOLLIPOP)) {
-            if (swatch != null) {
-                color = swatch.getRgb();
-            } else {
-                color = getResources().getColor(R.color.colorPrimaryDark);
-            }
-            getWindow().setStatusBarColor(color);
+            getWindow().setStatusBarColor(
+                    palette.getDarkVibrantColor(getResources().getColor(R.color.colorPrimaryDark)));
         }
 
         mToolbarBack = findViewById(R.id.back);
@@ -126,7 +134,7 @@ public class ProductActivity extends AppCompatActivity {
         TextView titleView = (TextView) findViewById(R.id.product_title);
         titleView.setText(book.getTitle());
 
-        swatch = palette.getDarkMutedSwatch();
+        swatch = palette.getLightVibrantSwatch();
         if (swatch != null) {
             color = swatch.getTitleTextColor();
         } else {
@@ -134,13 +142,16 @@ public class ProductActivity extends AppCompatActivity {
         }
         titleView.setTextColor(color);
 
+        (findViewById(R.id.pic_background)).setBackgroundColor(palette.getLightMutedColor(color));
+
         mToolbar = findViewById(R.id.product_title);
         if (swatch != null) {
             color = swatch.getRgb();
         } else {
             color = getResources().getColor(R.color.colorPrimary);
         }
-        mToolbar.setBackgroundColor(color);
+        mToolbar.setBackgroundColor(
+                palette.getLightVibrantColor(getResources().getColor(R.color.colorPrimary)));
     }
 
     @Override

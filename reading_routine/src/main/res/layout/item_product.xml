@@ -92,6 +92,7 @@
             android:layout_gravity="bottom"
             android:layout_marginTop="@dimen/margin_vertical"
             android:background="#66646464" />
+
     </LinearLayout>
 
 </LinearLayout>

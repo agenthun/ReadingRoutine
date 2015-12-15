@@ -88,4 +88,11 @@
         <item name="android:paddingRight">@dimen/listLinePaddingWithContent</item>
     </style>
 
+    <style name="product_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/margin_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/margin_horizontal</item>
+    </style>
+
 </resources>

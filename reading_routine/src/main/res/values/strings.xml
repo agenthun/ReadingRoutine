@@ -76,5 +76,10 @@
     <string name="action_search">搜索</string>
     <string name="text_search_hint">搜索</string>
     <string name="back">返回</string>
+    <string name="text_product_content">内容</string>
+    <string name="text_product_summary">书评</string>
+    <string name="text_author_null">不详</string>
+    <string name="text_publisher_null">出版社不详</string>
+    <string name="text_content_null">暂无</string>
 
 </resources>

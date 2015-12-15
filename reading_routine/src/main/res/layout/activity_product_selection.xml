@@ -42,31 +42,159 @@
                 android:src="@drawable/ic_arrow_back_white_24dp" />
         </FrameLayout>
 
-        <FrameLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ImageView
-                android:id="@+id/pic"
-                android:layout_width="172dp"
-                android:layout_height="172dp"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/margin_horizontal"
-                android:alpha="0"
-                android:contentDescription="@null"
-                android:padding="@dimen/margin_horizontal"
-                android:scaleType="centerInside"
-                android:src="@drawable/material_l1"
-                tools:ignore="PrivateResource" />
-
-            <FrameLayout
-                android:id="@+id/quiz_fragment_container"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:visibility="invisible" />
-        </FrameLayout>
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/pic_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/pic"
+                        android:layout_width="144dp"
+                        android:layout_height="186dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/margin_horizontal"
+                        android:alpha="0"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/material_l1" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/product_text_style"
+                    android:fontFamily="sans-serif"
+                    android:paddingTop="24dp"
+                    android:text="Title"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/abc_text_size_headline_material"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/author"
+                    style="@style/product_text_style"
+                    android:fontFamily="sans-serif"
+                    android:text="author"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/abc_text_size_small_material" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_horizontal"
+                    android:layout_marginRight="@dimen/margin_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/publisher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="publisher"
+                        android:textColor="#646464"
+                        android:textSize="@dimen/abc_text_size_small_material" />
+
+                    <TextView
+                        android:id="@+id/publishDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/margin_horizontal_medium"
+                        android:text="publishDate"
+                        android:textColor="#646464"
+                        android:textSize="@dimen/abc_text_size_small_material" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_horizontal"
+                    android:layout_marginRight="@dimen/margin_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="rate"
+                        android:textColor="#646464"
+                        android:textSize="@dimen/abc_text_size_small_material" />
+
+                    <TextView
+                        android:id="@+id/reviewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/margin_horizontal_small"
+                        android:text="Count"
+                        android:textColor="#646464"
+                        android:textSize="@dimen/abc_text_size_small_material" />
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/margin_horizontal_medium"
+                        android:text="Price"
+                        android:textColor="#646464"
+                        android:textSize="@dimen/abc_text_size_small_material" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/margin_vertical"
+                    android:background="#66646464" />
+
+                <TextView
+                    style="@style/product_text_style"
+                    android:fontFamily="sans-serif"
+                    android:paddingTop="@dimen/listLinePaddingWithContent"
+                    android:text="@string/text_product_content"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/abc_text_size_small_material"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/content"
+                    style="@style/product_text_style"
+                    android:fontFamily="sans-serif"
+                    android:paddingTop="@dimen/margin_vertical_medium"
+                    android:text="content"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/abc_text_size_small_material" />
+
+                <TextView
+                    style="@style/product_text_style"
+                    android:fontFamily="sans-serif"
+                    android:paddingTop="@dimen/listLinePaddingWithContent"
+                    android:text="@string/text_product_summary"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/abc_text_size_small_material"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/summary"
+                    style="@style/product_text_style"
+                    android:fontFamily="sans-serif"
+                    android:paddingTop="@dimen/margin_vertical_medium"
+                    android:text="summary"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/abc_text_size_small_material" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
