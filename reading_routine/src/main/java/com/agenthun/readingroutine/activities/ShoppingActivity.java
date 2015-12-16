@@ -119,8 +119,14 @@ public class ShoppingActivity extends AppCompatActivity {
             }
         });*/
 
-        startSearchAnimation(100);
-        getRequestData("第三种爱情");
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startSearchAnimation(100);
+                getRequestData("射雕侠侣");
+            }
+        }, 200);
 
         progressView = (CircularProgressView) findViewById(R.id.progressBar);
 

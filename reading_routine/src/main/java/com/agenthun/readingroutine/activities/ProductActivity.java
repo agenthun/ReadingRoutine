@@ -111,7 +111,7 @@ public class ProductActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(mFab, "onClick", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mFab, "分享功能 - 敬请期待", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
