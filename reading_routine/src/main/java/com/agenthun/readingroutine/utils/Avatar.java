@@ -26,7 +26,12 @@ public enum Avatar {
     THIRTEEN(R.drawable.avatar_13_raster),
     FOURTEEN(R.drawable.avatar_14_raster),
     FIFTEEN(R.drawable.avatar_15_raster),
-    SIXTEEN(R.drawable.avatar_16_raster);
+    SIXTEEN(R.drawable.avatar_16_raster),
+    SEVENTEEN(R.drawable.avatar_17_raster),
+    EIGHTEEN(R.drawable.avatar_18_raster),
+    NINETEEN(R.drawable.avatar_19_raster),
+    TWENTY(R.drawable.avatar_20_raster),
+    TWENTY_1(R.drawable.avatar_20_1_raster);
 
     private int mResId;
 

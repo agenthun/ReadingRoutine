@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.UserData;
 import com.agenthun.readingroutine.fragments.MenuFragment;
 import com.agenthun.readingroutine.fragments.SettingsFragment;
+import com.agenthun.readingroutine.services.AlarmNoiser;
+import com.agenthun.readingroutine.services.AlarmNoiserService;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.agenthun.readingroutine.utils.Avatar;
 import com.agenthun.readingroutine.utils.CircleTransformation;
@@ -233,6 +236,9 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
                 return false;
             }
         });
+
+        AlarmNoiser.startAlarmNoiserService(this, 5, AlarmNoiserService.class, AlarmNoiserService.ACTION);
+        Log.d(TAG, "onCreate() returned: startAlarmNoiserService");
     }
 
     @Override
@@ -341,6 +347,8 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        AlarmNoiser.stopAlarmNoiserService(this, AlarmNoiserService.class, AlarmNoiserService.ACTION);
+        Log.d(TAG, "onDestroy() returned: stopAlarmNoiserService");
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.agenthun.readingroutine.activities;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -51,6 +55,20 @@ public class LoginActivity extends TActivity {
             userData = new UserData();
             setIsTrial(true);
         }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_rr_launcher)
+                .setContentTitle("阅读提醒")
+                .setContentText("你的书该看了");
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(LoginActivity.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManager.notify(1, mBuilder.build());
     }
 
     @Override
