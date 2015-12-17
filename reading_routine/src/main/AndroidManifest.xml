@@ -128,7 +128,7 @@
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".services.MyIntentService"
+            android:name=".services.AlarmNoiserIntentService"
             android:exported="false"></service>
     </application>
 

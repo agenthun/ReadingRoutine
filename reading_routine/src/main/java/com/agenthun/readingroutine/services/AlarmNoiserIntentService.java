@@ -1,8 +1,16 @@
 package com.agenthun.readingroutine.services;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
+
+import com.agenthun.readingroutine.R;
+import com.agenthun.readingroutine.activities.MainActivity;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -11,18 +19,20 @@ import android.content.Intent;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class MyIntentService extends IntentService {
+public class AlarmNoiserIntentService extends IntentService {
+    private static final String TAG = "IntentService";
+
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_FOO = "com.agenthun.readingroutine.services.action.FOO";
-    private static final String ACTION_BAZ = "com.agenthun.readingroutine.services.action.BAZ";
+    public static final String ACTION_NOTIFICATION = "com.agenthun.readingroutine.services.action.NOTIFICATION";
+    public static final String ACTION_BAZ = "com.agenthun.readingroutine.services.action.BAZ";
 
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "com.agenthun.readingroutine.services.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.agenthun.readingroutine.services.extra.PARAM2";
 
-    public MyIntentService() {
-        super("MyIntentService");
+    public AlarmNoiserIntentService() {
+        super("AlarmNoiserIntentService");
     }
 
     /**
@@ -32,9 +42,9 @@ public class MyIntentService extends IntentService {
      * @see IntentService
      */
     // TODO: Customize helper method
-    public static void startActionFoo(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, MyIntentService.class);
-        intent.setAction(ACTION_FOO);
+    public static void startActionNotification(Context context, String param1, String param2) {
+        Intent intent = new Intent(context, AlarmNoiserIntentService.class);
+        intent.setAction(ACTION_NOTIFICATION);
         intent.putExtra(EXTRA_PARAM1, param1);
         intent.putExtra(EXTRA_PARAM2, param2);
         context.startService(intent);
@@ -48,7 +58,7 @@ public class MyIntentService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startActionBaz(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, MyIntentService.class);
+        Intent intent = new Intent(context, AlarmNoiserIntentService.class);
         intent.setAction(ACTION_BAZ);
         intent.putExtra(EXTRA_PARAM1, param1);
         intent.putExtra(EXTRA_PARAM2, param2);
@@ -59,10 +69,10 @@ public class MyIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_FOO.equals(action)) {
+            if (ACTION_NOTIFICATION.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
                 final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
+                handleActionNotification(param1, param2);
             } else if (ACTION_BAZ.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
                 final String param2 = intent.getStringExtra(EXTRA_PARAM2);
@@ -75,9 +85,25 @@ public class MyIntentService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionFoo(String param1, String param2) {
+    private void handleActionNotification(String param1, String param2) {
         // TODO: Handle action Foo
-        throw new UnsupportedOperationException("Not yet implemented");
+        Log.d(TAG, "handleActionNotification() returned: ");
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_rr_launcher)
+                .setContentTitle(getString(R.string.text_notification_title))
+                .setContentText(param1)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_MAX);
+//        .setStyle(new NotificationCompat.BigTextStyle().bigText(param1));
+
+        Intent intent = new Intent(this, AlarmNoiserIntentService.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManager.notify(1, mBuilder.build());
     }
 
     /**
@@ -86,6 +112,7 @@ public class MyIntentService extends IntentService {
      */
     private void handleActionBaz(String param1, String param2) {
         // TODO: Handle action Baz
-        throw new UnsupportedOperationException("Not yet implemented");
+        Log.d(TAG, "handleActionBaz() returned: ");
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }

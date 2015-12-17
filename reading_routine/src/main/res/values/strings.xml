@@ -81,5 +81,6 @@
     <string name="text_author_null">不详</string>
     <string name="text_publisher_null">出版社不详</string>
     <string name="text_content_null">暂无</string>
+    <string name="text_notification_title">阅读提醒</string>
 
 </resources>
