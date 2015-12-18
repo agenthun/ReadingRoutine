@@ -89,11 +89,11 @@ public class AlarmNoiserIntentService extends IntentService {
         // TODO: Handle action Foo
         Log.d(TAG, "handleActionNotification() returned: ");
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_rr_launcher)
+                .setSmallIcon(R.drawable.ic_reading_routine_white_no_annulus_48dp)
                 .setContentTitle(getString(R.string.text_notification_title))
                 .setContentText(param1)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_MAX);
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
 //        .setStyle(new NotificationCompat.BigTextStyle().bigText(param1));
 
         Intent intent = new Intent(this, AlarmNoiserIntentService.class);

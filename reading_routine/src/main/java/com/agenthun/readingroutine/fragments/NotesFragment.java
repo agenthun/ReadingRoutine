@@ -275,6 +275,12 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                 .start();
     }
 
+    @Override
+    public void onDestroy() {
+        NoteDatabaseUtil.destory();
+        super.onDestroy();
+    }
+
     //addItem,deleteItem,updateItem 的position从0开始
     //添加
     private void addItem(String title, String compose, String time, int colorIndex) {

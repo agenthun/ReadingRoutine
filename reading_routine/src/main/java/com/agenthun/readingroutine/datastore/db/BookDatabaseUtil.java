@@ -37,7 +37,7 @@ public class BookDatabaseUtil {
         return instance;
     }
 
-    public static void destory() {
+    public void destory() {
         if (instance != null) {
             instance.onDestory();
         }

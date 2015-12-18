@@ -242,6 +242,12 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         }
     }
 
+    @Override
+    public void onDestroy() {
+        databaseUtil.destory();
+        super.onDestroy();
+    }
+
     //addItem,deleteItem,updateItem 的position从0开始
     //添加
     private void addItem(String name, int colorIndex, String time) {
