@@ -184,7 +184,10 @@ public class BookActivity extends TActivity {
             mDate = calendar.getTime();
         }
 
-        CalendarDialogFragment calendarDialogFragment = new CalendarDialogFragment(mDate);
+        CalendarDialogFragment calendarDialogFragment = new CalendarDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong(CalendarDialogFragment.SELECTD_DATE, mDate.getTime());
+        calendarDialogFragment.setArguments(bundle);
         calendarDialogFragment.show(getSupportFragmentManager(), TAG);
         calendarDialogFragment.setCalendarCallback(mCalendarFragmentCallback);
 

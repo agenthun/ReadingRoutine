@@ -17,6 +17,7 @@ import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -85,10 +86,10 @@ public class AlarmNoiserIntentService extends IntentService {
                 if (bookInfo != null) {
                     Log.d(TAG, "onHandleIntent() returned: " + bookInfo.getBookName());
                     Log.d(TAG, "onHandleIntent() returned: " + bookInfo.getBookAlarmTime());
+                    final String param1 = intent.getStringExtra(EXTRA_PARAM1);
+                    final String param2 = intent.getStringExtra(EXTRA_PARAM2);
+                    handleActionNotification(param1, param2);
                 }
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionNotification(param1, param2);
             } else if (ACTION_BAZ.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
                 final String param2 = intent.getStringExtra(EXTRA_PARAM2);
@@ -152,7 +153,13 @@ public class AlarmNoiserIntentService extends IntentService {
 
         for (BookInfo bookInfo :
                 mDataSet) {
-            queue.add(bookInfo);
+            try {
+                if ((DATE_FORMAT.parse(bookInfo.getBookAlarmTime())).after(Calendar.getInstance().getTime())) {
+                    queue.add(bookInfo);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         if (queue.iterator().hasNext()) {
