@@ -120,41 +120,6 @@ public class BookActivity extends TActivity {
 
         int[] colorFab = getResources().getIntArray(R.array.style_book_fab_color);
         fab.setBackgroundTintList(ColorStateList.valueOf(colorFab[getBookColorIndex]));
- /*       ImageLoader.getInstance().displayImage("", icon,
-                new DisplayImageOptions.Builder()
-                        .cacheInMemory(true)
-                        .showImageOnFail(R.drawable.ic_reading_routine_white_no_annulus)
-                        .resetViewBeforeLoading(true).build(),
-                new ImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        Palette palette = Palette.generate(loadedImage);
-                        ColorStateList colorStateList = new ColorStateList(
-                                new int[][]{
-                                        new int[]{}
-                                },
-                                new int[]{
-                                        palette.getMutedColor(Color.parseColor("#66000000"))
-                                }
-                        );
-                        fab.setBackgroundTintList(colorStateList);
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String imageUri, View view) {
-
-                    }
-                });*/
 
 /*        fab.setVisibility(View.VISIBLE);
         fab.animate().scaleY(1.0f).scaleX(1.0f).alpha(1.0f)
@@ -178,7 +143,7 @@ public class BookActivity extends TActivity {
     public void onAlarmTimeClick() {
         try {
             SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-            mDate = DATE_FORMAT.parse(getBookAlarmTime);
+            mDate = DATE_FORMAT.parse(alarmTime.getText().toString());
         } catch (ParseException e) {
             Calendar calendar = Calendar.getInstance();
             mDate = calendar.getTime();
