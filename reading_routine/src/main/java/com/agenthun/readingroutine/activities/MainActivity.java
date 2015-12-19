@@ -19,6 +19,7 @@ import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.datastore.UserData;
 import com.agenthun.readingroutine.fragments.MenuFragment;
 import com.agenthun.readingroutine.fragments.SettingsFragment;
+import com.agenthun.readingroutine.services.AlarmNoiser;
 import com.agenthun.readingroutine.services.AlarmNoiserIntentService;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.agenthun.readingroutine.utils.Avatar;
@@ -236,8 +237,8 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
             }
         });
 
-        //AlarmNoiser.startAlarmNoiserService(this, 5, AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
-        AlarmNoiserIntentService.startActionNotification(this, "test", "");
+        AlarmNoiser.startAlarmNoiserService(this, 5, AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
+        //AlarmNoiserIntentService.startActionNotification(this, "test", "");
         Log.d(TAG, "onCreate() returned: startAlarmNoiserService");
     }
 
@@ -347,7 +348,7 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //AlarmNoiser.stopAlarmNoiserService(this, AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
+        AlarmNoiser.stopAlarmNoiserService(this, AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
         Log.d(TAG, "onDestroy() returned: stopAlarmNoiserService");
     }
 

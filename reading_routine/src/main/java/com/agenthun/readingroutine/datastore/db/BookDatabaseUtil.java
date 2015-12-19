@@ -30,14 +30,25 @@ public class BookDatabaseUtil {
         mContext = context;
     }
 
-    public synchronized static BookDatabaseUtil getInstance(Context context) {
+/*    public synchronized static BookDatabaseUtil getInstance(Context context) {
         if (instance == null) {
             instance = new BookDatabaseUtil(context);
         }
         return instance;
+    }*/
+
+    public static BookDatabaseUtil getInstance(Context context) {
+        if (instance == null) {
+            synchronized (BookDatabaseUtil.class) {
+                if (instance == null) {
+                    instance = new BookDatabaseUtil(context);
+                }
+            }
+        }
+        return instance;
     }
 
-    public void destory() {
+    public static void destory() {
         if (instance != null) {
             instance.onDestory();
         }

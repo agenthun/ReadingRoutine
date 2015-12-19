@@ -32,7 +32,11 @@ public class NoteDatabaseUtil {
 
     public synchronized static NoteDatabaseUtil getInstance(Context context) {
         if (instance == null) {
-            instance = new NoteDatabaseUtil(context);
+            synchronized (BookDatabaseUtil.class) {
+                if (instance == null) {
+                    instance = new NoteDatabaseUtil(context);
+                }
+            }
         }
         return instance;
     }

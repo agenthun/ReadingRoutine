@@ -68,7 +68,6 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
 
     private ArrayList<NoteInfo> mDataSet;
     private int itemPosition = 1;
-    NoteDatabaseUtil databaseUtil;
 
     public NotesFragment() {
         // Required empty public constructor
@@ -91,8 +90,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
     }
 
     private void setupDatabase() {
-        databaseUtil = NoteDatabaseUtil.getInstance(getContext());
-        mDataSet = databaseUtil.queryNoteInfos();
+        mDataSet = NoteDatabaseUtil.getInstance(getContext()).queryNoteInfos();
         if (mDataSet == null && getIsTrial() != true) {
             BmobQuery<NoteInfo> bmobQuery = new BmobQuery<>();
             bmobQuery.setLimit(10);
@@ -106,7 +104,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
             bmobQuery.findObjects(getContext(), new FindListener<NoteInfo>() {
                 @Override
                 public void onSuccess(List<NoteInfo> list) {
-                    mDataSet = (ArrayList<NoteInfo>) databaseUtil.setNotes(list);
+                    mDataSet = (ArrayList<NoteInfo>) NoteDatabaseUtil.getInstance(getContext()).setNotes(list);
                 }
 
                 @Override
@@ -297,17 +295,17 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                 public void onSuccess() {
                     Log.i(TAG, "上传服务器成功");
                     Log.i(TAG, noteInfo.getObjectId());
-                    databaseUtil.insertNote(noteInfo);
+                    NoteDatabaseUtil.getInstance(getContext()).insertNote(noteInfo);
                 }
 
                 @Override
                 public void onFailure(int i, String s) {
                     Log.i(TAG, "上传服务器失败: " + s);
-                    databaseUtil.insertNote(noteInfo, noteInfo, true); //无效invalid ObjectId
+                    NoteDatabaseUtil.getInstance(getContext()).insertNote(noteInfo, noteInfo, true); //无效invalid ObjectId
                 }
             });
         } else {
-            databaseUtil.insertNote(noteInfo, noteInfo, true); //无效invalid ObjectId
+            NoteDatabaseUtil.getInstance(getContext()).insertNote(noteInfo, noteInfo, true); //无效invalid ObjectId
         }
         mDataSet.add(0, noteInfo);
         notesAdapter.notifyDataSetChanged();
@@ -322,17 +320,17 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                 @Override
                 public void onSuccess() {
                     Log.i(TAG, "删除成功");
-                    databaseUtil.deleteNote(noteInfo);
+                    NoteDatabaseUtil.getInstance(getContext()).deleteNote(noteInfo);
                 }
 
                 @Override
                 public void onFailure(int i, String s) {
                     Log.i(TAG, "删除失败: " + s);
-                    databaseUtil.deleteNote(noteInfo, true);
+                    NoteDatabaseUtil.getInstance(getContext()).deleteNote(noteInfo, true);
                 }
             });
         } else {
-            databaseUtil.deleteNote(noteInfo, true);
+            NoteDatabaseUtil.getInstance(getContext()).deleteNote(noteInfo, true);
         }
 
         int size = mDataSet.size();
@@ -367,17 +365,17 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                     public void onSuccess() {
                         Log.i(TAG, "上传服务器成功");
                         Log.i(TAG, noteInfo.getObjectId());
-                        databaseUtil.insertNote(noteInfo, noteInfoOld, true);
+                        NoteDatabaseUtil.getInstance(getContext()).insertNote(noteInfo, noteInfoOld, true);
                     }
 
                     @Override
                     public void onFailure(int i, String s) {
                         Log.i(TAG, "上传服务器失败: " + s);
-                        databaseUtil.insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
+                        NoteDatabaseUtil.getInstance(getContext()).insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
                     }
                 });
             } else {
-                databaseUtil.insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
+                NoteDatabaseUtil.getInstance(getContext()).insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
             }
         } else {
             //服务器
@@ -385,7 +383,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                 @Override
                 public void onSuccess() {
                     Log.i(TAG, "更新服务器成功");
-                    databaseUtil.insertNote(noteInfo);
+                    NoteDatabaseUtil.getInstance(getContext()).insertNote(noteInfo);
                 }
 
                 @Override
@@ -394,7 +392,7 @@ public class NotesFragment extends TFragment implements RevealBackgroundView.OnS
                     switch (i) {
                         case 9010:
                         case 9016:
-                            databaseUtil.insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
+                            NoteDatabaseUtil.getInstance(getContext()).insertNote(noteInfo, noteInfoOld, true); //无效invalid ObjectId
                             break;
                     }
                 }

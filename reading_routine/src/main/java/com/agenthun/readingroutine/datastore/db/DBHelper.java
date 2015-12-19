@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public abstract class DBHelper extends SQLiteOpenHelper {
 
-    private SQLiteDatabase mDb;
+    protected SQLiteDatabase mDb;
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

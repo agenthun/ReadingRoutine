@@ -63,7 +63,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     private boolean pendingIntro;
     private ArrayList<BookInfo> mDataSet;
     private int itemPosition = 1;
-    private BookDatabaseUtil databaseUtil;
 
     public RoutinesFragment() {
         // Required empty public constructor
@@ -86,8 +85,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     }
 
     private void setupDatabase() {
-        databaseUtil = BookDatabaseUtil.getInstance(getContext());
-        mDataSet = databaseUtil.queryBookInfos();
+        mDataSet = BookDatabaseUtil.getInstance(getContext()).queryBookInfos();
         if (mDataSet == null && getIsTrial() != true) {
             BmobQuery<BookInfo> bmobQuery = new BmobQuery<>();
             bmobQuery.setLimit(10);
@@ -101,7 +99,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             bmobQuery.findObjects(getContext(), new FindListener<BookInfo>() {
                 @Override
                 public void onSuccess(List<BookInfo> list) {
-                    mDataSet = (ArrayList<BookInfo>) databaseUtil.setBookInfos(list);
+                    mDataSet = (ArrayList<BookInfo>) BookDatabaseUtil.getInstance(getContext()).setBookInfos(list);
                 }
 
                 @Override
@@ -244,7 +242,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
 
     @Override
     public void onDestroy() {
-        databaseUtil.destory();
+        BookDatabaseUtil.destory();
         super.onDestroy();
     }
 
@@ -256,6 +254,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         bookInfo.setBookName(name);
         bookInfo.setBookColor(colorIndex);
         bookInfo.setBookAlarmTime(time);
+
         if (!getIsTrial()) {
             //服务器
             bookInfo.save(getContext(), new SaveListener() {
@@ -263,17 +262,17 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 public void onSuccess() {
                     Log.i(TAG, "上传服务器成功");
                     Log.i(TAG, bookInfo.getObjectId());
-                    databaseUtil.insertBookInfo(bookInfo);
+                    BookDatabaseUtil.getInstance(getContext()).insertBookInfo(bookInfo);
                 }
 
                 @Override
                 public void onFailure(int i, String s) {
                     Log.i(TAG, "上传服务器失败: " + s);
-                    databaseUtil.insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
+                    BookDatabaseUtil.getInstance(getContext()).insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
                 }
             });
         } else {
-            databaseUtil.insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
+            BookDatabaseUtil.getInstance(getContext()).insertBookInfo(bookInfo, bookInfo, true); //无效invalid ObjectId
         }
 
         mDataSet.add(0, bookInfo);
@@ -283,23 +282,24 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     //删除
     private void deleteItem(int position, boolean setAnimator) {
         final BookInfo bookInfo = mDataSet.get(position);
+
         if (!getIsTrial()) {
             //服务器
             bookInfo.delete(getContext(), bookInfo.getObjectId(), new DeleteListener() {
                 @Override
                 public void onSuccess() {
                     Log.i(TAG, "删除成功");
-                    databaseUtil.deleteBookInfo(bookInfo);
+                    BookDatabaseUtil.getInstance(getContext()).deleteBookInfo(bookInfo);
                 }
 
                 @Override
                 public void onFailure(int i, String s) {
                     Log.i(TAG, "删除失败: " + s);
-                    databaseUtil.deleteBookInfo(bookInfo, true);
+                    BookDatabaseUtil.getInstance(getContext()).deleteBookInfo(bookInfo, true);
                 }
             });
         } else {
-            databaseUtil.deleteBookInfo(bookInfo, true);
+            BookDatabaseUtil.getInstance(getContext()).deleteBookInfo(bookInfo, true);
         }
 
         int size = mDataSet.size();
@@ -324,6 +324,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
         bookInfo.setBookAlarmTime(time);
 
         Log.i(TAG, "test id = " + bookInfo.getObjectId());
+
         if (bookInfo.getObjectId() == null) {
             Log.i(TAG, "into : test id = null");
             if (!getIsTrial()) {
@@ -332,17 +333,17 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                     public void onSuccess() {
                         Log.i(TAG, "上传服务器成功");
                         Log.i(TAG, bookInfo.getObjectId());
-                        databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true);
+                        BookDatabaseUtil.getInstance(getContext()).insertBookInfo(bookInfo, bookInfoOld, true);
                     }
 
                     @Override
                     public void onFailure(int i, String s) {
                         Log.i(TAG, "上传服务器失败: " + s);
-                        databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
+                        BookDatabaseUtil.getInstance(getContext()).insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
                     }
                 });
             } else {
-                databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
+                BookDatabaseUtil.getInstance(getContext()).insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
             }
         } else {
             //服务器
@@ -350,7 +351,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 @Override
                 public void onSuccess() {
                     Log.i(TAG, "更新服务器成功");
-                    databaseUtil.insertBookInfo(bookInfo);
+                    BookDatabaseUtil.getInstance(getContext()).insertBookInfo(bookInfo);
                 }
 
                 @Override
@@ -359,7 +360,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                     switch (i) {
                         case 9010:
                         case 9016:
-                            databaseUtil.insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
+                            BookDatabaseUtil.getInstance(getContext()).insertBookInfo(bookInfo, bookInfoOld, true); //无效invalid ObjectId
                             break;
                     }
                 }

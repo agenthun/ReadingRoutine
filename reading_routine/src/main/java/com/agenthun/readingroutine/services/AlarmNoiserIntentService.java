@@ -11,6 +11,15 @@ import android.util.Log;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.activities.MainActivity;
+import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -30,6 +39,8 @@ public class AlarmNoiserIntentService extends IntentService {
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "com.agenthun.readingroutine.services.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.agenthun.readingroutine.services.extra.PARAM2";
+
+    private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public AlarmNoiserIntentService() {
         super("AlarmNoiserIntentService");
@@ -70,6 +81,11 @@ public class AlarmNoiserIntentService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_NOTIFICATION.equals(action)) {
+                BookInfo bookInfo = getNext();
+                if (bookInfo != null) {
+                    Log.d(TAG, "onHandleIntent() returned: " + bookInfo.getBookName());
+                    Log.d(TAG, "onHandleIntent() returned: " + bookInfo.getBookAlarmTime());
+                }
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
                 final String param2 = intent.getStringExtra(EXTRA_PARAM2);
                 handleActionNotification(param1, param2);
@@ -114,5 +130,41 @@ public class AlarmNoiserIntentService extends IntentService {
         // TODO: Handle action Baz
         Log.d(TAG, "handleActionBaz() returned: ");
         //throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private BookInfo getNext() {
+        ArrayList<BookInfo> mDataSet = BookDatabaseUtil.getInstance(getApplicationContext()).queryBookInfos();
+
+        Set<BookInfo> queue = new TreeSet<>(new Comparator<BookInfo>() {
+            @Override
+            public int compare(BookInfo lhs, BookInfo rhs) {
+                int result = 0;
+                try {
+                    long diff = DATE_FORMAT.parse(lhs.getBookAlarmTime()).getTime() - DATE_FORMAT.parse(rhs.getBookAlarmTime()).getTime();
+                    if (diff > 0) return 1;
+                    else if (diff < 0) return -1;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return result;
+            }
+        });
+
+        for (BookInfo bookInfo :
+                mDataSet) {
+            queue.add(bookInfo);
+        }
+
+        if (queue.iterator().hasNext()) {
+            return queue.iterator().next();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        BookDatabaseUtil.destory();
+        super.onDestroy();
     }
 }
