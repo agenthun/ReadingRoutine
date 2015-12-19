@@ -8,7 +8,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,17 +15,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
+import com.agenthun.readingroutine.datastore.BookInfo;
 import com.agenthun.readingroutine.datastore.UserData;
+import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
 import com.agenthun.readingroutine.fragments.MenuFragment;
 import com.agenthun.readingroutine.fragments.SettingsFragment;
-import com.agenthun.readingroutine.services.AlarmNoiser;
-import com.agenthun.readingroutine.services.AlarmNoiserIntentService;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
 import com.agenthun.readingroutine.utils.Avatar;
 import com.agenthun.readingroutine.utils.CircleTransformation;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.squareup.picasso.Picasso;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -237,9 +244,47 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
             }
         });
 
-        AlarmNoiser.startAlarmNoiserService(this, 5, AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
+        //AlarmNoiser.startAlarmNoiserService(this, time, AlarmNoiserReciever.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
         //AlarmNoiserIntentService.startActionNotification(this, "test", "");
-        Log.d(TAG, "onCreate() returned: startAlarmNoiserService");
+
+        callRoutineService();
+    }
+
+    private BookInfo getNext() {
+        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        ArrayList<BookInfo> mDataSet = BookDatabaseUtil.getInstance(getApplicationContext()).queryBookInfos();
+
+        Set<BookInfo> queue = new TreeSet<>(new Comparator<BookInfo>() {
+            @Override
+            public int compare(BookInfo lhs, BookInfo rhs) {
+                int result = 0;
+                try {
+                    long diff = DATE_FORMAT.parse(lhs.getBookAlarmTime()).getTime() - DATE_FORMAT.parse(rhs.getBookAlarmTime()).getTime();
+                    if (diff > 0) return 1;
+                    else if (diff < 0) return -1;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return result;
+            }
+        });
+
+        for (BookInfo bookInfo :
+                mDataSet) {
+            try {
+                if ((DATE_FORMAT.parse(bookInfo.getBookAlarmTime())).after(Calendar.getInstance().getTime())) {
+                    queue.add(bookInfo);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (queue.iterator().hasNext()) {
+            return queue.iterator().next();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -348,8 +393,6 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AlarmNoiser.stopAlarmNoiserService(this, AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
-        Log.d(TAG, "onDestroy() returned: stopAlarmNoiserService");
     }
 
     @Override

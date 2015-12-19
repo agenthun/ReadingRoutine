@@ -277,6 +277,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
 
         mDataSet.add(0, bookInfo);
         routinesAdapter.notifyDataSetChanged();
+        callRoutineService();
     }
 
     //删除
@@ -312,6 +313,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
                 routinesAdapter.notifyDataSetChanged();
             }
         }
+        callRoutineService();
     }
 
     //更新
@@ -372,5 +374,6 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
             mDataSet.set(position, bookInfo);
             routinesAdapter.notifyDataSetChanged();
         }
+        callRoutineService();
     }
 }

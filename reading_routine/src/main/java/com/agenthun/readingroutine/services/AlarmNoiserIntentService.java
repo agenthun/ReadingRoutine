@@ -11,16 +11,6 @@ import android.util.Log;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.activities.MainActivity;
-import com.agenthun.readingroutine.datastore.BookInfo;
-import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -30,7 +20,7 @@ import java.util.TreeSet;
  * helper methods.
  */
 public class AlarmNoiserIntentService extends IntentService {
-    private static final String TAG = "IntentService";
+    private static final String TAG = "ANIntentService";
 
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
@@ -40,8 +30,6 @@ public class AlarmNoiserIntentService extends IntentService {
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "com.agenthun.readingroutine.services.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.agenthun.readingroutine.services.extra.PARAM2";
-
-    private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public AlarmNoiserIntentService() {
         super("AlarmNoiserIntentService");
@@ -60,6 +48,7 @@ public class AlarmNoiserIntentService extends IntentService {
         intent.putExtra(EXTRA_PARAM1, param1);
         intent.putExtra(EXTRA_PARAM2, param2);
         context.startService(intent);
+        Log.d(TAG, "startActionNotification");
     }
 
     /**
@@ -82,14 +71,9 @@ public class AlarmNoiserIntentService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_NOTIFICATION.equals(action)) {
-                BookInfo bookInfo = getNext();
-                if (bookInfo != null) {
-                    Log.d(TAG, "onHandleIntent() returned: " + bookInfo.getBookName());
-                    Log.d(TAG, "onHandleIntent() returned: " + bookInfo.getBookAlarmTime());
-                    final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                    final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                    handleActionNotification(param1, param2);
-                }
+                final String param1 = intent.getStringExtra(AlarmNoiser.EXTRA_CONTENT_TEXT);
+//                Log.d(TAG, "onHandleIntent() returned: " + param1);
+                handleActionNotification(param1);
             } else if (ACTION_BAZ.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
                 final String param2 = intent.getStringExtra(EXTRA_PARAM2);
@@ -102,13 +86,12 @@ public class AlarmNoiserIntentService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionNotification(String param1, String param2) {
+    private void handleActionNotification(String param1) {
         // TODO: Handle action Foo
-        Log.d(TAG, "handleActionNotification() returned: ");
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_reading_routine_white_no_annulus_48dp)
                 .setContentTitle(getString(R.string.text_notification_title))
-                .setContentText(param1)
+                .setContentText("亲, 您的<<" + param1 + ">>按计划完成的进度如何了?")
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 //        .setStyle(new NotificationCompat.BigTextStyle().bigText(param1));
@@ -121,6 +104,9 @@ public class AlarmNoiserIntentService extends IntentService {
         mBuilder.setContentIntent(pendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, mBuilder.build());
+
+        Intent serviceIntent = new Intent(this, AlarmNoiserReciever.class);
+        sendBroadcast(serviceIntent, null);
     }
 
     /**
@@ -133,45 +119,9 @@ public class AlarmNoiserIntentService extends IntentService {
         //throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private BookInfo getNext() {
-        ArrayList<BookInfo> mDataSet = BookDatabaseUtil.getInstance(getApplicationContext()).queryBookInfos();
-
-        Set<BookInfo> queue = new TreeSet<>(new Comparator<BookInfo>() {
-            @Override
-            public int compare(BookInfo lhs, BookInfo rhs) {
-                int result = 0;
-                try {
-                    long diff = DATE_FORMAT.parse(lhs.getBookAlarmTime()).getTime() - DATE_FORMAT.parse(rhs.getBookAlarmTime()).getTime();
-                    if (diff > 0) return 1;
-                    else if (diff < 0) return -1;
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                return result;
-            }
-        });
-
-        for (BookInfo bookInfo :
-                mDataSet) {
-            try {
-                if ((DATE_FORMAT.parse(bookInfo.getBookAlarmTime())).after(Calendar.getInstance().getTime())) {
-                    queue.add(bookInfo);
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (queue.iterator().hasNext()) {
-            return queue.iterator().next();
-        } else {
-            return null;
-        }
-    }
-
     @Override
     public void onDestroy() {
-        BookDatabaseUtil.destory();
+        Log.d(TAG, "AlarmNoiserIntentService onDestroy()");
         super.onDestroy();
     }
 }

@@ -1,7 +1,9 @@
 package com.agenthun.readingroutine.transitionmanagers;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.agenthun.readingroutine.services.AlarmNoiserReciever;
 import com.agenthun.readingroutine.transitionmanagers.lifecycle.IComponentContainer;
 import com.agenthun.readingroutine.transitionmanagers.lifecycle.LifeCycleComponent;
 import com.agenthun.readingroutine.transitionmanagers.lifecycle.LifeCycleComponentManager;
@@ -58,4 +60,8 @@ public abstract class TActivity extends TFragmentActivity implements IComponentC
         mLifeCycleComponentManager.onBecomesTotallyInvisible();
     }
 
+    protected void callRoutineService() {
+        Intent serviceIntent = new Intent(this, AlarmNoiserReciever.class);
+        sendBroadcast(serviceIntent, null);
+    }
 }

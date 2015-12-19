@@ -2,6 +2,7 @@ package com.agenthun.readingroutine.transitionmanagers;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.agenthun.readingroutine.services.AlarmNoiserReciever;
 import com.agenthun.readingroutine.transitionmanagers.lifecycle.IComponentContainer;
 import com.agenthun.readingroutine.transitionmanagers.lifecycle.LifeCycleComponent;
 import com.agenthun.readingroutine.transitionmanagers.lifecycle.LifeCycleComponentManager;
@@ -128,5 +130,10 @@ public class TFragment extends Fragment implements ITFragment, IComponentContain
     public boolean getIsTrial() {
         return getContext().getSharedPreferences(TFragmentActivity.GLOBAL_SETTINGS, 0)
                 .getBoolean(TFragmentActivity.IS_TRIAL, true);
+    }
+
+    protected void callRoutineService() {
+        Intent serviceIntent = new Intent(getContext(), AlarmNoiserReciever.class);
+        getContext().sendBroadcast(serviceIntent, null);
     }
 }

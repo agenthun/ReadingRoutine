@@ -129,7 +129,12 @@
             android:exported="true" />
         <service
             android:name=".services.AlarmNoiserIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <receiver
+            android:name=".services.AlarmNoiserReciever"
+            android:enabled="true"
+            android:exported="false"></receiver>
     </application>
 
 </manifest>

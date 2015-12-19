@@ -1,22 +1,24 @@
 package com.agenthun.readingroutine.services;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.agenthun.readingroutine.R;
-import com.agenthun.readingroutine.activities.MainActivity;
+import com.agenthun.readingroutine.datastore.BookInfo;
+import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AlarmNoiserService extends Service {
     private static final String TAG = "AlarmNoiserService";
-    public static final String ACTION = "com.agenthun.readingroutine.services.AlarmNoiserService";
-
-    NotificationCompat.Builder mBuilder;
 
     public AlarmNoiserService() {
     }
@@ -33,47 +35,69 @@ public class AlarmNoiserService extends Service {
         super.onCreate();
     }
 
-    private void initNotifiManager() {
-        mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_reading_routine_white)
-                .setContentTitle("阅读提醒")
-                .setContentText("你的书该看了");
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-    }
+        long time;
+        BookInfo bookInfo = getNext();
+        if (bookInfo != null) {
+            try {
+                final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+                time = (DATE_FORMAT.parse(bookInfo.getBookAlarmTime()).getTime() + Calendar.getInstance().getTimeInMillis()) / 2;
+                AlarmNoiser.startAlarmNoiserService(this, time, bookInfo.getBookName(), AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
 
-    int count = 0;
-
-    class AlarmNoiserThread extends Thread {
-        @Override
-        public void run() {
-            Log.d(TAG, "run() returned: ");
-            count++;
-            if (count % 5 == 0) {
-                showNotification();
-                Log.d(TAG, "run() returned: new message");
+                Log.d(TAG, "onStartCommand() returned: " + new Date(time));
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+            Log.d(TAG, "onStartCommand() returned: start AlarmNoiserIntentService" + bookInfo.toString());
+        } else {
+            AlarmNoiser.stopAlarmNoiserService(this, AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
+            Log.d(TAG, "onStartCommand() returned: stop AlarmNoiserIntentService");
         }
-    }
-
-    private void showNotification() {
-        Intent intent = new Intent(this, MainActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(intent);
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setContentIntent(pendingIntent);
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotificationManager.notify(0, mBuilder.build());
-        Log.d(TAG, "showNotification() returned: ");
+        return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         Log.d(TAG, "onDestroy() returned: ");
+        BookDatabaseUtil.destory();
+        super.onDestroy();
+    }
+
+    private BookInfo getNext() {
+        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        ArrayList<BookInfo> mDataSet = BookDatabaseUtil.getInstance(getApplicationContext()).queryBookInfos();
+
+        Set<BookInfo> queue = new TreeSet<>(new Comparator<BookInfo>() {
+            @Override
+            public int compare(BookInfo lhs, BookInfo rhs) {
+                int result = 0;
+                try {
+                    long diff = DATE_FORMAT.parse(lhs.getBookAlarmTime()).getTime() - DATE_FORMAT.parse(rhs.getBookAlarmTime()).getTime();
+                    if (diff > 0) return 1;
+                    else if (diff < 0) return -1;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return result;
+            }
+        });
+
+        for (BookInfo bookInfo :
+                mDataSet) {
+            try {
+                if ((DATE_FORMAT.parse(bookInfo.getBookAlarmTime())).after(Calendar.getInstance().getTime())) {
+                    queue.add(bookInfo);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (queue.iterator().hasNext()) {
+            return queue.iterator().next();
+        } else {
+            return null;
+        }
     }
 }
