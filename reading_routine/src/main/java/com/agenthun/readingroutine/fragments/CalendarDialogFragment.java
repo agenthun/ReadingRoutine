@@ -11,6 +11,7 @@ import android.view.View;
 import com.agenthun.readingroutine.R;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -31,7 +32,7 @@ public class CalendarDialogFragment extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_calendar, null);
         final MaterialCalendarView calendarView = (MaterialCalendarView) view.findViewById(R.id.calendarView);
-        Date mDate = new Date();
+        final Date mDate = new Date();
         mDate.setTime(getArguments().getLong(SELECTD_DATE));
         calendarView.setSelectedDate(mDate);
 
@@ -41,7 +42,11 @@ public class CalendarDialogFragment extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (mCalendarCallback != null) {
-                            mCalendarCallback.onDateTimeSet(calendarView.getSelectedDate().getDate());
+                            Date selectedDate = Calendar.getInstance().getTime();
+                            selectedDate.setYear(calendarView.getSelectedDate().getDate().getYear());
+                            selectedDate.setMonth(calendarView.getSelectedDate().getDate().getMonth());
+                            selectedDate.setDate(calendarView.getSelectedDate().getDate().getDate());
+                            mCalendarCallback.onDateTimeSet(selectedDate);
                         }
                     }
                 })

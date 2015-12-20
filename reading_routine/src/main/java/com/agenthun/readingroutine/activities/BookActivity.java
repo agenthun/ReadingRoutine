@@ -10,7 +10,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +40,7 @@ public class BookActivity extends TActivity {
 
     private static final String TAG = "BookActivity";
     private static final String SELECT_BOOK_ALARM_TIME = "SELECT_BOOK_ALARM_TIME";
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     private MaterialMenuIconToolbar materialMenuIconToolbar;
     @InjectView(R.id.appBarLayout)
@@ -116,7 +116,14 @@ public class BookActivity extends TActivity {
         }
 
         getBookAlarmTime = intent.getStringExtra(RoutinesAdapter.BOOK_ALARM_TIME);
-        alarmTime.setText(getBookAlarmTime);
+        try {
+            mDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS").parse(getBookAlarmTime);
+        } catch (ParseException e) {
+            Calendar calendar = Calendar.getInstance();
+            mDate = calendar.getTime();
+        }
+
+        alarmTime.setText(DATE_FORMAT.format(mDate));
 
         int[] colorFab = getResources().getIntArray(R.array.style_book_fab_color);
         fab.setBackgroundTintList(ColorStateList.valueOf(colorFab[getBookColorIndex]));
@@ -141,14 +148,6 @@ public class BookActivity extends TActivity {
 
     @OnClick(R.id.alarm_time)
     public void onAlarmTimeClick() {
-        try {
-            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-            mDate = DATE_FORMAT.parse(alarmTime.getText().toString());
-        } catch (ParseException e) {
-            Calendar calendar = Calendar.getInstance();
-            mDate = calendar.getTime();
-        }
-
         CalendarDialogFragment calendarDialogFragment = new CalendarDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putLong(CalendarDialogFragment.SELECTD_DATE, mDate.getTime());
@@ -182,7 +181,7 @@ public class BookActivity extends TActivity {
             return;
         } else {
             intent.putExtra(RoutinesAdapter.BOOK_NAME, name);
-            intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, alarmTime.getText().toString());
+            intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, getBookAlarmTime);
             setResult(RoutinesFragment.RENEW_BOOK, intent);
             finish();
         }
@@ -197,7 +196,7 @@ public class BookActivity extends TActivity {
             return;
         } else {
             intent.putExtra(RoutinesAdapter.BOOK_NAME, name);
-            intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, alarmTime.getText().toString());
+            intent.putExtra(RoutinesAdapter.BOOK_ALARM_TIME, getBookAlarmTime);
             setResult(RoutinesFragment.RENEW_BOOK, intent);
             finish();
         }
@@ -212,8 +211,7 @@ public class BookActivity extends TActivity {
     };
 
     private void updateAlarmTimeView() {
-        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        getBookAlarmTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS").format(mDate);
         alarmTime.setText(DATE_FORMAT.format(mDate));
-        Log.d(TAG, DATE_FORMAT.format(mDate));
     }
 }

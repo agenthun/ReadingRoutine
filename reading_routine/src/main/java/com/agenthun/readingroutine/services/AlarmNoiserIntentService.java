@@ -91,7 +91,7 @@ public class AlarmNoiserIntentService extends IntentService {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_reading_routine_white_no_annulus_48dp)
                 .setContentTitle(getString(R.string.text_notification_title))
-                .setContentText("亲, 您的<<" + param1 + ">>按计划完成的进度如何了?")
+                .setContentText("亲, 您的<<" + param1 + ">>是否按计划完成了?")
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 //        .setStyle(new NotificationCompat.BigTextStyle().bigText(param1));

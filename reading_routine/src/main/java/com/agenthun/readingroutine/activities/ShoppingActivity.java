@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -22,7 +23,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.agenthun.readingroutine.R;
 import com.agenthun.readingroutine.adapters.ShoppingAdapter;
@@ -248,8 +248,8 @@ public class ShoppingActivity extends AppCompatActivity {
             @Override
             public void onJsonHttpFailure(JSONObject response) {
                 progressView.setVisibility(View.GONE);
-//                Snackbar.make(toolbar, R.string.error_invalid_network, Snackbar.LENGTH_SHORT).show();
-                Toast.makeText(ShoppingActivity.this, R.string.error_invalid_network, Toast.LENGTH_SHORT).show();
+                Snackbar.make(toolbar, R.string.error_invalid_network, Snackbar.LENGTH_SHORT).show();
+//                Toast.makeText(ShoppingActivity.this, R.string.error_invalid_network, Toast.LENGTH_SHORT).show();
             }
         });
     }

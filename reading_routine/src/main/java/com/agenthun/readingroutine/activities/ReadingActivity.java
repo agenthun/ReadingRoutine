@@ -159,6 +159,7 @@ public class ReadingActivity extends TActivity {
     public void onReadingBackgroundClick() {
         Log.d(TAG, "onReadingBackgroundClick() returned: ");
         if (fileName != null && fileName.length() > 0) {
+            Snackbar.make(layoutShortcut, "更换背景功能 - 敬请期待", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -166,6 +167,7 @@ public class ReadingActivity extends TActivity {
     public void onMarkingClick() {
         Log.d(TAG, "onMarkingClick() returned: ");
         if (fileName != null && fileName.length() > 0) {
+            Snackbar.make(layoutShortcut, "添加笔记功能 - 敬请期待", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -188,7 +190,7 @@ public class ReadingActivity extends TActivity {
                 bookInfo.setUserData(UserData.getCurrentUser(ReadingActivity.this, UserData.class));
                 bookInfo.setBookName(bookName);
                 bookInfo.setBookColor(new Random().nextInt(4));
-                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS");
                 Calendar calendar = Calendar.getInstance();
                 bookInfo.setBookAlarmTime(DATE_FORMAT.format(calendar.getTime()));
 

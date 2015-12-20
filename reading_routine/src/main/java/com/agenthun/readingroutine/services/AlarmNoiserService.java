@@ -37,15 +37,13 @@ public class AlarmNoiserService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        long time;
         BookInfo bookInfo = getNext();
         if (bookInfo != null) {
             try {
-                final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-                time = (DATE_FORMAT.parse(bookInfo.getBookAlarmTime()).getTime() + Calendar.getInstance().getTimeInMillis()) / 2;
+                final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS");
+                long time = getAlarmTime(DATE_FORMAT.parse(bookInfo.getBookAlarmTime()));
                 AlarmNoiser.startAlarmNoiserService(this, time, bookInfo.getBookName(), AlarmNoiserIntentService.class, AlarmNoiserIntentService.ACTION_NOTIFICATION);
-
-                Log.d(TAG, "onStartCommand() returned: " + new Date(time));
+                Log.d(TAG, "onStartCommand() returned: Alarm Time " + new Date(time));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -57,6 +55,13 @@ public class AlarmNoiserService extends Service {
         return START_NOT_STICKY;
     }
 
+    private long getAlarmTime(Date date) {
+        long alarmTime;
+//        alarmTime = date.getTime() + 12 * 3600000;
+        alarmTime = date.getTime();
+        return alarmTime;
+    }
+
     @Override
     public void onDestroy() {
         Log.d(TAG, "onDestroy() returned: ");
@@ -65,7 +70,7 @@ public class AlarmNoiserService extends Service {
     }
 
     private BookInfo getNext() {
-        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS");
         ArrayList<BookInfo> mDataSet = BookDatabaseUtil.getInstance(getApplicationContext()).queryBookInfos();
 
         Set<BookInfo> queue = new TreeSet<>(new Comparator<BookInfo>() {

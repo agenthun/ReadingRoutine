@@ -15,9 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
-import com.agenthun.readingroutine.datastore.BookInfo;
 import com.agenthun.readingroutine.datastore.UserData;
-import com.agenthun.readingroutine.datastore.db.BookDatabaseUtil;
 import com.agenthun.readingroutine.fragments.MenuFragment;
 import com.agenthun.readingroutine.fragments.SettingsFragment;
 import com.agenthun.readingroutine.transitionmanagers.TActivity;
@@ -26,14 +24,6 @@ import com.agenthun.readingroutine.utils.CircleTransformation;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.squareup.picasso.Picasso;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -248,43 +238,6 @@ public class MainActivity extends TActivity implements MenuFragment.OnMenuIntera
         //AlarmNoiserIntentService.startActionNotification(this, "test", "");
 
         callRoutineService();
-    }
-
-    private BookInfo getNext() {
-        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-        ArrayList<BookInfo> mDataSet = BookDatabaseUtil.getInstance(getApplicationContext()).queryBookInfos();
-
-        Set<BookInfo> queue = new TreeSet<>(new Comparator<BookInfo>() {
-            @Override
-            public int compare(BookInfo lhs, BookInfo rhs) {
-                int result = 0;
-                try {
-                    long diff = DATE_FORMAT.parse(lhs.getBookAlarmTime()).getTime() - DATE_FORMAT.parse(rhs.getBookAlarmTime()).getTime();
-                    if (diff > 0) return 1;
-                    else if (diff < 0) return -1;
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                return result;
-            }
-        });
-
-        for (BookInfo bookInfo :
-                mDataSet) {
-            try {
-                if ((DATE_FORMAT.parse(bookInfo.getBookAlarmTime())).after(Calendar.getInstance().getTime())) {
-                    queue.add(bookInfo);
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (queue.iterator().hasNext()) {
-            return queue.iterator().next();
-        } else {
-            return null;
-        }
     }
 
     @Override

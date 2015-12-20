@@ -62,6 +62,7 @@
     <string name="text_new_app_version">新版本</string>
     <string name="text_app_introduction">功能介绍</string>
     <string name="text_thanks">致谢</string>
+    <string name="text_app_about_me">关于我</string>
     <string name="text_ok">确认</string>
     <string name="text_cancel">取消</string>
     <string name="text_copyright">Copyright \@2015 agenthun</string>
@@ -72,6 +73,7 @@
     <string name="text_introduction_title_notes">3.读书笔记</string>
     <string name="text_introduction_content_notes">你可以添加读书笔记，进行好句记录，书评，读后感等。</string>
     <string name="error_invalid_network">网络出错</string>
+    <string name="error_404_network">404 出错啦!</string>
 
     <string name="text_shopping">好书推荐</string>
     <string name="action_search">搜索</string>

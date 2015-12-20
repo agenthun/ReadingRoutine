@@ -1,7 +1,11 @@
 package com.agenthun.readingroutine.fragments;
 
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -26,6 +30,7 @@ public class AboutFragment extends TFragment {
     private LinearLayout updateVersionArea;
     private TextView appIntroduction;
     private TextView appThanks;
+    private TextView appAboutMe;
     private TextView appNewVersionNumHint;
     private TextView appNewVersionNum;
 
@@ -41,6 +46,7 @@ public class AboutFragment extends TFragment {
         updateVersionArea = (LinearLayout) view.findViewById(R.id.update_version_area);
         appIntroduction = (TextView) view.findViewById(R.id.app_introduction);
         appThanks = (TextView) view.findViewById(R.id.app_thanks);
+        appAboutMe = (TextView) view.findViewById(R.id.app_about_me);
 /*        appNewVersionNumHint = (TextView) view.findViewById(R.id.app_new_version_num_hint);
         appNewVersionNum = (TextView) view.findViewById(R.id.app_new_version_num);*/
 
@@ -66,6 +72,21 @@ public class AboutFragment extends TFragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle(R.string.text_thanks).setMessage("crush").setPositiveButton(R.string.text_ok, null).show();
+            }
+        });
+
+        appAboutMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://agenthun.github.io";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                intent.addCategory("android.intent.category.BROWSABLE");
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Snackbar.make(appAboutMe, R.string.error_404_network, Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
         return view;

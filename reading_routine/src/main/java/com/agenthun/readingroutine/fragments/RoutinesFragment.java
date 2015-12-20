@@ -201,7 +201,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     @OnClick(R.id.addBtn)
     public void onAddClick() {
         itemPosition = Integer.MAX_VALUE;
-        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS");
         Calendar calendar = Calendar.getInstance();
         Intent intent = new Intent(getContext(), BookActivity.class);
         intent.putExtra(RoutinesAdapter.BOOK_NAME, getResources().getString(R.string.text_book));
@@ -214,7 +214,7 @@ public class RoutinesFragment extends TFragment implements RevealBackgroundView.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         String name;
         int colorIndex;
-        String time;
+        String time = "";
 
         switch (requestCode) {
             case UPDATE_BOOK:

@@ -3,6 +3,7 @@ package com.agenthun.readingroutine.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -42,10 +43,16 @@ public class SettingsFragment extends TFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        final View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.inject(this, view);
         updateUIFromStoredSettings();
         setupUserInteraction();
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Snackbar.make(view, "设置功能 - 敬请期待", Snackbar.LENGTH_SHORT).show();
+            }
+        }, 500);
         return view;
     }
 
