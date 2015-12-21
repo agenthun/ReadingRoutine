@@ -34,11 +34,19 @@ import com.agenthun.readingroutine.views.CircularProgressView;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
+
 
 /**
  * @project ReadingRoutine
@@ -124,7 +132,8 @@ public class ShoppingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startSearchAnimation(100);
-                getRequestData("射雕侠侣");
+                //getRequestData("射雕侠侣");
+                getBookListRequestData("https://book.douban.com/chart?subcat=F&icn=index-topchart-fiction");
             }
         }, 200);
 
@@ -207,7 +216,7 @@ public class ShoppingActivity extends AppCompatActivity {
             @Override
             public void onJsonHttpSuccess(JSONObject response) {
                 mDataSet.clear();
-                progressView.setVisibility(View.GONE);
+
                 JSONArray jsonArrays = response.optJSONArray("books");
                 for (int i = 0; i < jsonArrays.length(); i++) {
                     Book book = new Book();
@@ -235,13 +244,14 @@ public class ShoppingActivity extends AppCompatActivity {
 
                     book.setContent(jsonArrays.optJSONObject(i).optString("catalog"));
                     book.setSummary(jsonArrays.optJSONObject(i).optString("summary"));
-                    book.setBitmap(jsonArrays.optJSONObject(i).optString("image"));
+                    book.setBitmap(jsonArrays.optJSONObject(i).optJSONObject("images").optString("large"));
                     book.setReviewCount(jsonArrays.optJSONObject(i).optJSONObject("rating").optInt("numRaters"));
                     book.setUrl(jsonArrays.optJSONObject(i).optString("ebook_url"));
 
                     mDataSet.add(book);
                     Log.d(TAG, "onJsonHttpSuccess() returned: " + book.toString());
                 }
+                progressView.setVisibility(View.GONE);
                 updateItem();
             }
 
@@ -253,6 +263,72 @@ public class ShoppingActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void getBookListRequestData(String str) {
+        BaseAsyncHttp.getAsyncHttpResponseData(str, new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        progressView.setVisibility(View.GONE);
+                        Snackbar.make(toolbar, R.string.error_invalid_network, Snackbar.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        mDataSet.clear();
+
+                        Document document = Jsoup.parse(responseString);
+                        Elements elements = document.select("#content");
+//                        elements = elements.get(0).select("ul > li");
+                        Elements bookElements = elements.select("li.media");
+
+                        for (Element bookElement :
+                                bookElements) {
+                            Book book = new Book();
+
+                            String id = bookElement.select("div.media__img a").attr("href");
+                            id = id.substring(id.indexOf("subject") + 8, id.length() - 1);
+                            book.setId(id);
+
+                            book.setBitmap(bookElement.select("img.subject-cover").attr("src"));
+
+                            book.setTitle(bookElement.select("div.media__body a.fleft").text());
+
+                            String temps = bookElement.select("div.media__body p.subject-abstract").text();
+                            String[] temp = temps.split(" / ");
+                            book.setAuthor(temp[0]);
+                            book.setPublisher(temp[2]);
+                            book.setPublishDate(temp[1]);
+                            book.setPrice(temp[3]);
+
+                            String rate = bookElement.select("div.media__body span.font-small").text();
+                            book.setRate(Double.parseDouble(rate));
+
+                            String reviewCount = bookElement.select("div.media__body span.ml8").text();
+                            reviewCount = reviewCount.substring(1, reviewCount.indexOf("人"));
+                            book.setReviewCount(Integer.parseInt(reviewCount));
+
+                            book.setAuthorInfo("");
+                            book.setPage("");
+                            book.setTag("");
+                            book.setContent("");
+                            book.setSummary("");
+
+                            try {
+                                book.setUrl(bookElement.select("div.ebook-link a").attr("href"));
+                            } catch (Exception e) {
+                                book.setUrl("");
+                            }
+
+                            mDataSet.add(book);
+                            Log.d(TAG, "getBookList onSuccess() returned: " + book.toString());
+                        }
+                        progressView.setVisibility(View.GONE);
+                        updateItem();
+                    }
+                }
+        );
+    }
+
 
     public void updateItem() {
         shoppingAdapter.setItems(mDataSet);

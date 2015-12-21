@@ -1,6 +1,7 @@
 package com.agenthun.readingroutine.net;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -28,7 +29,7 @@ public class BaseAsyncHttp extends AsyncHttpClient {
         new AsyncHttpClient().get(HOST + url, params, handler);
     }
 
-    public static void downloadFile(String url, FileDownloadHandler handler) {
+    public static void getAsyncHttpResponseData(String url, AsyncHttpResponseHandler handler) {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, handler);
     }

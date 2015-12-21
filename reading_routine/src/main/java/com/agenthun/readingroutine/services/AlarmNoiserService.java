@@ -57,7 +57,7 @@ public class AlarmNoiserService extends Service {
 
     private long getAlarmTime(Date date) {
         long alarmTime;
-//        alarmTime = date.getTime() + 12 * 3600000;
+//        alarmTime = date.getTime() - 3600000;
         alarmTime = date.getTime();
         return alarmTime;
     }
