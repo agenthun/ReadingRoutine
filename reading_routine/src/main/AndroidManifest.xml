@@ -128,7 +128,8 @@
         <activity
             android:name=".activities.FeedbackActivity"
             android:label="@string/text_app_feedback"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
 
         <service
             android:name=".services.AlarmNoiserService"
