@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -123,7 +124,7 @@ public class ShoppingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startSearchAnimation(100);
-                getRequestData("第三种爱情");
+                getSearchRequestData("第三种爱情");
             }
         });*/
 
@@ -132,7 +133,6 @@ public class ShoppingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startSearchAnimation(100);
-                //getRequestData("射雕侠侣");
                 getBookListRequestData("https://book.douban.com/chart?subcat=F&icn=index-topchart-fiction");
             }
         }, 200);
@@ -153,7 +153,7 @@ public class ShoppingActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     startSearchAnimation(100);
-                    getRequestData(query);
+                    getSearchRequestData(query);
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                     return true;
                 }
@@ -167,7 +167,7 @@ public class ShoppingActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     startSearchAnimation(100);
-                    getRequestData(String.valueOf(searchView.getQuery()));
+                    getSearchRequestData(String.valueOf(searchView.getQuery()));
                 }
             });
         }
@@ -179,9 +179,15 @@ public class ShoppingActivity extends AppCompatActivity {
         shoppingAdapter = new ShoppingAdapter(ShoppingActivity.this, mDataSet);
         shoppingAdapter.setOnItemClickListener(new ShoppingAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(final View view, int position) {
 //                Log.d(TAG, "onItemClick() returned: " + position);
-                startProductActivityWithTransition(ShoppingActivity.this, view.findViewById(R.id.pic), shoppingAdapter.getItem(position));
+                final Book mBook = shoppingAdapter.getItem(position);
+                if (TextUtils.isEmpty(mBook.getContent()) && TextUtils.isEmpty(mBook.getSummary())) {
+                    getSearchByIdRequestDataAndStartActivity(position, mBook.getId(), mBook);
+                    Log.d(TAG, "onItemClick() returned: getSearchByIdRequestDataAndStartActivity");
+                } else {
+                    startProductActivityWithTransition(ShoppingActivity.this, view.findViewById(R.id.pic), mBook);
+                }
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(ShoppingActivity.this);
@@ -209,7 +215,7 @@ public class ShoppingActivity extends AppCompatActivity {
         finish();
     }
 
-    public void getRequestData(String str) {
+    public void getSearchRequestData(String str) {
         RequestParams params = new RequestParams();
         params.put("q", str.trim());
         BaseAsyncHttp.getReq("/v2/book/search", params, new HttpResponseHandler() {
@@ -264,6 +270,37 @@ public class ShoppingActivity extends AppCompatActivity {
         });
     }
 
+    public void getSearchByIdRequestDataAndStartActivity(final int position, String id, final Book book) {
+        BaseAsyncHttp.getAsyncHttpResponseData("https://api.douban.com/v2/book/" + id, new HttpResponseHandler() {
+            @Override
+            public void onJsonHttpSuccess(JSONObject response) {
+                book.setAuthorInfo(response.optString("author_intro"));
+                book.setPage(response.optString("pages"));
+
+                String tags = "";
+                for (int j = 0; j < response.optJSONArray("tags").length(); j++) {
+                    tags = tags + " " + response.optJSONArray("tags").optJSONObject(j).optString("name");
+                }
+                book.setTag(tags.trim());
+
+                book.setContent(response.optString("catalog"));
+                book.setSummary(response.optString("summary"));
+
+                Log.d(TAG, "onJsonHttpSuccess() returned: " + book.toString());
+
+                shoppingAdapter.setItem(position, book);
+                shoppingAdapter.notifyItemChanged(position);
+                startProductActivityWithTransition(ShoppingActivity.this, findViewById(R.id.pic), book);
+            }
+
+            @Override
+            public void onJsonHttpFailure(JSONObject response) {
+                startProductActivityWithTransition(ShoppingActivity.this, findViewById(R.id.pic), book);
+//                Snackbar.make(toolbar, R.string.error_invalid_network, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void getBookListRequestData(String str) {
         BaseAsyncHttp.getAsyncHttpResponseData(str, new TextHttpResponseHandler() {
                     @Override
@@ -289,7 +326,7 @@ public class ShoppingActivity extends AppCompatActivity {
                             id = id.substring(id.indexOf("subject") + 8, id.length() - 1);
                             book.setId(id);
 
-                            book.setBitmap(bookElement.select("img.subject-cover").attr("src"));
+                            book.setBitmap(bookElement.select("img.subject-cover").attr("src").replace("spic", "lpic"));
 
                             book.setTitle(bookElement.select("div.media__body a.fleft").text());
 
