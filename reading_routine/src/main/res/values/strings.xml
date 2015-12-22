@@ -64,6 +64,11 @@
     <string name="text_thanks">致谢</string>
     <string name="text_app_about_me">关于我</string>
     <string name="text_app_feedback">反馈</string>
+    <string name="text_feedback_hint">感谢您对阅读路线的使用与支持,请在这里写下您的宝贵意见,以便我们进行完善.</string>
+    <string name="error_invalid_feedback">您的意见为空,请写下您的宝贵意见</string>
+    <string name="error_repeated_feedback">请勿重复提交反馈</string>
+    <string name="msg_save_feedback_success">反馈信息已发送到服务器</string>
+    <string name="msg_save_feedback_fail">发送反馈信息失败：</string>
     <string name="text_ok">确认</string>
     <string name="text_cancel">取消</string>
     <string name="text_copyright">Copyright \@2015 agenthun</string>

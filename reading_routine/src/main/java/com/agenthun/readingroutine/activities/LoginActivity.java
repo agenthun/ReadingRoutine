@@ -14,6 +14,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -39,7 +40,7 @@ public class LoginActivity extends TActivity {
         setContentView(R.layout.activity_login);
         //初始化Bmob
         Bmob.initialize(this, BMOB_APP_ID);
-//        BmobPush.startWork(this, BMOB_APP_ID);
+        BmobPush.startWork(this, BMOB_APP_ID);
 
         ButterKnife.inject(this);
 

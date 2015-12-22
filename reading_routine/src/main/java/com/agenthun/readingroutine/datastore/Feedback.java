@@ -8,15 +8,15 @@ import cn.bmob.v3.BmobObject;
  * @date 15/12/22 下午11:36.
  */
 public class Feedback extends BmobObject {
-    private String contacts;
+    private String username;
     private String content;
 
-    public String getContacts() {
-        return contacts;
+    public String getUsername() {
+        return username;
     }
 
-    public void setContacts(String contacts) {
-        this.contacts = contacts;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getContent() {

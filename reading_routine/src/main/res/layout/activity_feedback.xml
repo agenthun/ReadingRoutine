@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.agenthun.readingroutine.activities.NoteDetailsActivity">
+    tools:context="com.agenthun.readingroutine.activities.SignUpActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,18 +21,39 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_note_details" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:elevation="6dp"
-        android:src="@drawable/ic_save_white_48dp"
-        android:translationZ="12dp"
-        app:borderWidth="0dp"
-        app:pressedTranslationZ="12dp" />
+        <EditText
+            android:id="@+id/edit_feedback_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_white"
+            android:gravity="top"
+            android:hint="@string/text_feedback_hint"
+            android:lineSpacingExtra="@dimen/editor_line_space_extra"
+            android:minLines="10"
+            android:textColor="@color/gray_800"
+            android:textSize="@dimen/abc_text_size_small_material" />
 
+        <Button
+            android:id="@+id/send_button"
+            style="?android:textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical"
+            android:background="@drawable/btn_default_color_primary"
+            android:text="@string/action_send"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            app:layout_behavior="android.support.design.widget.FloatingActionButton.Behavior" />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
