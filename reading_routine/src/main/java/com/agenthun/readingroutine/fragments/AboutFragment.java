@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.agenthun.readingroutine.R;
+import com.agenthun.readingroutine.activities.FeedbackActivity;
 import com.agenthun.readingroutine.transitionmanagers.TFragment;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 
@@ -31,6 +32,7 @@ public class AboutFragment extends TFragment {
     private TextView appIntroduction;
     private TextView appThanks;
     private TextView appAboutMe;
+    private TextView appFeedback;
     private TextView appNewVersionNumHint;
     private TextView appNewVersionNum;
 
@@ -47,6 +49,7 @@ public class AboutFragment extends TFragment {
         appIntroduction = (TextView) view.findViewById(R.id.app_introduction);
         appThanks = (TextView) view.findViewById(R.id.app_thanks);
         appAboutMe = (TextView) view.findViewById(R.id.app_about_me);
+        appFeedback = (TextView) view.findViewById(R.id.app_feedback);
 /*        appNewVersionNumHint = (TextView) view.findViewById(R.id.app_new_version_num_hint);
         appNewVersionNum = (TextView) view.findViewById(R.id.app_new_version_num);*/
 
@@ -87,6 +90,13 @@ public class AboutFragment extends TFragment {
                 } catch (ActivityNotFoundException e) {
                     Snackbar.make(appAboutMe, R.string.error_404_network, Snackbar.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        appFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), FeedbackActivity.class));
             }
         });
         return view;

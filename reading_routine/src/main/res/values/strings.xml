@@ -31,7 +31,7 @@
     <string name="error_invalid_bookname">书名无效</string>
     <string name="text_refresh">同步</string>
 
-    <string name="title_activity_note_details">NoteDetailsActivity</string>
+    <string name="title_activity_note_details">新建笔记</string>
     <string name="text_note_title">标题</string>
     <string name="text_note_compose">内容</string>
     <string name="error_invalid_notecompose">内容无效</string>
@@ -63,6 +63,7 @@
     <string name="text_app_introduction">功能介绍</string>
     <string name="text_thanks">致谢</string>
     <string name="text_app_about_me">关于我</string>
+    <string name="text_app_feedback">反馈</string>
     <string name="text_ok">确认</string>
     <string name="text_cancel">取消</string>
     <string name="text_copyright">Copyright \@2015 agenthun</string>

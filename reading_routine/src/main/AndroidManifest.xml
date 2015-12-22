@@ -125,6 +125,10 @@
         <activity
             android:name=".activities.ProductActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.FeedbackActivity"
+            android:label="@string/text_app_feedback"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".services.AlarmNoiserService"

@@ -39,6 +39,7 @@ public class LoginActivity extends TActivity {
         setContentView(R.layout.activity_login);
         //初始化Bmob
         Bmob.initialize(this, BMOB_APP_ID);
+//        BmobPush.startWork(this, BMOB_APP_ID);
 
         ButterKnife.inject(this);
 
