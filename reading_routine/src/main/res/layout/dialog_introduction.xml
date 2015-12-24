@@ -18,27 +18,41 @@
             android:text="@string/text_introduction_title_routines"
             android:textColor="@color/text_dialog_color_subhead" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!--        <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="156dp"
+                        android:layout_height="156dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/r_routine_detail" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/margin_horizontal"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/text_introduction_content_routines"
+                        android:textColor="@color/text_dialog_color_subhead" />
+                </LinearLayout>-->
+
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_routine" />
 
-            <ImageView
-                android:layout_width="144dp"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:src="@drawable/introduction_routine" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_horizontal"
-                android:fontFamily="sans-serif"
-                android:text="@string/text_introduction_content_routines"
-                android:textColor="@color/text_dialog_color_subhead" />
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_routine_detail" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,27 +62,41 @@
             android:text="@string/text_introduction_title_reading"
             android:textColor="@color/text_dialog_color_subhead" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!--        <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="144dp"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/introduction_reading" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/margin_horizontal"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/text_introduction_content_reading"
+                        android:textColor="@color/text_dialog_color_subhead" />
+                </LinearLayout>-->
+
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_reading" />
 
-            <ImageView
-                android:layout_width="144dp"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:src="@drawable/introduction_reading" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_horizontal"
-                android:fontFamily="sans-serif"
-                android:text="@string/text_introduction_content_reading"
-                android:textColor="@color/text_dialog_color_subhead" />
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_reading_txt" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -78,27 +106,63 @@
             android:text="@string/text_introduction_title_notes"
             android:textColor="@color/text_dialog_color_subhead" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="16dp"
+             android:orientation="horizontal">
+
+             <ImageView
+                 android:layout_width="144dp"
+                 android:layout_height="wrap_content"
+                 android:scaleType="centerCrop"
+                 android:src="@drawable/introduction_notes" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_vertical"
+                 android:layout_marginLeft="@dimen/margin_horizontal"
+                 android:fontFamily="sans-serif"
+                 android:text="@string/text_introduction_content_notes"
+                 android:textColor="@color/text_dialog_color_subhead" />
+         </LinearLayout>-->
+
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_notes" />
 
-            <ImageView
-                android:layout_width="144dp"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:src="@drawable/introduction_notes" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_notes_detail" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_horizontal"
-                android:fontFamily="sans-serif"
-                android:text="@string/text_introduction_content_notes"
-                android:textColor="@color/text_dialog_color_subhead" />
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/text_introduction_title_shopping"
+            android:textColor="@color/text_dialog_color_subhead" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_shopping" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_shopping_product" />
     </LinearLayout>
 
 </ScrollView>
