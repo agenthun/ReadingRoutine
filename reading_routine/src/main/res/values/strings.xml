@@ -59,6 +59,7 @@
     <string name="text_about">关于</string>
     <string name="text_version">V1.0 Beta</string>
     <string name="text_app_new_version_update">版本更新</string>
+    <string name="text_app_already_the_latest_version">已是最新版本</string>
     <string name="text_new_app_version">新版本</string>
     <string name="text_app_introduction">功能介绍</string>
     <string name="text_thanks">致谢</string>
@@ -78,8 +79,10 @@
     <string name="text_introduction_content_reading">加入电子书阅读器的功能，可与读书计划安排进行关联。</string>
     <string name="text_introduction_title_notes">3.读书笔记</string>
     <string name="text_introduction_content_notes">你可以添加读书笔记，进行好句记录，书评，读后感等。</string>
-    <string name="text_introduction_title_shopping">4.好书推荐</string>
+    <string name="text_introduction_title_shopping">4.好书推荐, 源自豆瓣读书排名</string>
     <string name="text_introduction_content_shopping">来自豆瓣读书排行榜。</string>
+    <string name="text_introduction_title_login_user">5.数据同步</string>
+    <string name="text_introduction_content_login_user">个人数据及时与云端同步</string>
     <string name="error_invalid_network">网络出错</string>
     <string name="error_404_network">404 出错啦!</string>
 

@@ -56,7 +56,7 @@ public class AboutFragment extends TFragment {
         updateVersionArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Snackbar.make(updateVersionArea, R.string.text_app_already_the_latest_version, Snackbar.LENGTH_SHORT).show();
             }
         });
 

@@ -163,6 +163,21 @@
             android:padding="@dimen/margin_horizontal_medium"
             android:scaleType="centerCrop"
             android:src="@drawable/r_shopping_product" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/text_introduction_title_login_user"
+            android:textColor="@color/text_dialog_color_subhead" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_horizontal_medium"
+            android:scaleType="centerCrop"
+            android:src="@drawable/r_user" />
     </LinearLayout>
 
 </ScrollView>
